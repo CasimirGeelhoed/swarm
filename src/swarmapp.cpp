@@ -5,6 +5,7 @@
 #include <nap/logger.h>
 #include <inputrouter.h>
 #include <rendergnomoncomponent.h>
+#include <renderablemeshcomponent.h>
 #include <perspcameracomponent.h>
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmApp)
@@ -48,6 +49,18 @@ namespace nap
 		if (!error.check(mGnomonEntity != nullptr, "unable to find entity with name: %s", "GnomonEntity"))
 			return false;
         
+        // Get the Cube entity
+        mCubeEntity = mScene->findEntity("CubeEntity");
+        if (!error.check(mCubeEntity != nullptr, "unable to find entity with name: %s", "CubeEntity"))
+            return false;
+        
+        mOutputData = mResourceManager->findObject<OutputData>("OutputData");
+        if (!error.check(mOutputData != nullptr, "unable to find output data with name: %s", "Scene"))
+            return false;
+
+        
+
+        
 		// All done!
 		return true;
 	}
@@ -59,6 +72,9 @@ namespace nap
 		// Use a default input router to forward input events (recursively) to all input components in the default scene
 		nap::DefaultInputRouter input_router(true);
 		mInputService->processWindowEvents(*mRenderWindow, input_router, { &mScene->getRootEntity() });
+        
+        // update cube position based on 'OutputData' (mockup)
+        mCubeEntity->getComponent<TransformComponentInstance>().setTranslate(mOutputData->getData()[0]);
         
     }
 	
@@ -83,7 +99,9 @@ namespace nap
 			// Add Gnomon
 			std::vector<nap::RenderableComponentInstance*> components_to_render
 			{
-				&mGnomonEntity->getComponent<RenderGnomonComponentInstance>()
+				&mGnomonEntity->getComponent<RenderGnomonComponentInstance>(),
+                &mCubeEntity->getComponent<RenderableMeshComponentInstance>()
+
 			};
 
 			// Render Gnomon

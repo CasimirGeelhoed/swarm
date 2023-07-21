@@ -14,8 +14,8 @@
 #include <entity.h>
 #include <app.h>
 
-// Parameter GUI
-#include <parametergui.h>
+// OutputData class include
+#include <OutputData.h>
 
 namespace nap
 {
@@ -80,5 +80,10 @@ namespace nap
 		ObjectPtr<Scene>			mScene = nullptr;				///< Pointer to the main scene
 		ObjectPtr<EntityInstance>	mCameraEntity = nullptr;		///< Pointer to the entity that holds the perspective camera
 		ObjectPtr<EntityInstance>	mGnomonEntity = nullptr;		///< Pointer to the entity that can render the gnomon
+        
+        ObjectPtr<EntityInstance>   mCubeEntity = nullptr;
+        
+        ResourcePtr<OutputData>     mOutputData = nullptr;
+        
     };
 }

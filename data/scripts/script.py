@@ -10,7 +10,10 @@ class Control:
         self.cc.resizeData(1)
         
     def update(self, elapsedTime, deltaTime):
-        self.cc.setData(0, nap.vec3(math.sin(elapsedTime), 0, 0))
+        x = math.sin(elapsedTime * 4)
+        y = math.cos(elapsedTime * 2)
+        z = math.sin(elapsedTime * 0.25) * 5
+        self.cc.setData(0, nap.vec3(x, y, z))
         
     def destroy():
         pass
