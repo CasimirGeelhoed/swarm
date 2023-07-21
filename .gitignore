@@ -34,3 +34,4 @@ __pycache__
 cached_project_json.cmake
 */imgui.ini
 .DS_Store
+cache/path_mapping.json
