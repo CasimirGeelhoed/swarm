@@ -76,6 +76,10 @@ namespace nap
         // update cube position based on 'OutputData' (mockup)
         mCubeEntity->getComponent<TransformComponentInstance>().setTranslate(mOutputData->getData()[0]);
         
+        // performance gui
+        ImGui::Begin("Performance");
+        ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
+        ImGui::End();
     }
 	
 	
