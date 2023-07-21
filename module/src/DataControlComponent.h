@@ -38,15 +38,21 @@ namespace nap
         // Initialize the component
         bool init(utility::ErrorState& errorState) override;
         
-        void resizeData(int size)
+        void initData(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size)
         {
-            mData->resize(size);
+            mData->initFields(vec3Fields, floatFields, size);
+        }
+
+        void setFloat(int index, std::string fieldName, float value)
+        {
+            mData->setFloat(index, fieldName, value);
         }
         
-        void setData(int index, glm::vec3 value)
+        void setVec3(int index, std::string fieldName, glm::vec3 value)
         {
-            mData->setData(index, value);
+            mData->setVec3(index, fieldName, value);
         }
+
 
     private:
         OutputData* mData;

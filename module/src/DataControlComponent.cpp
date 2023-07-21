@@ -10,8 +10,9 @@ RTTI_END_CLASS
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::DataControlComponentInstance)
     RTTI_CONSTRUCTOR(nap::EntityInstance&, nap::Component&)
-    RTTI_FUNCTION("resizeData", &nap::DataControlComponentInstance::resizeData)
-    RTTI_FUNCTION("setData", &nap::DataControlComponentInstance::setData)
+    RTTI_FUNCTION("initData", &nap::DataControlComponentInstance::initData)
+    RTTI_FUNCTION("setFloat", &nap::DataControlComponentInstance::setFloat)
+    RTTI_FUNCTION("setVec3", &nap::DataControlComponentInstance::setVec3)
 RTTI_END_CLASS
 
 namespace nap

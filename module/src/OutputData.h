@@ -15,33 +15,43 @@ namespace nap {
     public:
         OutputData() : Resource() { }
         
+        
+        // TODO: also bool type, string type?
+        void initFields(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size)
+        {
+            for(auto& s : vec3Fields)
+                mVec3Fields.insert({s, std::vector<glm::vec3>(size)});
+            
+            for(auto& s : floatFields)
+                mFloatFields.insert({s, std::vector<float>(size)});
+        }
+        
+        // TODO: optimize
+        void setFloat(int index, std::string fieldName, float value)
+        {
+            mFloatFields[fieldName][index] = value;
+        }
+        
+        // TODO: optimize?
+        void setVec3(int index, std::string fieldName, glm::vec3 value)
+        {
+            mVec3Fields[fieldName][index] = value;
+        }
+        
 
-        /**
-         * Set the amount of positions. Should be called before calling setPosition() (at initialisation).
-         */
-        void resize(int size)
+        const std::vector<glm::vec3>& getVec3Field(std::string name)
         {
-            mPositions.resize(size);
+            return mVec3Fields[name];
         }
         
-        /**
-         * Unsafe method to set position at index.
-         */
-        void setData(int index, glm::vec3 value)
+        const std::vector<float>& getFloatField(std::string name)
         {
-            mPositions[index] = value;
-        }
-        
-        /**
-         * Function to read positions.
-         */
-        const std::vector<glm::vec3>& getData()
-        {
-            return mPositions;
+            return mFloatFields[name];
         }
         
     private:
-        std::vector<glm::vec3> mPositions;
+        std::unordered_map<std::string, std::vector<glm::vec3>> mVec3Fields;
+        std::unordered_map<std::string, std::vector<float>> mFloatFields;
     };
     
 }

@@ -114,7 +114,9 @@ namespace nap
             mViewMatUniform->setValue(viewMatrix);
 
         // Get points to copy onto
-        const std::vector<glm::vec3>& pos_data = mData->getData();
+        // TODO: optimize
+        const std::vector<glm::vec3>& pos_data = mData->getVec3Field("position");
+        const std::vector<float>& scale_data = mData->getFloatField("gain");
 
         // Get render-pipeline for mesh / material
         utility::ErrorState error_state;
@@ -139,7 +141,7 @@ namespace nap
         {
             // Calculate model matrix
             glm::mat4x4 object_loc = glm::translate(mTransform->getGlobalTransform(), pos_data[i]);
-            auto model_mat = glm::scale(object_loc, { 0.1, 0.1, 0.1 });
+            auto model_mat = glm::scale(object_loc, { scale_data[i], scale_data[i], scale_data[i] });
             mModelMatUniform->setValue(model_mat);
 
             // Render mesh
