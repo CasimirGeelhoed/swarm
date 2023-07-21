@@ -21,7 +21,6 @@ namespace nap {
          */
         void resize(int size)
         {
-            std::cout << "resize data" << std::endl;
             mPositions.resize(size);
         }
         
@@ -31,7 +30,6 @@ namespace nap {
         void setData(int index, glm::vec3 value)
         {
             mPositions[index] = value;
-            std::cout << "set data " << value.x << std::endl;
         }
         
         /**

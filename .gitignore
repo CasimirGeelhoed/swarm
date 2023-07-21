@@ -35,3 +35,5 @@ cached_project_json.cmake
 */imgui.ini
 .DS_Store
 cache/path_mapping.json
+.ini/renderservice.ini
+.ini/imguiservice_window.ini
