@@ -19,9 +19,11 @@ namespace nap {
         // TODO: also bool type, string type?
         void initFields(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size)
         {
+            mVec3Fields.clear();
             for(auto& s : vec3Fields)
                 mVec3Fields.insert({s, std::vector<glm::vec3>(size)});
             
+            mFloatFields.clear();
             for(auto& s : floatFields)
                 mFloatFields.insert({s, std::vector<float>(size)});
         }
