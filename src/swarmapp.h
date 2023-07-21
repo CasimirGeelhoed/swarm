@@ -81,9 +81,7 @@ namespace nap
 		ObjectPtr<EntityInstance>	mCameraEntity = nullptr;		///< Pointer to the entity that holds the perspective camera
 		ObjectPtr<EntityInstance>	mGnomonEntity = nullptr;		///< Pointer to the entity that can render the gnomon
         
-        ObjectPtr<EntityInstance>   mCubeEntity = nullptr;
-        
-        ResourcePtr<OutputData>     mOutputData = nullptr;
+        ObjectPtr<EntityInstance>   mRenderingEntity = nullptr;
         
     };
 }

@@ -8,6 +8,8 @@
 #include <renderablemeshcomponent.h>
 #include <perspcameracomponent.h>
 
+#include <DataRenderingComponent.h>
+
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmApp)
 	RTTI_CONSTRUCTOR(nap::Core&)
 RTTI_END_CLASS
@@ -48,18 +50,11 @@ namespace nap
 		mGnomonEntity = mScene->findEntity("GnomonEntity");
 		if (!error.check(mGnomonEntity != nullptr, "unable to find entity with name: %s", "GnomonEntity"))
 			return false;
-        
-        // Get the Cube entity
-        mCubeEntity = mScene->findEntity("CubeEntity");
-        if (!error.check(mCubeEntity != nullptr, "unable to find entity with name: %s", "CubeEntity"))
+                
+        // Get the Rendering entity
+        mRenderingEntity = mScene->findEntity("RenderingEntity");
+        if (!error.check(mRenderingEntity != nullptr, "unable to find entity with name: %s", "RenderingEntity"))
             return false;
-        
-        mOutputData = mResourceManager->findObject<OutputData>("OutputData");
-        if (!error.check(mOutputData != nullptr, "unable to find output data with name: %s", "Scene"))
-            return false;
-
-        
-
         
 		// All done!
 		return true;
@@ -73,8 +68,6 @@ namespace nap
 		nap::DefaultInputRouter input_router(true);
 		mInputService->processWindowEvents(*mRenderWindow, input_router, { &mScene->getRootEntity() });
         
-        // update cube position based on 'OutputData' (mockup)
-        mCubeEntity->getComponent<TransformComponentInstance>().setTranslate(mOutputData->getData()[0]);
         
         // performance gui
         ImGui::Begin("Performance");
@@ -104,8 +97,7 @@ namespace nap
 			std::vector<nap::RenderableComponentInstance*> components_to_render
 			{
 				&mGnomonEntity->getComponent<RenderGnomonComponentInstance>(),
-                &mCubeEntity->getComponent<RenderableMeshComponentInstance>()
-
+                &mRenderingEntity->getComponent<DataRenderingComponentInstance>()
 			};
 
 			// Render Gnomon

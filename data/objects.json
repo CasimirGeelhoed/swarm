@@ -1,31 +1,6 @@
 {
     "Objects": [
         {
-            "Type": "nap::BoxMesh",
-            "mID": "BoxMesh",
-            "Usage": "Static",
-            "CullMode": "Back",
-            "PolygonMode": "Fill",
-            "Size": {
-                "x": 1.0,
-                "y": 1.0,
-                "z": 1.0
-            },
-            "Position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            },
-            "Color": {
-                "Values": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            }
-        },
-        {
             "Type": "nap::ConstantShader",
             "mID": "ConstantShader"
         },
@@ -114,36 +89,19 @@
         },
         {
             "Type": "nap::Entity",
-            "mID": "CubeEntity",
+            "mID": "GnomonEntity",
             "Components": [
                 {
-                    "Type": "nap::RenderableMeshComponent",
-                    "mID": "RenderableMeshComponent",
+                    "Type": "nap::RenderGnomonComponent",
+                    "mID": "RenderGnomon",
                     "Visible": true,
-                    "Mesh": "BoxMesh",
-                    "MaterialInstance": {
-                        "Uniforms": [],
-                        "Samplers": [],
-                        "Buffers": [],
-                        "Material": "ConstantMaterial",
-                        "BlendMode": "NotSet",
-                        "DepthMode": "NotSet"
-                    },
+                    "Gnomon": "Gnomon",
                     "LineWidth": 1.0,
-                    "ClipRect": {
-                        "Min": {
-                            "x": 0.0,
-                            "y": 0.0
-                        },
-                        "Max": {
-                            "x": 0.0,
-                            "y": 0.0
-                        }
-                    }
+                    "DepthMode": "ReadWrite"
                 },
                 {
                     "Type": "nap::TransformComponent",
-                    "mID": "TransformComponent",
+                    "mID": "PositionGnomon",
                     "Properties": {
                         "Translate": {
                             "x": 0.0,
@@ -160,7 +118,7 @@
                             "y": 1.0,
                             "z": 1.0
                         },
-                        "UniformScale": 0.10000000149011612
+                        "UniformScale": 1.0
                     }
                 }
             ],
@@ -168,19 +126,26 @@
         },
         {
             "Type": "nap::Entity",
-            "mID": "GnomonEntity",
+            "mID": "RenderingEntity",
             "Components": [
                 {
-                    "Type": "nap::RenderGnomonComponent",
-                    "mID": "RenderGnomon",
+                    "Type": "nap::DataRenderingComponent",
+                    "mID": "nap::DataRenderingComponent_8fe3063c",
                     "Visible": true,
-                    "Gnomon": "Gnomon",
-                    "LineWidth": 1.0,
-                    "DepthMode": "ReadWrite"
+                    "MaterialInstance": {
+                        "Uniforms": [],
+                        "Samplers": [],
+                        "Buffers": [],
+                        "Material": "ConstantMaterial",
+                        "BlendMode": "NotSet",
+                        "DepthMode": "NotSet"
+                    },
+                    "Mesh": "SphereMesh",
+                    "Data": "OutputData"
                 },
                 {
                     "Type": "nap::TransformComponent",
-                    "mID": "PositionGnomon",
+                    "mID": "nap::TransformComponent_f67a0f73",
                     "Properties": {
                         "Translate": {
                             "x": 0.0,
@@ -298,10 +263,33 @@
                     "InstanceProperties": []
                 },
                 {
-                    "Entity": "CubeEntity",
+                    "Entity": "RenderingEntity",
                     "InstanceProperties": []
                 }
             ]
+        },
+        {
+            "Type": "nap::SphereMesh",
+            "mID": "SphereMesh",
+            "Usage": "Static",
+            "CullMode": "Back",
+            "PolygonMode": "Fill",
+            "Radius": 1.0,
+            "Rings": 50,
+            "Sectors": 50,
+            "Color": {
+                "Values": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "Position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
         }
     ]
 }
