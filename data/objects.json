@@ -66,6 +66,60 @@
         },
         {
             "Type": "nap::Entity",
+            "mID": "CircleGridEntity",
+            "Components": [
+                {
+                    "Type": "nap::RenderableMeshComponent",
+                    "mID": "nap::RenderableMeshComponent_70667cb4",
+                    "Visible": true,
+                    "Mesh": "CircleGridmesh",
+                    "MaterialInstance": {
+                        "Uniforms": [],
+                        "Samplers": [],
+                        "Buffers": [],
+                        "Material": "GridMaterial",
+                        "BlendMode": "NotSet",
+                        "DepthMode": "NotSet"
+                    },
+                    "LineWidth": 1.0,
+                    "ClipRect": {
+                        "Min": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "Max": {
+                            "x": 0.0,
+                            "y": 0.0
+                        }
+                    }
+                },
+                {
+                    "Type": "nap::TransformComponent",
+                    "mID": "nap::TransformComponent_e47c8ea2",
+                    "Properties": {
+                        "Translate": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "Rotate": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "Scale": {
+                            "x": 1.0,
+                            "y": 1.0,
+                            "z": 1.0
+                        },
+                        "UniformScale": 100.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "Type": "nap::Entity",
             "mID": "ControllingEntity",
             "Components": [
                 {
@@ -125,6 +179,60 @@
         },
         {
             "Type": "nap::Entity",
+            "mID": "GridEntity",
+            "Components": [
+                {
+                    "Type": "nap::RenderableMeshComponent",
+                    "mID": "nap::RenderableMeshComponent_45c03f73",
+                    "Visible": true,
+                    "Mesh": "GridMesh",
+                    "MaterialInstance": {
+                        "Uniforms": [],
+                        "Samplers": [],
+                        "Buffers": [],
+                        "Material": "GridMaterial",
+                        "BlendMode": "NotSet",
+                        "DepthMode": "NotSet"
+                    },
+                    "LineWidth": 1.0,
+                    "ClipRect": {
+                        "Min": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "Max": {
+                            "x": 0.0,
+                            "y": 0.0
+                        }
+                    }
+                },
+                {
+                    "Type": "nap::TransformComponent",
+                    "mID": "nap::TransformComponent_bc8a278c",
+                    "Properties": {
+                        "Translate": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "Rotate": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "Scale": {
+                            "x": 1.0,
+                            "y": 1.0,
+                            "z": 1.0
+                        },
+                        "UniformScale": 100.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
+            "Type": "nap::Entity",
             "mID": "ReceivingEntity",
             "Components": [
                 {
@@ -147,7 +255,7 @@
             "Components": [
                 {
                     "Type": "nap::DataRenderingComponent",
-                    "mID": "DataRenderingComponent",
+                    "mID": "nap::DataRenderingComponent_7f30aa49",
                     "Visible": true,
                     "MaterialInstance": {
                         "Uniforms": [],
@@ -162,7 +270,7 @@
                 },
                 {
                     "Type": "nap::TransformComponent",
-                    "mID": "TransformComponent",
+                    "mID": "nap::TransformComponent_3f9a3a77",
                     "Properties": {
                         "Translate": {
                             "x": 0.0,
@@ -194,6 +302,50 @@
                     "mID": "DataSendingComponent",
                     "OSCSender": "OSCSender",
                     "Data": "OutputData"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "Type": "nap::Entity",
+            "mID": "ShadowsEntity",
+            "Components": [
+                {
+                    "Type": "nap::DataRenderingComponent",
+                    "mID": "nap::DataRenderingComponent_b17cfaa4",
+                    "Visible": true,
+                    "MaterialInstance": {
+                        "Uniforms": [],
+                        "Samplers": [],
+                        "Buffers": [],
+                        "Material": "ShadowMaterial",
+                        "BlendMode": "AlphaBlend",
+                        "DepthMode": "NotSet"
+                    },
+                    "Mesh": "SphereMesh",
+                    "Data": "OutputData"
+                },
+                {
+                    "Type": "nap::TransformComponent",
+                    "mID": "nap::TransformComponent_1665a021",
+                    "Properties": {
+                        "Translate": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "Rotate": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "Scale": {
+                            "x": 1.0,
+                            "y": 0.0,
+                            "z": 1.0
+                        },
+                        "UniformScale": 1.0
+                    }
                 }
             ],
             "Children": []
@@ -282,7 +434,7 @@
                                     "Name": "color",
                                     "Value": {
                                         "x": 1.0,
-                                        "y": 0.0,
+                                        "y": 0.5,
                                         "z": 0.0
                                     }
                                 },
@@ -338,6 +490,92 @@
                         "y": 0.0,
                         "z": 0.0
                     }
+                },
+                {
+                    "Type": "nap::LineMesh",
+                    "mID": "LineMesh"
+                },
+                {
+                    "Type": "nap::Material",
+                    "mID": "GridMaterial",
+                    "Uniforms": [
+                        {
+                            "Type": "nap::UniformStruct",
+                            "mID": "UniformStruct_de19c714",
+                            "Name": "UBO",
+                            "Uniforms": [
+                                {
+                                    "Type": "nap::UniformVec3",
+                                    "mID": "UniformVec3_e671c541",
+                                    "Name": "color",
+                                    "Value": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "Samplers": [],
+                    "Buffers": [],
+                    "Shader": "GridShader",
+                    "VertexAttributeBindings": [],
+                    "BlendMode": "AlphaBlend",
+                    "DepthMode": "InheritFromBlendMode"
+                },
+                {
+                    "Type": "nap::CircleGridMesh",
+                    "mID": "CircleGridmesh",
+                    "Sectors": 200,
+                    "Circles": 50,
+                    "Meridians": 24
+                },
+                {
+                    "Type": "nap::GridMesh",
+                    "mID": "GridMesh",
+                    "Lines": 101
+                },
+                {
+                    "Type": "nap::ShaderFromFile",
+                    "mID": "GridShader",
+                    "VertShader": "shaders/grid.vert",
+                    "FragShader": "shaders/grid.frag"
+                },
+                {
+                    "Type": "nap::Material",
+                    "mID": "ShadowMaterial",
+                    "Uniforms": [
+                        {
+                            "Type": "nap::UniformStruct",
+                            "mID": "UniformStruct_28d92b99",
+                            "Name": "UBO",
+                            "Uniforms": [
+                                {
+                                    "Type": "nap::UniformVec3",
+                                    "mID": "UniformVec3_446d6501",
+                                    "Name": "color",
+                                    "Value": {
+                                        "x": 0.5,
+                                        "y": 0.5,
+                                        "z": 0.5
+                                    }
+                                },
+                                {
+                                    "Type": "nap::UniformFloat",
+                                    "mID": "UniformFloat_07c299e7",
+                                    "Name": "alpha",
+                                    "Value": 0.5
+                                }
+                            ]
+                        }
+                    ],
+                    "Samplers": [],
+                    "Buffers": [],
+                    "Shader": "ConstantShader",
+                    "VertexAttributeBindings": [],
+                    "BlendMode": "Opaque",
+                    "DepthMode": "InheritFromBlendMode"
                 }
             ],
             "Children": []
@@ -348,7 +586,21 @@
             "Entities": [
                 {
                     "Entity": "GnomonEntity",
-                    "InstanceProperties": []
+                    "InstanceProperties": [
+                        {
+                            "TargetComponent": "./PositionGnomon",
+                            "TargetAttributes": [
+                                {
+                                    "Path": "Properties/Translate/y",
+                                    "Value": {
+                                        "Type": "nap::FloatInstancePropertyValue",
+                                        "mID": "override_a4d2471d",
+                                        "Value": 0.009999999776482582
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "Entity": "CameraEntity",
@@ -359,15 +611,27 @@
                     "InstanceProperties": []
                 },
                 {
-                    "Entity": "RenderingEntity",
-                    "InstanceProperties": []
-                },
-                {
                     "Entity": "SendingEntity",
                     "InstanceProperties": []
                 },
                 {
                     "Entity": "ReceivingEntity",
+                    "InstanceProperties": []
+                },
+                {
+                    "Entity": "GridEntity",
+                    "InstanceProperties": []
+                },
+                {
+                    "Entity": "RenderingEntity",
+                    "InstanceProperties": []
+                },
+                {
+                    "Entity": "ShadowsEntity",
+                    "InstanceProperties": []
+                },
+                {
+                    "Entity": "CircleGridEntity",
                     "InstanceProperties": []
                 }
             ]
