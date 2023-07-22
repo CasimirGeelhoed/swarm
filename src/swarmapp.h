@@ -91,6 +91,8 @@ namespace nap
 
         bool mCircleGrid = false;
         bool mDarkMode = false;
+        bool mShadows = true;
+        bool mGnomon = true;
 
         
         glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };

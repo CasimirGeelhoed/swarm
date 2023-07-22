@@ -92,6 +92,8 @@ namespace nap
         ImGui::End();
         
         ImGui::Begin("Visualisation options");
+        ImGui::Checkbox("Gnomon", &mGnomon);
+        ImGui::Checkbox("Shadows", &mShadows);
         ImGui::Checkbox("Circular grid", &mCircleGrid);
         ImGui::Checkbox("Dark mode", &mDarkMode);
         ImGui::End();
@@ -124,11 +126,19 @@ namespace nap
 			// Add Gnomon
 			std::vector<nap::RenderableComponentInstance*> components_to_render
 			{
-				&mGnomonEntity->getComponent<RenderGnomonComponentInstance>(),
-                mCircleGrid ? &mCircleGridEntity->getComponent<RenderableMeshComponentInstance>() : &mGridEntity->getComponent<RenderableMeshComponentInstance>(),
-                &mRenderingEntity->getComponent<DataRenderingComponentInstance>(),
-                &mShadowsEntity->getComponent<DataRenderingComponentInstance>()
+                &mRenderingEntity->getComponent<DataRenderingComponentInstance>()
 			};
+            
+            if(mGnomon)
+                components_to_render.emplace_back(&mGnomonEntity->getComponent<RenderGnomonComponentInstance>());
+
+            if(mCircleGrid)
+                components_to_render.emplace_back(&mCircleGridEntity->getComponent<RenderableMeshComponentInstance>());
+            else
+                components_to_render.emplace_back(&mGridEntity->getComponent<RenderableMeshComponentInstance>());
+
+            if(mShadows)
+                components_to_render.emplace_back(&mShadowsEntity->getComponent<DataRenderingComponentInstance>());
 
 			// Render Gnomon
 			mRenderService->renderObjects(*mRenderWindow, perp_cam, components_to_render);
