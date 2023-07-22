@@ -15,7 +15,6 @@ namespace nap {
     public:
         OutputData() : Resource() { }
         
-        
         // TODO: also bool type, string type?
         void initFields(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size)
         {
@@ -49,6 +48,16 @@ namespace nap {
         const std::vector<float>& getFloatField(std::string name)
         {
             return mFloatFields[name];
+        }
+        
+        const std::unordered_map<std::string, std::vector<glm::vec3>>& getVec3Fields()
+        {
+            return mVec3Fields;
+        }
+        
+        const std::unordered_map<std::string, std::vector<float>>& getFloatFields()
+        {
+            return mFloatFields;
         }
         
     private:

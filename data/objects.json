@@ -1,10 +1,6 @@
 {
     "Objects": [
         {
-            "Type": "nap::ConstantShader",
-            "mID": "ConstantShader"
-        },
-        {
             "Type": "nap::Entity",
             "mID": "CameraEntity",
             "Components": [
@@ -70,7 +66,7 @@
         },
         {
             "Type": "nap::Entity",
-            "mID": "ControlEntity",
+            "mID": "ControllingEntity",
             "Components": [
                 {
                     "Type": "nap::PythonScriptComponent",
@@ -169,49 +165,24 @@
             "Children": []
         },
         {
-            "Type": "nap::GnomonMesh",
-            "mID": "Gnomon",
-            "Size": 1.0,
-            "Position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            }
-        },
-        {
-            "Type": "nap::Material",
-            "mID": "ConstantMaterial",
-            "Uniforms": [
+            "Type": "nap::Entity",
+            "mID": "SendingEntity",
+            "Components": [
                 {
-                    "Type": "nap::UniformStruct",
-                    "mID": "UniformStruct_fef3fd8b",
-                    "Name": "UBO",
-                    "Uniforms": [
-                        {
-                            "Type": "nap::UniformVec3",
-                            "mID": "color",
-                            "Name": "color",
-                            "Value": {
-                                "x": 1.0,
-                                "y": 0.0,
-                                "z": 0.0
-                            }
-                        },
-                        {
-                            "Type": "nap::UniformFloat",
-                            "mID": "alpha",
-                            "Name": "alpha",
-                            "Value": 1.0
-                        }
-                    ]
+                    "Type": "nap::DataSendingComponent",
+                    "mID": "DataSendingComponent",
+                    "OSCSender": "OSCSender",
+                    "Data": "OutputData"
                 }
             ],
-            "Samplers": [],
-            "Buffers": [],
-            "Shader": "ConstantShader",
-            "VertexAttributeBindings": [],
-            "BlendMode": "Opaque",
-            "DepthMode": "InheritFromBlendMode"
+            "Children": []
+        },
+        {
+            "Type": "nap::OSCSender",
+            "mID": "OSCSender",
+            "IpAddress": "127.0.0.1",
+            "Port": 8000,
+            "BufferScale": 2
         },
         {
             "Type": "nap::OutputData",
@@ -247,6 +218,85 @@
             "RestorePosition": true
         },
         {
+            "Type": "nap::ResourceGroup",
+            "mID": "Rendering",
+            "Members": [
+                {
+                    "Type": "nap::Material",
+                    "mID": "ConstantMaterial",
+                    "Uniforms": [
+                        {
+                            "Type": "nap::UniformStruct",
+                            "mID": "UniformStruct_fef3fd8b",
+                            "Name": "UBO",
+                            "Uniforms": [
+                                {
+                                    "Type": "nap::UniformVec3",
+                                    "mID": "color",
+                                    "Name": "color",
+                                    "Value": {
+                                        "x": 1.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    }
+                                },
+                                {
+                                    "Type": "nap::UniformFloat",
+                                    "mID": "alpha",
+                                    "Name": "alpha",
+                                    "Value": 1.0
+                                }
+                            ]
+                        }
+                    ],
+                    "Samplers": [],
+                    "Buffers": [],
+                    "Shader": "ConstantShader",
+                    "VertexAttributeBindings": [],
+                    "BlendMode": "Opaque",
+                    "DepthMode": "InheritFromBlendMode"
+                },
+                {
+                    "Type": "nap::ConstantShader",
+                    "mID": "ConstantShader"
+                },
+                {
+                    "Type": "nap::GnomonMesh",
+                    "mID": "Gnomon",
+                    "Size": 1.0,
+                    "Position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                },
+                {
+                    "Type": "nap::SphereMesh",
+                    "mID": "SphereMesh",
+                    "Usage": "Static",
+                    "CullMode": "Back",
+                    "PolygonMode": "Fill",
+                    "Radius": 1.0,
+                    "Rings": 50,
+                    "Sectors": 50,
+                    "Color": {
+                        "Values": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ]
+                    },
+                    "Position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            ],
+            "Children": []
+        },
+        {
             "Type": "nap::Scene",
             "mID": "Scene",
             "Entities": [
@@ -259,37 +309,18 @@
                     "InstanceProperties": []
                 },
                 {
-                    "Entity": "ControlEntity",
+                    "Entity": "ControllingEntity",
                     "InstanceProperties": []
                 },
                 {
                     "Entity": "RenderingEntity",
                     "InstanceProperties": []
+                },
+                {
+                    "Entity": "SendingEntity",
+                    "InstanceProperties": []
                 }
             ]
-        },
-        {
-            "Type": "nap::SphereMesh",
-            "mID": "SphereMesh",
-            "Usage": "Static",
-            "CullMode": "Back",
-            "PolygonMode": "Fill",
-            "Radius": 1.0,
-            "Rings": 50,
-            "Sectors": 50,
-            "Color": {
-                "Values": [
-                    1.0,
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "Position": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0
-            }
         }
     ]
 }

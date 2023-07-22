@@ -8,6 +8,7 @@
         "napcameracontrol",
         "napparametergui",
         "nappython",
+        "naposc",
         "napswarm"
     ],
     "Data": "data/objects.json",
