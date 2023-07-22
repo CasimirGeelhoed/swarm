@@ -83,5 +83,7 @@ namespace nap
         
         ObjectPtr<EntityInstance>   mRenderingEntity = nullptr;
         
+        glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
+        
     };
 }
