@@ -31,7 +31,6 @@ namespace nap
     };
 
     
-    // TODO: try renaming: getFloat() -> get(). getVec3() > get(). setFloat() -> set(). setVec3() -> set()?
     class NAPAPI DataControlComponentInstance : public ComponentInstance
     {
         RTTI_ENABLE(ComponentInstance)
@@ -55,23 +54,34 @@ namespace nap
             mParameterData->initParameters(vec3Parameters, floatParameters);
         }
         
-        
+        /**
+         * Sets the value for index i in field fieldName.
+         */
         void setFloat(int index, const std::string& fieldName, float value)
         {
             mOutputData->setFloat(index, fieldName, value);
         }
         
+        /**
+         * Sets the value for index i in field fieldName.
+         */
         void setVec3(int index, const std::string& fieldName, glm::vec3 value)
         {
             mOutputData->setVec3(index, fieldName, value);
         }
 
         
+        /**
+         * Returns the parameter value.
+         */
         float getFloat(const std::string& name)
         {
             return mParameterData->getFloat(name);
         }
 
+        /**
+         * Returns the parameter value.
+         */
         glm::vec3 getVec3(const std::string& name)
         {
             return mParameterData->getVec3(name);
