@@ -1,28 +1,20 @@
-from base import *
+from swarm import *
 from nap import vec3
 import math
 
 class Control:
 
     def __init__(self, entity):
-                
-        # a list containing the names of all vec3 data fields
-        vec3Fields = ["position"]
+                        
+        self.sourcesCount = 5
+
+        addVec3Field("position")
+        addFloatField("gain")
         
-        # a list containing the names of all float data fields
-        floatFields = ["gain"]
+        addVec3Parameter("param1", 0, 10, vec3(1,2,3))
+        addFloatParameter("param2", 0, 10, 5)
         
-        # the number of sources controlled & visualised by Swarm
-        sourcesCount = 5
-        
-        # a list of parameters, each containing their name, min, max and default values.
-        vec3Parameters = [("param1", 0, 10, vec3(1,2,3))]
-        floatParameters = [("param2", 0, 10, 5)]
-        
-        # initialise
-        initController(entity)
-        initParameters(vec3Parameters, floatParameters)
-        initData(vec3Fields, floatFields, sourcesCount)
+        init(entity, self.sourcesCount)
         
     def update(self, elapsedTime, deltaTime):
     
