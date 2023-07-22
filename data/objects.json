@@ -125,6 +125,24 @@
         },
         {
             "Type": "nap::Entity",
+            "mID": "ReceivingEntity",
+            "Components": [
+                {
+                    "Type": "nap::DataReceivingComponent",
+                    "mID": "DataReceivingComponent",
+                    "OSCInputComponent": "./OSCInputComponent",
+                    "ParameterData": "ParameterData"
+                },
+                {
+                    "Type": "nap::OSCInputComponent",
+                    "mID": "OSCInputComponent",
+                    "Addresses": []
+                }
+            ],
+            "Children": []
+        },
+        {
+            "Type": "nap::Entity",
             "mID": "RenderingEntity",
             "Components": [
                 {
@@ -181,21 +199,6 @@
             "Children": []
         },
         {
-            "Type": "nap::OSCSender",
-            "mID": "OSCSender",
-            "IpAddress": "127.0.0.1",
-            "Port": 8000,
-            "BufferScale": 2
-        },
-        {
-            "Type": "nap::OutputData",
-            "mID": "OutputData"
-        },
-        {
-            "Type": "nap::ParameterData",
-            "mID": "ParameterData"
-        },
-        {
             "Type": "nap::PythonScript",
             "mID": "PythonScript",
             "Path": "scripts/script.py"
@@ -223,6 +226,42 @@
             "AdditionalSwapImages": 1,
             "RestoreSize": true,
             "RestorePosition": true
+        },
+        {
+            "Type": "nap::ResourceGroup",
+            "mID": "Data",
+            "Members": [
+                {
+                    "Type": "nap::OutputData",
+                    "mID": "OutputData"
+                },
+                {
+                    "Type": "nap::ParameterData",
+                    "mID": "ParameterData"
+                }
+            ],
+            "Children": []
+        },
+        {
+            "Type": "nap::ResourceGroup",
+            "mID": "OSC",
+            "Members": [
+                {
+                    "Type": "nap::OSCReceiver",
+                    "mID": "OSCReceiver",
+                    "Port": 333,
+                    "EnableDebugOutput": false,
+                    "AllowPortReuse": false
+                },
+                {
+                    "Type": "nap::OSCSender",
+                    "mID": "OSCSender",
+                    "IpAddress": "127.0.0.1",
+                    "Port": 8000,
+                    "BufferScale": 2
+                }
+            ],
+            "Children": []
         },
         {
             "Type": "nap::ResourceGroup",
@@ -325,6 +364,10 @@
                 },
                 {
                     "Entity": "SendingEntity",
+                    "InstanceProperties": []
+                },
+                {
+                    "Entity": "ReceivingEntity",
                     "InstanceProperties": []
                 }
             ]
