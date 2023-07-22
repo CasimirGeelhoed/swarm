@@ -5,6 +5,7 @@
 #include <nap/resourceptr.h>
 
 #include <OutputData.h>
+#include <ParameterData.h>
 
 namespace nap
 {
@@ -12,6 +13,9 @@ namespace nap
     class DataControlComponentInstance;
     
     
+    /**
+     * Component that interfaces with the 'output' data and the parameters. Is controlled by the python script.
+     */
     class NAPAPI DataControlComponent : public Component
     {
         RTTI_ENABLE(Component)
@@ -20,19 +24,22 @@ namespace nap
     public:
         DataControlComponent() : Component() { }
         
-        nap::ResourcePtr<OutputData> mData;
+        nap::ResourcePtr<ParameterData> mParameterData; ///< Property: pointer to the parameters.
+        nap::ResourcePtr<OutputData> mOutputData; ///< Property: pointer to the output data.
         
     private:
     };
 
     
+    // TODO: try renaming: getFloat() -> get(). getVec3() > get(). setFloat() -> set(). setVec3() -> set()?
     class NAPAPI DataControlComponentInstance : public ComponentInstance
     {
         RTTI_ENABLE(ComponentInstance)
     public:
         DataControlComponentInstance(EntityInstance& entity, Component& resource) : ComponentInstance(entity, resource)
         {
-            mData = getComponent<DataControlComponent>()->mData.get();
+            mOutputData = getComponent<DataControlComponent>()->mOutputData.get();
+            mParameterData = getComponent<DataControlComponent>()->mParameterData.get();
         }
         
         // Initialize the component
@@ -40,22 +47,39 @@ namespace nap
         
         void initData(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size)
         {
-            mData->initFields(vec3Fields, floatFields, size);
+            mOutputData->initFields(vec3Fields, floatFields, size);
         }
 
-        void setFloat(int index, std::string fieldName, float value)
+        void initParameters(std::vector<std::tuple<std::string, float, float, glm::vec3>> vec3Parameters, std::vector<std::tuple<std::string, float, float, float>> floatParameters)
         {
-            mData->setFloat(index, fieldName, value);
+            mParameterData->initParameters(vec3Parameters, floatParameters);
         }
         
-        void setVec3(int index, std::string fieldName, glm::vec3 value)
+        
+        void setFloat(int index, const std::string& fieldName, float value)
         {
-            mData->setVec3(index, fieldName, value);
+            mOutputData->setFloat(index, fieldName, value);
+        }
+        
+        void setVec3(int index, const std::string& fieldName, glm::vec3 value)
+        {
+            mOutputData->setVec3(index, fieldName, value);
         }
 
+        
+        float getFloat(const std::string& name)
+        {
+            return mParameterData->getFloat(name);
+        }
+
+        glm::vec3 getVec3(const std::string& name)
+        {
+            return mParameterData->getVec3(name);
+        }
 
     private:
-        OutputData* mData;
+        OutputData* mOutputData = nullptr;
+        ParameterData* mParameterData = nullptr;
     };
         
 }

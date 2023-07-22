@@ -1,4 +1,4 @@
-import nap
+from nap import vec3
 import math
 
 
@@ -10,22 +10,30 @@ class Control:
         
         vec3Fields = ["position"]
         floatFields = ["gain"]
-        sourcesCount = 3
+        sourcesCount = 5
         
+        vec3Parameters = [("param1", 0, 10, vec3(1,2,3))]
+        floatParameters = [("param2", 0, 10, 5)]
+        
+        self.cc.initParameters(vec3Parameters, floatParameters)
         self.cc.initData(vec3Fields, floatFields, sourcesCount)
         
     def update(self, elapsedTime, deltaTime):
-        x = math.sin(elapsedTime * 5)
-        y = math.cos(elapsedTime * 15)
-        z = math.sin(elapsedTime * 0.25) * 5
-        g = math.sin(elapsedTime * 10) + 1.0
-        self.cc.setVec3(0, "position", nap.vec3(x, y, z))
-        self.cc.setVec3(1, "position", nap.vec3(y, x, z))
-        self.cc.setVec3(2, "position", nap.vec3(z, x, y))
-        self.cc.setFloat(0, "gain", g)
-        self.cc.setFloat(1, "gain", g)
-        self.cc.setFloat(2, "gain", g)
-
+        # mock up, testing..
+        x = math.sin(elapsedTime * 0.5) * 1
+        y = math.cos(elapsedTime * 0.1) * 1
+        z = math.sin(elapsedTime * 0.25) * 1
+        g = math.sin(elapsedTime * 0.1) + 1.0
+        self.cc.setVec3(0, "position", vec3(x, y, z))
+        self.cc.setVec3(1, "position", vec3(y, x, z))
+        self.cc.setVec3(2, "position", vec3(z, x, y))
+        self.cc.setVec3(3, "position", vec3(z * 2, x, x))
+    
+        self.cc.setFloat(0, "gain", g - 0.3)
+        self.cc.setFloat(1, "gain", g - 0.3)
+        self.cc.setFloat(2, "gain", g - 0.3)
+        self.cc.setFloat(3, "gain", 0.1)
         
-    def destroy():
-        pass
+        self.cc.setVec3(4, "position", self.cc.getVec3("param1"))
+        self.cc.setFloat(4, "gain", self.cc.getFloat("param2") / 10.0)
+

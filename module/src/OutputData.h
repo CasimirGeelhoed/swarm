@@ -9,6 +9,7 @@ namespace nap {
     /**
      * Resource that holds all data to be sent out. Data is set by the python script and read out by the monitor and OSC sender.
      */
+    // TODO: try renaming: getFloat() -> get(). getVec3() > get(). setFloat() -> set(). setVec3() -> set().
     class NAPAPI OutputData : public Resource {
         RTTI_ENABLE(Resource)
 
@@ -20,32 +21,32 @@ namespace nap {
         {
             mVec3Fields.clear();
             for(auto& s : vec3Fields)
-                mVec3Fields.insert({s, std::vector<glm::vec3>(size)});
+                mVec3Fields.emplace(s, std::vector<glm::vec3>(size));
             
             mFloatFields.clear();
             for(auto& s : floatFields)
-                mFloatFields.insert({s, std::vector<float>(size)});
+                mFloatFields.emplace(s, std::vector<float>(size));
         }
         
-        // TODO: optimize
-        void setFloat(int index, std::string fieldName, float value)
+        // TODO: optimise?
+        void setFloat(int index, const std::string& fieldName, float value)
         {
             mFloatFields[fieldName][index] = value;
         }
         
-        // TODO: optimize?
-        void setVec3(int index, std::string fieldName, glm::vec3 value)
+        // TODO: optimise?
+        void setVec3(int index, const std::string& fieldName, glm::vec3 value)
         {
             mVec3Fields[fieldName][index] = value;
         }
         
 
-        const std::vector<glm::vec3>& getVec3Field(std::string name)
+        const std::vector<glm::vec3>& getVec3Field(const std::string& name)
         {
             return mVec3Fields[name];
         }
         
-        const std::vector<float>& getFloatField(std::string name)
+        const std::vector<float>& getFloatField(const std::string& name)
         {
             return mFloatFields[name];
         }

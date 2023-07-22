@@ -74,13 +74,14 @@
                     "PythonScript": "PythonScript",
                     "Class": "Control",
                     "Dependencies": [
-                        "DataControlComponent"
+                        "nap::DataControlComponent"
                     ]
                 },
                 {
                     "Type": "nap::DataControlComponent",
                     "mID": "DataControlComponent",
-                    "Data": "OutputData"
+                    "ParameterData": "ParameterData",
+                    "OutputData": "OutputData"
                 }
             ],
             "Children": []
@@ -128,7 +129,7 @@
             "Components": [
                 {
                     "Type": "nap::DataRenderingComponent",
-                    "mID": "nap::DataRenderingComponent_8fe3063c",
+                    "mID": "DataRenderingComponent",
                     "Visible": true,
                     "MaterialInstance": {
                         "Uniforms": [],
@@ -143,7 +144,7 @@
                 },
                 {
                     "Type": "nap::TransformComponent",
-                    "mID": "nap::TransformComponent_f67a0f73",
+                    "mID": "TransformComponent",
                     "Properties": {
                         "Translate": {
                             "x": 0.0,
@@ -189,6 +190,10 @@
         {
             "Type": "nap::OutputData",
             "mID": "OutputData"
+        },
+        {
+            "Type": "nap::ParameterData",
+            "mID": "ParameterData"
         },
         {
             "Type": "nap::PythonScript",
