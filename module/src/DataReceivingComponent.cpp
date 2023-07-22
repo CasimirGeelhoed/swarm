@@ -26,13 +26,13 @@ namespace nap
     }
 
 
-    void DataReceivingComponentInstance::onMessageReceived(const OSCEvent&)
+    void DataReceivingComponentInstance::onMessageReceived(const OSCEvent& event)
     {
-        // TODO: ..
-        std::cout << "check " << std::endl;
+        // TODO: catch wrong OSC addresses & values
+        if(event.getCount() == 1)
+            mParameterData->setFloat(event.getAddress(), event.getArgument(0)->asFloat());
+        else
+            mParameterData->setVec3(event.getAddress(), glm::vec3(event.getArgument(0)->asFloat(), event.getArgument(1)->asFloat(), event.getArgument(2)->asFloat()));
     }
-
-
-
 
 }

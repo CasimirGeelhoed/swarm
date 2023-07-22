@@ -40,7 +40,7 @@ namespace nap
     private:
         nap::Slot<const OSCEvent&> mMessageReceivedSlot  = { this, &DataReceivingComponentInstance::onMessageReceived };
         
-        void onMessageReceived(const OSCEvent&);
+        void onMessageReceived(const OSCEvent& event);
         
         ComponentInstancePtr<OSCInputComponent> mOSCInputComponent = { this, &DataReceivingComponent::mOSCInputComponent };
         ParameterData* mParameterData = nullptr;
