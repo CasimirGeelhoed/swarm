@@ -37,3 +37,5 @@ cached_project_json.cmake
 cache/path_mapping.json
 .ini/renderservice.ini
 .ini/imguiservice_window.ini
+module/cached_module_json.cmake
+cached_app_json.cmake
