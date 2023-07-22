@@ -83,7 +83,19 @@ namespace nap
         
         ObjectPtr<EntityInstance>   mRenderingEntity = nullptr;
         
+        ObjectPtr<EntityInstance>   mShadowsEntity = nullptr;
+
+        
+        ObjectPtr<EntityInstance>   mGridEntity = nullptr;
+        ObjectPtr<EntityInstance>   mCircleGridEntity = nullptr;
+
+        bool mCircleGrid = false;
+        bool mDarkMode = false;
+
+        
         glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
+        glm::vec3 mDarkColor = { 0.1f, 0.1f, 0.1f };
+
         
     };
 }

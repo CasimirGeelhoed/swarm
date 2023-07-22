@@ -56,6 +56,23 @@ namespace nap
         if (!error.check(mRenderingEntity != nullptr, "unable to find entity with name: %s", "RenderingEntity"))
             return false;
         
+        // Get the Grid entity
+        mGridEntity = mScene->findEntity("GridEntity");
+        if (!error.check(mGridEntity != nullptr, "unable to find entity with name: %s", "GridEntity"))
+            return false;
+        
+        mCircleGridEntity = mScene->findEntity("CircleGridEntity");
+        if (!error.check(mCircleGridEntity != nullptr, "unable to find entity with name: %s", "CircleGridEntity"))
+            return false;
+
+        
+        // Get the Shadows entity
+        mShadowsEntity = mScene->findEntity("ShadowsEntity");
+        if (!error.check(mShadowsEntity != nullptr, "unable to find entity with name: %s", "ShadowsEntity"))
+            return false;
+
+
+        
 		// All done!
 		return true;
 	}
@@ -73,6 +90,12 @@ namespace nap
         ImGui::Begin("Performance");
         ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
         ImGui::End();
+        
+        ImGui::Begin("Visualisation options");
+        ImGui::Checkbox("Circular grid", &mCircleGrid);
+        ImGui::Checkbox("Dark mode", &mDarkMode);
+        ImGui::End();
+
     }
 	
 	
@@ -84,7 +107,11 @@ namespace nap
 		// Multiple frames are in flight at the same time, but if the graphics load is heavy the system might wait here to ensure resources are available.
 		mRenderService->beginFrame();
 
-        mRenderWindow->setClearColor({ mColor[0], mColor[1], mColor[2], 1.0f });
+        if(mDarkMode)
+            mRenderWindow->setClearColor({ mDarkColor[0], mDarkColor[1], mDarkColor[2], 1.f });
+        else
+            mRenderWindow->setClearColor({ mColor[0], mColor[1], mColor[2], 1.f });
+        
 		// Begin recording the render commands for the main render window
 		if (mRenderService->beginRecording(*mRenderWindow))
 		{
@@ -98,7 +125,9 @@ namespace nap
 			std::vector<nap::RenderableComponentInstance*> components_to_render
 			{
 				&mGnomonEntity->getComponent<RenderGnomonComponentInstance>(),
-                &mRenderingEntity->getComponent<DataRenderingComponentInstance>()
+                mCircleGrid ? &mCircleGridEntity->getComponent<RenderableMeshComponentInstance>() : &mGridEntity->getComponent<RenderableMeshComponentInstance>(),
+                &mRenderingEntity->getComponent<DataRenderingComponentInstance>(),
+                &mShadowsEntity->getComponent<DataRenderingComponentInstance>()
 			};
 
 			// Render Gnomon
