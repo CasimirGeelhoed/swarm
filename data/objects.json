@@ -73,7 +73,9 @@
                     "mID": "PythonScriptComponent",
                     "PythonScript": "PythonScript",
                     "Class": "Control",
-                    "Dependencies": []
+                    "Dependencies": [
+                        "DataControlComponent"
+                    ]
                 },
                 {
                     "Type": "nap::DataControlComponent",
