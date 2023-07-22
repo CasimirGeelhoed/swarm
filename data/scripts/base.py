@@ -1,5 +1,9 @@
 from nap import vec3
 
+
+# TODO: change interface to: addVec3Field / addFloatField / addVec3Parameter / addFloatParameter / initAll
+# That would be even more readable.
+
 controller = None
 
 def initController(entity):
