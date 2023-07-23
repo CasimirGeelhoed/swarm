@@ -403,7 +403,7 @@
                     "mID": "OSCReceiver",
                     "Port": 333,
                     "EnableDebugOutput": false,
-                    "AllowPortReuse": false
+                    "AllowPortReuse": true
                 },
                 {
                     "Type": "nap::OSCSender",
