@@ -7,6 +7,7 @@
 #include <rendergnomoncomponent.h>
 #include <renderablemeshcomponent.h>
 #include <perspcameracomponent.h>
+#include <oschandler.h>
 
 #include <DataRenderingComponent.h>
 
@@ -55,6 +56,12 @@ namespace nap
         mRenderingEntity = mScene->findEntity("RenderingEntity");
         if (!error.check(mRenderingEntity != nullptr, "unable to find entity with name: %s", "RenderingEntity"))
             return false;
+        
+        // Get the Receiving entity
+        mReceivingEntity = mScene->findEntity("ReceivingEntity");
+        if (!error.check(mReceivingEntity != nullptr, "unable to find entity with name: %s", "ReceivingEntity"))
+            return false;
+
         
         // Get the Grid entity
         mGridEntity = mScene->findEntity("GridEntity");
@@ -260,8 +267,35 @@ namespace nap
             ImGui::Checkbox("Dark mode", &mDarkMode);
         }
         ImGui::End();
+        
+        ImGui::Begin("OSC Input");
+        showOSCLog();
+        ImGui::End();
 
     }
+
+
+    void swarmApp::showOSCLog()
+    {
+        // Get the osc handle component
+        auto osc_handler = mReceivingEntity->findComponent<OscHandlerComponentInstance>();
+
+        // Get all received osc messages and convert into a single string
+        std::string msg;
+        for (const auto& message : osc_handler->getMessages())
+            msg += (message + "\n");
+
+        // Backup text
+        char txt[256] = "No OSC Messages Received";
+
+        // If there are no messages display that instead of the received messages
+        char* display_msg = msg.empty() ? txt : &msg[0];
+        size_t display_size = msg.empty() ? 256 : msg.size();
+
+        // Display block of text
+        ImGui::InputTextMultiline("OSC Messages", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
+}
+
 
 	void swarmApp::windowMessageReceived(WindowEventPtr windowEvent)
 	{

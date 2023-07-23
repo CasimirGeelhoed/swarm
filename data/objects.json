@@ -245,6 +245,10 @@
                     "Type": "nap::OSCInputComponent",
                     "mID": "OSCInputComponent",
                     "Addresses": []
+                },
+                {
+                    "Type": "nap::OscHandlerComponent",
+                    "mID": "OSCInputLogComponent"
                 }
             ],
             "Children": []
