@@ -64,6 +64,16 @@ namespace nap {
             return mVec3Parameters[name]->mValue;
         }
         
+        const std::unordered_map<std::string, std::unique_ptr<ParameterVec3>>& getVec3Parameters()
+        {
+            return mVec3Parameters;
+        }
+        
+        const std::unordered_map<std::string, std::unique_ptr<ParameterFloat>>& getFloatParameters()
+        {
+            return mFloatParameters;
+        }
+        
     private:
         std::unordered_map<std::string, std::unique_ptr<ParameterVec3>> mVec3Parameters;
         std::unordered_map<std::string, std::unique_ptr<ParameterFloat>> mFloatParameters;

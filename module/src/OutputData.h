@@ -9,14 +9,13 @@ namespace nap {
     /**
      * Resource that holds all data to be sent out. Data is set by the python script and read out by the monitor and OSC sender.
      */
-    // TODO: try renaming: getFloat() -> get(). getVec3() > get(). setFloat() -> set(). setVec3() -> set().
+    // TODO: also bool type, string type?
     class NAPAPI OutputData : public Resource {
         RTTI_ENABLE(Resource)
 
     public:
         OutputData() : Resource() { }
         
-        // TODO: also bool type, string type?
         void initFields(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size)
         {
             mVec3Fields.clear();

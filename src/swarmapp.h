@@ -14,8 +14,10 @@
 #include <entity.h>
 #include <app.h>
 
-// OutputData class include
+// data classes include
 #include <OutputData.h>
+#include <ParameterData.h>
+
 
 namespace nap
 {
@@ -71,6 +73,9 @@ namespace nap
 		virtual int shutdown() override;
 
 	private:
+        
+        void updateGUI();
+        
 		ResourceManager*			mResourceManager = nullptr;		///< Manages all the loaded data
 		RenderService*				mRenderService = nullptr;		///< Render Service that handles render calls
 		SceneService*				mSceneService = nullptr;		///< Manages all the objects in the scene
@@ -88,6 +93,9 @@ namespace nap
         
         ObjectPtr<EntityInstance>   mGridEntity = nullptr;
         ObjectPtr<EntityInstance>   mCircleGridEntity = nullptr;
+        
+        ResourcePtr<OutputData> mOutputData = nullptr;
+        ResourcePtr<ParameterData> mParameterData = nullptr;
 
         bool mCircleGrid = false;
         bool mDarkMode = false;

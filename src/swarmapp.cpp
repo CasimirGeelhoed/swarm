@@ -70,8 +70,15 @@ namespace nap
         mShadowsEntity = mScene->findEntity("ShadowsEntity");
         if (!error.check(mShadowsEntity != nullptr, "unable to find entity with name: %s", "ShadowsEntity"))
             return false;
-
-
+        
+        
+        mOutputData = mResourceManager->findObject("OutputData");
+        if (!error.check(mOutputData != nullptr, "unable to find resource with name: %s", "OutputData"))
+            return false;
+        
+        mParameterData = mResourceManager->findObject("ParameterData");
+        if (!error.check(mParameterData != nullptr, "unable to find resource with name: %s", "ParameterData"))
+            return false;
         
 		// All done!
 		return true;
@@ -85,19 +92,8 @@ namespace nap
 		nap::DefaultInputRouter input_router(true);
 		mInputService->processWindowEvents(*mRenderWindow, input_router, { &mScene->getRootEntity() });
         
+        updateGUI();
         
-        // performance gui
-        ImGui::Begin("Performance");
-        ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
-        ImGui::End();
-        
-        ImGui::Begin("Visualisation options");
-        ImGui::Checkbox("Gnomon", &mGnomon);
-        ImGui::Checkbox("Shadows", &mShadows);
-        ImGui::Checkbox("Circular grid", &mCircleGrid);
-        ImGui::Checkbox("Dark mode", &mDarkMode);
-        ImGui::End();
-
     }
 	
 	
@@ -123,7 +119,6 @@ namespace nap
 			// Get Perspective camera to render with
 			auto& perp_cam = mCameraEntity->getComponent<PerspCameraComponentInstance>();
 
-			// Add Gnomon
 			std::vector<nap::RenderableComponentInstance*> components_to_render
 			{
                 &mRenderingEntity->getComponent<DataRenderingComponentInstance>()
@@ -140,7 +135,6 @@ namespace nap
             if(mShadows)
                 components_to_render.emplace_back(&mShadowsEntity->getComponent<DataRenderingComponentInstance>());
 
-			// Render Gnomon
 			mRenderService->renderObjects(*mRenderWindow, perp_cam, components_to_render);
 
 			// Render GUI elements
@@ -157,6 +151,117 @@ namespace nap
 		mRenderService->endFrame();
 	}
 	
+
+    void swarmApp::updateGUI()
+    {
+        int windowWidth = mRenderWindow->getWidthPixels();
+        int settingsWidth = 550;
+        int monitorWidth = 350;
+        int paramWidth = 0.66 * (windowWidth - settingsWidth - monitorWidth);
+        int dataWidth = windowWidth - settingsWidth - monitorWidth - paramWidth;
+        
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowSize(ImVec2(settingsWidth, 0));
+        ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
+        ImGui::Begin("Settings");
+        {
+            ImGui::Text("set osc input port");
+            ImGui::Text("set osc output port");
+            ImGui::Text("set osc output address");
+            ImGui::Text("other settings..");
+            ImGui::Separator();
+            ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
+        }
+        ImGui::End();
+
+        ImGui::SetNextWindowPos(ImVec2(settingsWidth, 0));
+        ImGui::SetNextWindowSize(ImVec2(paramWidth, 0));
+        ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
+        ImGui::Begin("Parameters");
+        {
+            ImGui::Columns(4, "params", false);
+            for(auto& x : mParameterData->getVec3Parameters())
+            {
+                ImGui::Text(x.first.c_str());
+                ImGui::NextColumn();
+                ImGui::Text("%.02f", x.second->mValue.x);
+                ImGui::NextColumn();
+                ImGui::Text("%.02f", x.second->mValue.y);
+                ImGui::NextColumn();
+                ImGui::Text("%.02f", x.second->mValue.z);
+                ImGui::NextColumn();
+                ImGui::Separator();
+            }
+
+            for(auto& x : mParameterData->getFloatParameters())
+            {
+                ImGui::Text(x.first.c_str());
+                ImGui::NextColumn();
+                ImGui::Text("%.02f", x.second->mValue);
+                ImGui::NextColumn();
+                ImGui::NextColumn();
+                ImGui::NextColumn();
+                ImGui::Separator();
+            }
+            ImGui::Columns(1);
+        }
+        ImGui::End();
+        
+        ImGui::SetNextWindowPos(ImVec2(settingsWidth + paramWidth, 0));
+        ImGui::SetNextWindowSize(ImVec2(dataWidth, 0));
+        ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
+        ImGui::Begin("Output data");
+        {
+            ImGui::Columns(3, "outputdata", false);
+            int i = 0;
+            for(auto& x : mOutputData->getVec3Fields())
+            {
+                ImGui::Text(x.first.c_str());
+                ImGui::NextColumn();
+                
+                const char* items[] = { "Off", "Position" };
+                static int item_current = 0;
+                ImGui::Combo(("##combovec3" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
+
+                ImGui::NextColumn();
+                bool dummy = false;
+                ImGui::Checkbox(" ", &dummy);
+                ImGui::NextColumn();
+                ImGui::Separator();
+            }
+            
+            
+            for(auto& x : mOutputData->getFloatFields())
+            {
+                ImGui::Text(x.first.c_str());
+                ImGui::NextColumn();
+                
+                const char* items[] = { "Off", "Red", "Green", "Blue", "Scale"};
+                static int item_current = 0;
+                ImGui::Combo(("##combofloat" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
+                
+                ImGui::NextColumn();
+                bool dummy = false;
+                ImGui::Checkbox(" ", &dummy);
+                ImGui::NextColumn();
+                ImGui::Separator();
+            }
+        }
+        ImGui::End();
+        
+        ImGui::SetNextWindowPos(ImVec2(settingsWidth + paramWidth + dataWidth, 0));
+        ImGui::SetNextWindowSize(ImVec2(monitorWidth, 0));
+        ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
+        ImGui::Begin("Monitor");
+        {
+            ImGui::Checkbox("Gnomon", &mGnomon);
+            ImGui::Checkbox("Shadows", &mShadows);
+            ImGui::Checkbox("Circular grid", &mCircleGrid);
+            ImGui::Checkbox("Dark mode", &mDarkMode);
+        }
+        ImGui::End();
+
+    }
 
 	void swarmApp::windowMessageReceived(WindowEventPtr windowEvent)
 	{
