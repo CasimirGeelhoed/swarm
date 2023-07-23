@@ -219,7 +219,7 @@ namespace nap
                 ImGui::Text(x.first.c_str());
                 ImGui::NextColumn();
                 
-                const char* items[] = { "Off", "Position" };
+                const char* items[] = { "Off", "Position", "Arrow" };
                 static int item_current = 0;
                 ImGui::Combo(("##combovec3" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
 

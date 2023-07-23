@@ -34,7 +34,13 @@ def init(entity, sourcesCount):
     controller = entity.findComponentByID("DataControlComponent")
     controller.initParameters(vec3Parameters, floatParameters)
     controller.initData(vec3Fields, floatFields, sourcesCount)
-
+    
+    # Clear lists so entries won't be duplicated after reloading of the script
+    vec3Fields.clear()
+    floatFields.clear()
+    vec3Parameters.clear()
+    floatParameters.clear()
+    
 # Returns a vec3 parameter value
 def getVec3(name):
     return controller.getVec3(name)
