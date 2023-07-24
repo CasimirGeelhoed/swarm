@@ -23,6 +23,8 @@ namespace nap
 {
 	using namespace rtti;
 
+    class SwarmServiceConfiguration;
+
 	/**
 	 * Main application that is called from within the main loop
 	 */
@@ -76,9 +78,11 @@ namespace nap
         
         void updateGUI();
         
+        void writeConfig();
+        
         void showOSCLog();
         
-
+        SwarmServiceConfiguration* mConfig;
         
 		ResourceManager*			mResourceManager = nullptr;		///< Manages all the loaded data
 		RenderService*				mRenderService = nullptr;		///< Render Service that handles render calls
@@ -98,16 +102,9 @@ namespace nap
         
         ResourcePtr<OutputData> mOutputData = nullptr;
         ResourcePtr<ParameterData> mParameterData = nullptr;
-
-        bool mCircleGrid = false;
-        bool mDarkMode = false;
-        bool mShadows = true;
-        bool mGnomon = true;
-
         
         glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
         glm::vec3 mDarkColor = { 0.1f, 0.1f, 0.1f };
-
         
     };
 }

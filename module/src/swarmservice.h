@@ -5,6 +5,22 @@
 
 namespace nap
 {
+
+    class NAPAPI SwarmServiceConfiguration : public ServiceConfiguration
+    {
+        RTTI_ENABLE(ServiceConfiguration)
+        
+    public:
+        rtti::TypeInfo getServiceType() const;
+
+        bool mGnomon = true;
+        bool mShadows = true;
+        bool mCircleGrid = true;
+        bool mDarkMode = true;
+        
+    };
+
+
 	class NAPAPI swarmService : public Service
 	{
 		RTTI_ENABLE(Service)
@@ -41,6 +57,9 @@ namespace nap
 		 * When service B depends on A, Service B is shutdown before A
 		 */
 		virtual void shutdown() override;
+        
+        
+        SwarmServiceConfiguration& getSwarmServiceConfiguration() { return *getConfiguration<SwarmServiceConfiguration>(); }
 
 	};
 }

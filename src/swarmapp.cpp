@@ -9,6 +9,8 @@
 #include <perspcameracomponent.h>
 #include <oschandler.h>
 
+#include <swarmservice.h>
+
 #include <DataRenderingComponent.h>
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmApp)
@@ -87,12 +89,13 @@ namespace nap
         if (!error.check(mParameterData != nullptr, "unable to find resource with name: %s", "ParameterData"))
             return false;
         
+        mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
+        
 		// All done!
 		return true;
 	}
 	
 	
-	// Update app
 	void swarmApp::update(double deltaTime)
 	{
 		// Use a default input router to forward input events (recursively) to all input components in the default scene
@@ -100,11 +103,25 @@ namespace nap
 		mInputService->processWindowEvents(*mRenderWindow, input_router, { &mScene->getRootEntity() });
         
         updateGUI();
-        
+    }
+
+
+    void swarmApp::writeConfig()
+    {
+        static std::string configError;
+        utility::ErrorState errorState;
+        auto configPath = getCore().getProjectInfo()->mServiceConfigFilename;
+        if (configPath.empty())
+            configPath = "config.json";
+        configError.clear();
+        if (!getCore().writeConfigFile(configPath, errorState))
+        {
+            configError = errorState.toString();
+            nap::Logger::error(configError);
+        }
     }
 	
-	
-	// Render app
+
 	void swarmApp::render()
 	{
 		// Signal the beginning of a new frame, allowing it to be recorded.
@@ -112,7 +129,7 @@ namespace nap
 		// Multiple frames are in flight at the same time, but if the graphics load is heavy the system might wait here to ensure resources are available.
 		mRenderService->beginFrame();
 
-        if(mDarkMode)
+        if(mConfig->mDarkMode)
             mRenderWindow->setClearColor({ mDarkColor[0], mDarkColor[1], mDarkColor[2], 1.f });
         else
             mRenderWindow->setClearColor({ mColor[0], mColor[1], mColor[2], 1.f });
@@ -131,15 +148,15 @@ namespace nap
                 &mRenderingEntity->getComponent<DataRenderingComponentInstance>()
 			};
             
-            if(mGnomon)
+            if(mConfig->mGnomon)
                 components_to_render.emplace_back(&mGnomonEntity->getComponent<RenderGnomonComponentInstance>());
 
-            if(mCircleGrid)
+            if(mConfig->mCircleGrid)
                 components_to_render.emplace_back(&mCircleGridEntity->getComponent<RenderableMeshComponentInstance>());
             else
                 components_to_render.emplace_back(&mGridEntity->getComponent<RenderableMeshComponentInstance>());
 
-            if(mShadows)
+            if(mConfig->mShadows)
                 components_to_render.emplace_back(&mShadowsEntity->getComponent<DataRenderingComponentInstance>());
 
 			mRenderService->renderObjects(*mRenderWindow, perp_cam, components_to_render);
@@ -261,10 +278,10 @@ namespace nap
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
         ImGui::Begin("Monitor");
         {
-            ImGui::Checkbox("Gnomon", &mGnomon);
-            ImGui::Checkbox("Shadows", &mShadows);
-            ImGui::Checkbox("Circular grid", &mCircleGrid);
-            ImGui::Checkbox("Dark mode", &mDarkMode);
+            if(ImGui::Checkbox("Gnomon", &mConfig->mGnomon)) writeConfig();
+            if(ImGui::Checkbox("Shadows", &mConfig->mShadows)) writeConfig();
+            if(ImGui::Checkbox("Circular grid", &mConfig->mCircleGrid)) writeConfig();
+            if(ImGui::Checkbox("Dark mode", &mConfig->mDarkMode)) writeConfig();
         }
         ImGui::End();
         
@@ -294,7 +311,7 @@ namespace nap
 
         // Display block of text
         ImGui::InputTextMultiline("OSC Messages", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
-}
+    }
 
 
 	void swarmApp::windowMessageReceived(WindowEventPtr windowEvent)

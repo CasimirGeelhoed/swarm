@@ -11,8 +11,23 @@ RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmService)
 	RTTI_CONSTRUCTOR(nap::ServiceConfiguration*)
 RTTI_END_CLASS
 
+RTTI_BEGIN_CLASS(nap::SwarmServiceConfiguration)
+    RTTI_PROPERTY("Gnomon", &nap::SwarmServiceConfiguration::mGnomon, nap::rtti::EPropertyMetaData::Default)
+    RTTI_PROPERTY("CircleGrid", &nap::SwarmServiceConfiguration::mCircleGrid, nap::rtti::EPropertyMetaData::Default)
+    RTTI_PROPERTY("Shadows", &nap::SwarmServiceConfiguration::mShadows, nap::rtti::EPropertyMetaData::Default)
+    RTTI_PROPERTY("DarkMode", &nap::SwarmServiceConfiguration::mDarkMode, nap::rtti::EPropertyMetaData::Default)
+RTTI_END_CLASS
+
+
 namespace nap
 {
+
+    rtti::TypeInfo SwarmServiceConfiguration::getServiceType() const
+    {
+        return RTTI_OF(swarmService);
+    }
+
+
 	bool swarmService::init(nap::utility::ErrorState& errorState)
 	{
 		//Logger::info("Initializing swarmService");
