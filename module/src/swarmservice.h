@@ -12,7 +12,10 @@ namespace nap
         
     public:
         rtti::TypeInfo getServiceType() const;
-
+        
+        std::string mOSCOutputAddress = "127.0.0.1";
+        int mOSCOutputPort = 7000;
+        
         bool mGnomon = true;
         bool mShadows = true;
         bool mCircleGrid = true;

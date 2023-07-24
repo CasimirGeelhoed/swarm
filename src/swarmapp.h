@@ -13,11 +13,11 @@
 #include <renderwindow.h>
 #include <entity.h>
 #include <app.h>
+#include <oscsender.h>
 
 // data classes include
 #include <OutputData.h>
 #include <ParameterData.h>
-
 
 namespace nap
 {
@@ -80,6 +80,11 @@ namespace nap
         
         void writeConfig();
         
+        /**
+         * Restart the OSCSender with current configuration.
+         */
+        void restartOSCSender();
+        
         void showOSCLog();
         
         SwarmServiceConfiguration* mConfig;
@@ -99,6 +104,8 @@ namespace nap
         ObjectPtr<EntityInstance>   mShadowsEntity = nullptr;
         ObjectPtr<EntityInstance>   mGridEntity = nullptr;
         ObjectPtr<EntityInstance>   mCircleGridEntity = nullptr;
+        
+        ResourcePtr<OSCSender> mOSCSender = nullptr;
         
         ResourcePtr<OutputData> mOutputData = nullptr;
         ResourcePtr<ParameterData> mParameterData = nullptr;

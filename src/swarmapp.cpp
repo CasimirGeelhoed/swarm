@@ -89,7 +89,13 @@ namespace nap
         if (!error.check(mParameterData != nullptr, "unable to find resource with name: %s", "ParameterData"))
             return false;
         
+        mOSCSender = mResourceManager->findObject("OSCSender");
+        if (!error.check(mOSCSender != nullptr, "unable to find resource with name: %s", "OSCSender"))
+            return false;
+        
         mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
+        
+        restartOSCSender();
         
 		// All done!
 		return true;
@@ -174,12 +180,21 @@ namespace nap
 		// Proceed to next frame
 		mRenderService->endFrame();
 	}
+
+    void swarmApp::restartOSCSender()
+    {
+        mOSCSender->mIPAddress = mConfig->mOSCOutputAddress;
+        mOSCSender->mPort = mConfig->mOSCOutputPort;
+        mOSCSender->stop();
+        utility::ErrorState e;
+        mOSCSender->start(e);
+    }
 	
 
     void swarmApp::updateGUI()
     {
         int windowWidth = mRenderWindow->getWidthPixels();
-        int settingsWidth = 550;
+        int settingsWidth = 500;
         int monitorWidth = 350;
         int paramWidth = 0.66 * (windowWidth - settingsWidth - monitorWidth);
         int dataWidth = windowWidth - settingsWidth - monitorWidth - paramWidth;
@@ -189,10 +204,20 @@ namespace nap
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
         ImGui::Begin("Settings");
         {
-            ImGui::Text("set osc input port");
-            ImGui::Text("set osc output port");
-            ImGui::Text("set osc output address");
-            ImGui::Text("other settings..");
+            ImGui::PushItemWidth(200);
+            static char buf[16] = "";
+            std::copy(mConfig->mOSCOutputAddress.begin(), mConfig->mOSCOutputAddress.end(), buf);
+            if(ImGui::InputText("OSC Address", buf, IM_ARRAYSIZE(buf)))
+                mConfig->mOSCOutputAddress = buf;
+            ImGui::InputInt("OSC Port", &mConfig->mOSCOutputPort, 0);
+            ImGui::PopItemWidth();
+            if(ImGui::Button("Apply"))
+            {
+                writeConfig();
+                restartOSCSender();
+            }
+                
+            
             ImGui::Separator();
             ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
         }
