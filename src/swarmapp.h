@@ -78,16 +78,23 @@ namespace nap
         
         void updateGUI();
         
+        // Updates to config file.
         void writeConfig();
         
-        /**
-         * Restart the OSCSender with current configuration.
-         */
+        // Restarts the OSCSender with current configuration.
         void restartOSCSender();
         
-        void showOSCLog();
-        
+        // GUI's
         void showPythonLog();
+        void showOSCLog();
+        void showSettings();
+        void showParameters();
+        void showOutputData();
+        void showMonitorOptions();
+        
+        bool mPythonLogVisible = true;
+        bool mOSCLogVisible = true;
+        
         
         SwarmServiceConfiguration* mConfig;
         

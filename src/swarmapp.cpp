@@ -199,6 +199,7 @@ namespace nap
     void swarmApp::updateGUI()
     {
         int windowWidth = mRenderWindow->getWidthPixels();
+        int windowHeight = mRenderWindow->getHeightPixels();
         int settingsWidth = 500;
         int monitorWidth = 350;
         int paramWidth = 0.66 * (windowWidth - settingsWidth - monitorWidth);
@@ -208,121 +209,162 @@ namespace nap
         ImGui::SetNextWindowSize(ImVec2(settingsWidth, 0));
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
         ImGui::Begin("Settings");
-        {
-            ImGui::PushItemWidth(200);
-            static char buf[16] = "";
-            std::copy(mConfig->mOSCOutputAddress.begin(), mConfig->mOSCOutputAddress.end(), buf);
-            if(ImGui::InputText("OSC Address", buf, IM_ARRAYSIZE(buf)))
-                mConfig->mOSCOutputAddress = buf;
-            ImGui::InputInt("OSC Port", &mConfig->mOSCOutputPort, 0);
-            ImGui::PopItemWidth();
-            if(ImGui::Button("Apply"))
-            {
-                writeConfig();
-                restartOSCSender();
-            }
-                
-            
-            ImGui::Separator();
-            ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
-        }
+        showSettings();
         ImGui::End();
 
         ImGui::SetNextWindowPos(ImVec2(settingsWidth, 0));
         ImGui::SetNextWindowSize(ImVec2(paramWidth, 0));
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
         ImGui::Begin("Parameters");
-        {
-            ImGui::Columns(4, "params", false);
-            for(auto& x : mParameterData->getVec3Parameters())
-            {
-                ImGui::Text(x.first.c_str());
-                ImGui::NextColumn();
-                ImGui::Text("%.02f", x.second->mValue.x);
-                ImGui::NextColumn();
-                ImGui::Text("%.02f", x.second->mValue.y);
-                ImGui::NextColumn();
-                ImGui::Text("%.02f", x.second->mValue.z);
-                ImGui::NextColumn();
-                ImGui::Separator();
-            }
-
-            for(auto& x : mParameterData->getFloatParameters())
-            {
-                ImGui::Text(x.first.c_str());
-                ImGui::NextColumn();
-                ImGui::Text("%.02f", x.second->mValue);
-                ImGui::NextColumn();
-                ImGui::NextColumn();
-                ImGui::NextColumn();
-                ImGui::Separator();
-            }
-            ImGui::Columns(1);
-        }
+        showParameters();
         ImGui::End();
         
         ImGui::SetNextWindowPos(ImVec2(settingsWidth + paramWidth, 0));
         ImGui::SetNextWindowSize(ImVec2(dataWidth, 0));
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
         ImGui::Begin("Output data");
-        {
-            ImGui::Columns(3, "outputdata", false);
-            int i = 0;
-            for(auto& x : mOutputData->getVec3Fields())
-            {
-                ImGui::Text(x.first.c_str());
-                ImGui::NextColumn();
-                
-                const char* items[] = { "Off", "Position", "Arrow" };
-                static int item_current = 0;
-                ImGui::Combo(("##combovec3" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
-
-                ImGui::NextColumn();
-                bool dummy = false;
-                ImGui::Checkbox(" ", &dummy);
-                ImGui::NextColumn();
-                ImGui::Separator();
-            }
-            
-            
-            for(auto& x : mOutputData->getFloatFields())
-            {
-                ImGui::Text(x.first.c_str());
-                ImGui::NextColumn();
-                
-                const char* items[] = { "Off", "Red", "Green", "Blue", "Scale"};
-                static int item_current = 0;
-                ImGui::Combo(("##combofloat" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
-                
-                ImGui::NextColumn();
-                bool dummy = false;
-                ImGui::Checkbox(" ", &dummy);
-                ImGui::NextColumn();
-                ImGui::Separator();
-            }
-        }
+        showOutputData();
         ImGui::End();
         
         ImGui::SetNextWindowPos(ImVec2(settingsWidth + paramWidth + dataWidth, 0));
         ImGui::SetNextWindowSize(ImVec2(monitorWidth, 0));
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
         ImGui::Begin("Monitor");
+        showMonitorOptions();
+        ImGui::End();
+        
+        
+        int i = 1;
+        
+        if(mPythonLogVisible)
         {
-            if(ImGui::Checkbox("Gnomon", &mConfig->mGnomon)) writeConfig();
-            if(ImGui::Checkbox("Shadows", &mConfig->mShadows)) writeConfig();
-            if(ImGui::Checkbox("Circular grid", &mConfig->mCircleGrid)) writeConfig();
-            if(ImGui::Checkbox("Dark mode", &mConfig->mDarkMode)) writeConfig();
+            ImGui::Begin("Python Log", &mPythonLogVisible);
+            showPythonLog();
+            ImGui::End();
         }
-        ImGui::End();
+        else
+        {
+            ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 45 - 100 * (i++)));
+            bool b = true;
+            ImGui::Begin("pythonlogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
+            if(ImGui::Button("Python Log"))
+                mPythonLogVisible = true;
+            ImGui::End();
+        }
         
-        ImGui::Begin("OSC Input");
-        showOSCLog();
-        ImGui::End();
+        if(mOSCLogVisible)
+        {
+            ImGui::Begin("OSC Input", &mOSCLogVisible);
+            showOSCLog();
+            ImGui::End();
+        }
+        else
+        {
+            ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 45 - 100 * (i++)));
+            bool b = true;
+            ImGui::Begin("osclogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
+            if(ImGui::Button("OSC Log"))
+                mOSCLogVisible = true;
+            ImGui::End();
+        }
         
-        ImGui::Begin("Python Log");
-        showPythonLog();
-        ImGui::End();
 
+    }
+
+
+    void swarmApp::showSettings()
+    {
+        ImGui::PushItemWidth(200);
+        static char buf[16] = "";
+        std::copy(mConfig->mOSCOutputAddress.begin(), mConfig->mOSCOutputAddress.end(), buf);
+        if(ImGui::InputText("OSC Address", buf, IM_ARRAYSIZE(buf)))
+            mConfig->mOSCOutputAddress = buf;
+        ImGui::InputInt("OSC Port", &mConfig->mOSCOutputPort, 0);
+        ImGui::PopItemWidth();
+        if(ImGui::Button("Apply"))
+        {
+            writeConfig();
+            restartOSCSender();
+        }
+            
+        ImGui::Separator();
+        ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
+    }
+
+
+    void swarmApp::showParameters()
+    {
+        ImGui::Columns(4, "params", false);
+        for(auto& x : mParameterData->getVec3Parameters())
+        {
+            ImGui::Text(x.first.c_str());
+            ImGui::NextColumn();
+            ImGui::Text("%.02f", x.second->mValue.x);
+            ImGui::NextColumn();
+            ImGui::Text("%.02f", x.second->mValue.y);
+            ImGui::NextColumn();
+            ImGui::Text("%.02f", x.second->mValue.z);
+            ImGui::NextColumn();
+            ImGui::Separator();
+        }
+
+        for(auto& x : mParameterData->getFloatParameters())
+        {
+            ImGui::Text(x.first.c_str());
+            ImGui::NextColumn();
+            ImGui::Text("%.02f", x.second->mValue);
+            ImGui::NextColumn();
+            ImGui::NextColumn();
+            ImGui::NextColumn();
+            ImGui::Separator();
+        }
+        ImGui::Columns(1);
+    }
+
+
+    void swarmApp::showOutputData()
+    {
+        ImGui::Columns(3, "outputdata", false);
+        int i = 0;
+        for(auto& x : mOutputData->getVec3Fields())
+        {
+            ImGui::Text(x.first.c_str());
+            ImGui::NextColumn();
+            
+            const char* items[] = { "Off", "Position", "Arrow" };
+            static int item_current = 0;
+            ImGui::Combo(("##combovec3" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
+
+            ImGui::NextColumn();
+            bool dummy = false;
+            ImGui::Checkbox(" ", &dummy);
+            ImGui::NextColumn();
+            ImGui::Separator();
+        }
+        
+        for(auto& x : mOutputData->getFloatFields())
+        {
+            ImGui::Text(x.first.c_str());
+            ImGui::NextColumn();
+            
+            const char* items[] = { "Off", "Red", "Green", "Blue", "Scale"};
+            static int item_current = 0;
+            ImGui::Combo(("##combofloat" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
+            
+            ImGui::NextColumn();
+            bool dummy = false;
+            ImGui::Checkbox(" ", &dummy);
+            ImGui::NextColumn();
+            ImGui::Separator();
+        }
+    }
+
+    void swarmApp::showMonitorOptions()
+    {
+        if(ImGui::Checkbox("Gnomon", &mConfig->mGnomon)) writeConfig();
+        if(ImGui::Checkbox("Shadows", &mConfig->mShadows)) writeConfig();
+        if(ImGui::Checkbox("Circular grid", &mConfig->mCircleGrid)) writeConfig();
+        if(ImGui::Checkbox("Dark mode", &mConfig->mDarkMode)) writeConfig();
     }
 
 
@@ -370,7 +412,6 @@ namespace nap
         // Display block of text
         ImGui::InputTextMultiline("Python Errors", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
     }
-
 
 
 	void swarmApp::windowMessageReceived(WindowEventPtr windowEvent)
