@@ -42,7 +42,7 @@ namespace nap
         
         ComponentInstancePtr<PythonScriptComponent> mPythonScriptComponent = { this, &PythonErrorHandlerComponent::mPythonScriptComponent };
         
-        std::vector<std::string> mReceivedPythonErrors;        ///< Holds all the received events
+        std::vector<std::string> mMessages;        ///< Holds all the received events
 
     };
         

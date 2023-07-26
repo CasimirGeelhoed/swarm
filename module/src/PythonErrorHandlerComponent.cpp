@@ -18,7 +18,7 @@ namespace nap
     bool PythonErrorHandlerComponentInstance::init(utility::ErrorState& errorState)
     {
         // Set up python error log.
-        mReceivedPythonErrors.reserve(25);
+        mMessages.reserve(25);
         mPythonScriptComponent->mPythonErrorCaught.connect(mPythonErrorReceived);
 
         return true;
@@ -28,18 +28,18 @@ namespace nap
 
     const std::vector<std::string>& PythonErrorHandlerComponentInstance::getMessages()
     {
-        return mReceivedPythonErrors;
+        return mMessages;
     }
 
 
     void PythonErrorHandlerComponentInstance::onPythonErrorReceived(const std::string& errorMessage)
     {
-        // Add
-        mReceivedPythonErrors.emplace_back(errorMessage);
+        // Add message
+        mMessages.emplace_back(errorMessage);
 
         // Remove first element when out of range
-        if (mReceivedPythonErrors.size() > 25)
-            mReceivedPythonErrors.erase(mReceivedPythonErrors.begin());
+        if (mMessages.size() > 25)
+            mMessages.erase(mMessages.begin());
     }
 
 }

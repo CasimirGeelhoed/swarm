@@ -92,8 +92,8 @@ namespace nap
         void showOutputData();
         void showMonitorOptions();
         
-        bool mPythonLogVisible = true;
-        bool mOSCLogVisible = true;
+        bool mPythonLogVisible = false;
+        bool mOSCLogVisible = false;
         
         
         SwarmServiceConfiguration* mConfig;
