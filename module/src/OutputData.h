@@ -27,13 +27,13 @@ namespace nap {
                 mFloatFields.emplace(s, std::vector<float>(size));
         }
         
-        // TODO: optimise?
+        // TODO: prevent incorrect index / fieldName causing crashing
         void setFloat(int index, const std::string& fieldName, float value)
         {
             mFloatFields[fieldName][index] = value;
         }
         
-        // TODO: optimise?
+        // TODO: prevent incorrect index / fieldName causing crashing
         void setVec3(int index, const std::string& fieldName, glm::vec3 value)
         {
             mVec3Fields[fieldName][index] = value;

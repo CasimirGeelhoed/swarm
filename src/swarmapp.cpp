@@ -8,11 +8,11 @@
 #include <renderablemeshcomponent.h>
 #include <perspcameracomponent.h>
 #include <oschandler.h>
-#include <pythonscriptcomponent.h>
-
 #include <swarmservice.h>
 
 #include <DataRenderingComponent.h>
+#include <PythonErrorHandlerComponent.h>
+
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmApp)
 	RTTI_CONSTRUCTOR(nap::Core&)
@@ -101,12 +101,7 @@ namespace nap
         mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
         
         restartOSCSender();
-        
-        // set up python error log
-        mReceivedPythonErrors.reserve(25);
-        auto& pythonScriptComponent = mControllingEntity->getComponent<PythonScriptComponentInstance>();
-        pythonScriptComponent.mPythonErrorCaught.connect(mPythonErrorReceived);
-        
+                
 		// All done!
 		return true;
 	}
@@ -334,30 +329,35 @@ namespace nap
     void swarmApp::showOSCLog()
     {
         // Get the osc handle component
-        auto osc_handler = mReceivingEntity->findComponent<OscHandlerComponentInstance>();
+        auto oscHandler = mReceivingEntity->findComponent<OscHandlerComponentInstance>();
+        assert(oscHandler);
 
         // Get all received osc messages and convert into a single string
         std::string msg;
-        for (const auto& message : osc_handler->getMessages())
+        for (const auto& message : oscHandler->getMessages())
             msg += (message + "\n");
 
         // Backup text
         char txt[256] = "No OSC Messages Received";
 
         // If there are no messages display that instead of the received messages
-        char* display_msg = msg.empty() ? txt : &msg[0];
-        size_t display_size = msg.empty() ? 256 : msg.size();
+        char* displayMsg = msg.empty() ? txt : &msg[0];
+        size_t displaySize = msg.empty() ? 256 : msg.size();
 
         // Display block of text
-        ImGui::InputTextMultiline("OSC Messages", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputTextMultiline("OSC Messages", displayMsg, displaySize, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
     }
 
 
     void swarmApp::showPythonLog()
     {
+        // Get the python error handler component
+        auto pythonErrorHandler = mControllingEntity->findComponent<PythonErrorHandlerComponentInstance>();
+        assert(pythonErrorHandler);
+        
         // Get all received osc messages and convert into a single string
         std::string msg;
-        for (const auto& message : mReceivedPythonErrors)
+        for (const auto& message : pythonErrorHandler->getMessages())
             msg += (message + "\n");
 
         // Backup text

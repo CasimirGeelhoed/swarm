@@ -137,6 +137,11 @@
                     "mID": "DataControlComponent",
                     "ParameterData": "ParameterData",
                     "OutputData": "OutputData"
+                },
+                {
+                    "Type": "nap::PythonErrorHandlerComponent",
+                    "mID": "nap::PythonErrorHandlerComponent_665438e7",
+                    "PythonScriptComponent": "./PythonScriptComponent"
                 }
             ],
             "Children": []
@@ -358,14 +363,12 @@
         {
             "Type": "nap::PythonScript",
             "mID": "BackupPythonScript",
-            "Path": "scripts/backupscript.py",
-            "BackupPath": ""
+            "Path": "scripts/backupscript.py"
         },
         {
             "Type": "nap::PythonScript",
             "mID": "PythonScript",
-            "Path": "scripts/script.py",
-            "BackupPath": "scripts/backupscript.py"
+            "Path": "scripts/script.py"
         },
         {
             "Type": "nap::RenderWindow",
