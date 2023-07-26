@@ -57,6 +57,7 @@ namespace nap
         /**
          * Sets the value for index i in field fieldName.
          */
+        // TODO: log if unsuccesful
         void setFloat(int index, const std::string& fieldName, float value)
         {
             mOutputData->setFloat(index, fieldName, value);
@@ -65,6 +66,7 @@ namespace nap
         /**
          * Sets the value for index i in field fieldName.
          */
+        // TODO: log if unsuccesful
         void setVec3(int index, const std::string& fieldName, glm::vec3 value)
         {
             mOutputData->setVec3(index, fieldName, value);
@@ -74,6 +76,7 @@ namespace nap
         /**
          * Returns the parameter value.
          */
+        // TODO: log if unsuccesful
         float getFloat(const std::string& name)
         {
             return mParameterData->getFloat(name);
@@ -82,6 +85,7 @@ namespace nap
         /**
          * Returns the parameter value.
          */
+        // TODO: log if unsuccesful
         glm::vec3 getVec3(const std::string& name)
         {
             return mParameterData->getVec3(name);

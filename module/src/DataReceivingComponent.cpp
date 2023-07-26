@@ -26,13 +26,27 @@ namespace nap
     }
 
 
+    // Converts int / float / double arguments to a float value. If unsuccesful, return 0.
+    float argumentToFloat(const OSCArgument& argument)
+    {
+        if (argument.isFloat())
+            return argument.asFloat();
+        else if (argument.isDouble())
+            return argument.asDouble();
+        else if (argument.isInt())
+            return argument.asInt();
+        return false;
+    }
+
+
     void DataReceivingComponentInstance::onMessageReceived(const OSCEvent& event)
     {
-        // TODO: catch wrong OSC addresses & values
+        // TODO: is this simple parsing completely fool-proof?
+        // TODO: log wrong OSC input.
         if(event.getCount() == 1)
-            mParameterData->setFloat(event.getAddress(), event.getArgument(0)->asFloat());
-        else
-            mParameterData->setVec3(event.getAddress(), glm::vec3(event.getArgument(0)->asFloat(), event.getArgument(1)->asFloat(), event.getArgument(2)->asFloat()));
+            mParameterData->setFloat(event.getAddress(), argumentToFloat(*event.getArgument(0)));
+        else if(event.getCount() == 3)
+            mParameterData->setVec3(event.getAddress(), glm::vec3(argumentToFloat(*event.getArgument(0)), argumentToFloat(*event.getArgument(1)), argumentToFloat(*event.getArgument(2))));
     }
 
 }
