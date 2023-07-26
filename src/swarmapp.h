@@ -87,6 +87,25 @@ namespace nap
         
         void showOSCLog();
         
+        void showPythonLog();
+        
+        // TODO: move below to a PythonErrorHandlerComponent (because the signal<>slot link breaks after a hotload)
+        
+        Slot<const std::string&> mPythonErrorReceived = { this, &swarmApp::onPythonErrorReceived };
+        
+        void onPythonErrorReceived(const std::string& errorMessage)
+        {
+            // Add
+            mReceivedPythonErrors.emplace_back(errorMessage);
+
+            // Remove first element when out of range
+            if (mReceivedPythonErrors.size() > 25)
+                mReceivedPythonErrors.erase(mReceivedPythonErrors.begin());
+        }
+        
+        std::vector<std::string> mReceivedPythonErrors;        ///< Holds all the received events
+        
+        
         SwarmServiceConfiguration* mConfig;
         
 		ResourceManager*			mResourceManager = nullptr;		///< Manages all the loaded data
@@ -100,6 +119,7 @@ namespace nap
         ObjectPtr<EntityInstance>	mCameraEntity = nullptr;
 		ObjectPtr<EntityInstance>	mGnomonEntity = nullptr;
         ObjectPtr<EntityInstance>   mRenderingEntity = nullptr;
+        ObjectPtr<EntityInstance>   mControllingEntity = nullptr;
         ObjectPtr<EntityInstance>   mReceivingEntity = nullptr;
         ObjectPtr<EntityInstance>   mShadowsEntity = nullptr;
         ObjectPtr<EntityInstance>   mGridEntity = nullptr;

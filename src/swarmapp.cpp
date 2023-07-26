@@ -8,6 +8,7 @@
 #include <renderablemeshcomponent.h>
 #include <perspcameracomponent.h>
 #include <oschandler.h>
+#include <pythonscriptcomponent.h>
 
 #include <swarmservice.h>
 
@@ -63,6 +64,10 @@ namespace nap
         mReceivingEntity = mScene->findEntity("ReceivingEntity");
         if (!error.check(mReceivingEntity != nullptr, "unable to find entity with name: %s", "ReceivingEntity"))
             return false;
+        
+        mControllingEntity = mScene->findEntity("ControllingEntity");
+        if (!error.check(mControllingEntity != nullptr, "unable to find entity with name: %s", "ControllingEntity"))
+            return false;
 
         
         // Get the Grid entity
@@ -96,6 +101,11 @@ namespace nap
         mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
         
         restartOSCSender();
+        
+        // set up python error log
+        mReceivedPythonErrors.reserve(25);
+        auto& pythonScriptComponent = mControllingEntity->getComponent<PythonScriptComponentInstance>();
+        pythonScriptComponent.mPythonErrorCaught.connect(mPythonErrorReceived);
         
 		// All done!
 		return true;
@@ -313,6 +323,10 @@ namespace nap
         ImGui::Begin("OSC Input");
         showOSCLog();
         ImGui::End();
+        
+        ImGui::Begin("Python Log");
+        showPythonLog();
+        ImGui::End();
 
     }
 
@@ -337,6 +351,26 @@ namespace nap
         // Display block of text
         ImGui::InputTextMultiline("OSC Messages", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
     }
+
+
+    void swarmApp::showPythonLog()
+    {
+        // Get all received osc messages and convert into a single string
+        std::string msg;
+        for (const auto& message : mReceivedPythonErrors)
+            msg += (message + "\n");
+
+        // Backup text
+        char txt[256] = "No Python Errors";
+
+        // If there are no messages display that instead of the received messages
+        char* display_msg = msg.empty() ? txt : &msg[0];
+        size_t display_size = msg.empty() ? 256 : msg.size();
+
+        // Display block of text
+        ImGui::InputTextMultiline("Python Errors", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
+    }
+
 
 
 	void swarmApp::windowMessageReceived(WindowEventPtr windowEvent)

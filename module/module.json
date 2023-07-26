@@ -5,7 +5,8 @@
         "naprender",
         "napscene",
         "napparameter",
-        "naposc"
+        "naposc",
+        "nappython"
     ], 
     "WindowsDllSearchPaths": []
 }

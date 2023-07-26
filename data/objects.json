@@ -126,6 +126,7 @@
                     "Type": "nap::PythonScriptComponent",
                     "mID": "PythonScriptComponent",
                     "PythonScript": "PythonScript",
+                    "BackupPythonScript": "BackupPythonScript",
                     "Class": "Control",
                     "Dependencies": [
                         "nap::DataControlComponent"
@@ -356,8 +357,15 @@
         },
         {
             "Type": "nap::PythonScript",
+            "mID": "BackupPythonScript",
+            "Path": "scripts/backupscript.py",
+            "BackupPath": ""
+        },
+        {
+            "Type": "nap::PythonScript",
             "mID": "PythonScript",
-            "Path": "scripts/script.py"
+            "Path": "scripts/script.py",
+            "BackupPath": "scripts/backupscript.py"
         },
         {
             "Type": "nap::RenderWindow",
