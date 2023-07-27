@@ -27,6 +27,10 @@ namespace nap
 	 */
 	bool swarmApp::init(utility::ErrorState& error)
 	{
+        mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
+
+        capFramerate(mConfig->mCapFPS);
+
 		// Retrieve services
 		mRenderService	= getCore().getService<nap::RenderService>();
 		mSceneService	= getCore().getService<nap::SceneService>();
@@ -99,7 +103,6 @@ namespace nap
         if (!error.check(mOSCSender != nullptr, "unable to find resource with name: %s", "OSCSender"))
             return false;
         
-        mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
         
         restartOSCSender();
                 
@@ -295,7 +298,17 @@ namespace nap
         }
             
         ImGui::Separator();
+        
+        if(ImGui::Checkbox("Limit FPS", &mConfig->mCapFPS))
+        {
+            capFramerate(mConfig->mCapFPS);
+            writeConfig();
+        }
+        
+        ImGui::Separator();
+        
         ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
+
     }
 
 

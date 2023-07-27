@@ -21,6 +21,7 @@ namespace nap
         bool mCircleGrid = true;
         bool mDarkMode = true;
         bool mLabels = true;
+        bool mCapFPS = true;
         
     };
 

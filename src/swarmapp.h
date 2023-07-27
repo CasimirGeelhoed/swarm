@@ -73,7 +73,7 @@ namespace nap
 		 * @return the application exit code, this is returned when the main loop is exited
 		 */
 		virtual int shutdown() override;
-
+        
 	private:
         
         void updateGUI();
@@ -94,7 +94,7 @@ namespace nap
         
         bool mPythonLogVisible = false;
         bool mOSCLogVisible = false;
-        
+
         
         SwarmServiceConfiguration* mConfig;
         
