@@ -37,38 +37,20 @@ namespace nap
     std::string roundToTwoDecimals(float number)
     {
         std::stringstream ss;
-        ss << std::fixed << std::setprecision(2) << (number + 0.05f);
+        ss << std::fixed << std::setprecision(2) << (number + 0.005f);
         return ss.str();
     }
 
 
     void LabelsRenderingComponentInstance::setDataToRender(std::string name, bool isVec3)
     {
-        if(name == "")
-        {
-            mDisplay = false;
-            mTexts.clear();
-            return;
-        }
-        
-        if(isVec3)
-        {
-            auto field = mData->getVec3Field(name);
-            mTexts.clear();
-            mTexts.reserve(field.size());
-            for(int i = 0; i < field.size(); i++)
-                mTexts.emplace_back(roundToTwoDecimals(field[i].x) + " " + roundToTwoDecimals(field[i].y) + " " + roundToTwoDecimals(field[i].z));
-        }
-        else
-        {
-            auto field = mData->getFloatField(name);
-            mTexts.clear();
-            mTexts.reserve(field.size());
-            for(int i = 0; i < field.size(); i++)
-                mTexts.emplace_back(roundToTwoDecimals(field[i]));
-        }
+        mFieldName = name;
+        mFieldIsVec3 = isVec3;
 
-        mDisplay = true;
+        if(mFieldName == "")
+            mDisplay = false;
+        else
+            mDisplay = true;
     }
 
 
@@ -86,10 +68,24 @@ namespace nap
         }
         else
         {
-            for(int i = 0; i < std::min<int>(mCount, mTexts.size()); i++)
-                mRenderableTextComponent->setText(i, mTexts[i], e);
+            if(mFieldName == "")
+                return;
+
+            if(mFieldIsVec3)
+            {
+                auto field = mData->getVec3Field(mFieldName);
+                for(int i = 0; i < std::min<int>(field.size(),mCount); i++)
+                    mRenderableTextComponent->setText(i, roundToTwoDecimals(field[i].x) + " " + roundToTwoDecimals(field[i].y) + " " + roundToTwoDecimals(field[i].z), e);
+            }
+            else
+            {
+                auto field = mData->getFloatField(mFieldName);
+                for(int i = 0; i < std::min<int>(field.size(),mCount); i++)
+                    mRenderableTextComponent->setText(i, roundToTwoDecimals(field[i]), e);
+            }
         }
     }
+
 
     void LabelsRenderingComponentInstance::draw(IRenderTarget& renderTarget, PerspCameraComponentInstance& perspCamera, glm::vec3 color)
     {

@@ -61,8 +61,9 @@ namespace nap
         std::vector<glm::vec3> mPositions; // TODO: is it really necessary to copy this data?
         bool mDisplay = true;
         bool mIndices = false;
-                
-        std::vector<std::string> mTexts;
+        
+        std::string mFieldName = "";
+        bool mFieldIsVec3 = false;
         
     };
         
