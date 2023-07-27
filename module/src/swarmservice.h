@@ -23,6 +23,7 @@ namespace nap
         bool mLabels = true;
         bool mCapFPS = true;
         
+        std::string mSelectedData = "";
     };
 
 

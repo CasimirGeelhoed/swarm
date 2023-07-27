@@ -103,6 +103,19 @@ namespace nap
         if (!error.check(mOSCSender != nullptr, "unable to find resource with name: %s", "OSCSender"))
             return false;
         
+        // Update selected data based on config setting
+        for(auto& x : mOutputData->getVec3Fields())
+        {
+            std::string name = x.first.c_str();
+            if(mConfig->mSelectedData == name)
+                selectData(name, true);
+        }
+        for(auto& x : mOutputData->getFloatFields())
+        {
+            std::string name = x.first.c_str();
+            if(mConfig->mSelectedData == name)
+                selectData(name, false);
+        }
         
         restartOSCSender();
                 
@@ -266,7 +279,7 @@ namespace nap
         }
         else
         {
-            ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 45 - 100 * (i++)));
+            ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 32 - 100 * (i++)));
             bool b = true;
             ImGui::Begin("pythonlogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
             if(ImGui::Button("Python Log"))
@@ -282,7 +295,7 @@ namespace nap
         }
         else
         {
-            ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 45 - 100 * (i++)));
+            ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 32 - 100 * (i++)));
             bool b = true;
             ImGui::Begin("osclogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
             if(ImGui::Button("OSC Log"))
@@ -290,6 +303,12 @@ namespace nap
             ImGui::End();
         }
 
+        
+        ImGui::SetNextWindowPos(ImVec2(windowWidth - 520, windowHeight - 75));
+        bool b = true;
+        ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+        ImGui::Text("Swarm v0.1 - by Casimir Geelhoed");
+        ImGui::End();
     }
 
 
@@ -355,34 +374,35 @@ namespace nap
 
     void swarmApp::showOutputData()
     {
-        
         for(auto& x : mOutputData->getVec3Fields())
         {
             std::string name = x.first.c_str();
-            if(ImGui::RadioButton(name.c_str(), mSelectedData == name))
+            if(ImGui::RadioButton(name.c_str(), mConfig->mSelectedData == name))
             {
                 selectData(name, true);
-                mSelectedData = name;
+                mConfig->mSelectedData = name;
+                writeConfig();
             }
             ImGui::Separator();
         }
-        
         
         for(auto& x : mOutputData->getFloatFields())
         {
             std::string name = x.first.c_str();
-            if(ImGui::RadioButton(name.c_str(), mSelectedData == name))
+            if(ImGui::RadioButton(name.c_str(), mConfig->mSelectedData == name))
             {
                 selectData(name, false);
-                mSelectedData = name;
+                mConfig->mSelectedData = name;
+                writeConfig();
             }
             ImGui::Separator();
         }
 
-        if(ImGui::RadioButton("(none)", mSelectedData == ""))
+        if(ImGui::RadioButton("(none)", mConfig->mSelectedData == ""))
         {
             selectData("", false);
-            mSelectedData = "";
+            mConfig->mSelectedData = "";
+            writeConfig();
         }
 
     }

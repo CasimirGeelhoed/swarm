@@ -97,8 +97,6 @@ namespace nap
         
         bool mPythonLogVisible = false;
         bool mOSCLogVisible = false;
-
-        std::string mSelectedData = "";
         
         SwarmServiceConfiguration* mConfig;
         
