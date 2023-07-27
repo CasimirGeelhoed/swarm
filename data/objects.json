@@ -72,7 +72,7 @@
                     "Type": "nap::RenderableMeshComponent",
                     "mID": "nap::RenderableMeshComponent_70667cb4",
                     "Visible": true,
-                    "Mesh": "CircleGridmesh",
+                    "Mesh": "CircleGridMesh",
                     "MaterialInstance": {
                         "Uniforms": [],
                         "Samplers": [],
@@ -393,16 +393,6 @@
             "Children": []
         },
         {
-            "Type": "nap::PythonScript",
-            "mID": "BackupPythonScript",
-            "Path": "scripts/backupscript.py"
-        },
-        {
-            "Type": "nap::PythonScript",
-            "mID": "PythonScript",
-            "Path": "scripts/script.py"
-        },
-        {
             "Type": "nap::RenderWindow",
             "mID": "Window",
             "Borderless": false,
@@ -458,6 +448,23 @@
                     "IpAddress": "127.0.0.1",
                     "Port": 8000,
                     "BufferScale": 2
+                }
+            ],
+            "Children": []
+        },
+        {
+            "Type": "nap::ResourceGroup",
+            "mID": "PythonScripts",
+            "Members": [
+                {
+                    "Type": "nap::PythonScript",
+                    "mID": "PythonScript",
+                    "Path": "scripts/script.py"
+                },
+                {
+                    "Type": "nap::PythonScript",
+                    "mID": "BackupPythonScript",
+                    "Path": "scripts/backupscript.py"
                 }
             ],
             "Children": []
@@ -539,10 +546,6 @@
                     }
                 },
                 {
-                    "Type": "nap::LineMesh",
-                    "mID": "LineMesh"
-                },
-                {
                     "Type": "nap::Material",
                     "mID": "GridMaterial",
                     "Uniforms": [
@@ -573,7 +576,7 @@
                 },
                 {
                     "Type": "nap::CircleGridMesh",
-                    "mID": "CircleGridmesh",
+                    "mID": "CircleGridMesh",
                     "Sectors": 200,
                     "Circles": 50,
                     "Meridians": 24
