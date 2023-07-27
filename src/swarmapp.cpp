@@ -11,6 +11,7 @@
 #include <swarmservice.h>
 
 #include <DataRenderingComponent.h>
+#include <LabelsRenderingComponent.h>
 #include <PythonErrorHandlerComponent.h>
 
 
@@ -172,6 +173,13 @@ namespace nap
 
 			mRenderService->renderObjects(*mRenderWindow, perp_cam, components_to_render);
 
+            // Render labels.
+            if(mConfig->mLabels)
+            {
+                auto& labelsRenderingComponent = mRenderingEntity->getComponent<LabelsRenderingComponentInstance>();
+                labelsRenderingComponent.draw(*mRenderWindow, perp_cam, mConfig->mDarkMode ? mColor : mDarkColor);
+            }
+            
 			// Render GUI elements
 			mGuiService->draw();
 
@@ -363,6 +371,7 @@ namespace nap
         if(ImGui::Checkbox("Gnomon", &mConfig->mGnomon)) writeConfig();
         if(ImGui::Checkbox("Shadows", &mConfig->mShadows)) writeConfig();
         if(ImGui::Checkbox("Circular grid", &mConfig->mCircleGrid)) writeConfig();
+        if(ImGui::Checkbox("Labels", &mConfig->mLabels)) writeConfig();
         if(ImGui::Checkbox("Dark mode", &mConfig->mDarkMode)) writeConfig();
     }
 

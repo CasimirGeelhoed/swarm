@@ -299,6 +299,38 @@
                         },
                         "UniformScale": 1.0
                     }
+                },
+                {
+                    "Type": "nap::LabelsRenderingComponent",
+                    "mID": "nap::LabelsRenderingComponent_b0d2dcc5",
+                    "RenderableTextComponent": "./nap::Renderable2DTextComponent_c315a7b8",
+                    "Data": "OutputData",
+                    "LabelOffset": {
+                        "x": 25.0,
+                        "y": 0.0
+                    }
+                },
+                {
+                    "Type": "nap::Renderable2DTextComponent",
+                    "mID": "nap::Renderable2DTextComponent_c315a7b8",
+                    "Visible": true,
+                    "Text": "",
+                    "Font": "LabelsFont",
+                    "TextColor": {
+                        "Values": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ]
+                    },
+                    "Location": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "Orientation": "Left",
+                    "DepthMode": "NoReadWrite",
+                    "IgnoreTransform": true,
+                    "DPI Aware": true
                 }
             ],
             "Children": []
@@ -591,6 +623,14 @@
                     "VertexAttributeBindings": [],
                     "BlendMode": "Opaque",
                     "DepthMode": "InheritFromBlendMode"
+                },
+                {
+                    "Type": "nap::Font",
+                    "mID": "LabelsFont",
+                    "Properties": {
+                        "Size": 9
+                    },
+                    "Font": "Manrope-Light.otf"
                 }
             ],
             "Children": []

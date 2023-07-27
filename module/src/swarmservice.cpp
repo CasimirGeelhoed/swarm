@@ -16,6 +16,7 @@ RTTI_BEGIN_CLASS(nap::SwarmServiceConfiguration)
     RTTI_PROPERTY("CircleGrid", &nap::SwarmServiceConfiguration::mCircleGrid, nap::rtti::EPropertyMetaData::Default)
     RTTI_PROPERTY("Shadows", &nap::SwarmServiceConfiguration::mShadows, nap::rtti::EPropertyMetaData::Default)
     RTTI_PROPERTY("DarkMode", &nap::SwarmServiceConfiguration::mDarkMode, nap::rtti::EPropertyMetaData::Default)
+    RTTI_PROPERTY("Labels", &nap::SwarmServiceConfiguration::mLabels, nap::rtti::EPropertyMetaData::Default)
     RTTI_PROPERTY("OSCOutputAddress", &nap::SwarmServiceConfiguration::mOSCOutputAddress, nap::rtti::EPropertyMetaData::Default)
     RTTI_PROPERTY("OSCOutputPort", &nap::SwarmServiceConfiguration::mOSCOutputPort, nap::rtti::EPropertyMetaData::Default)
 RTTI_END_CLASS
@@ -32,7 +33,6 @@ namespace nap
 
 	bool swarmService::init(nap::utility::ErrorState& errorState)
 	{
-		//Logger::info("Initializing swarmService");
 		return true;
 	}
 

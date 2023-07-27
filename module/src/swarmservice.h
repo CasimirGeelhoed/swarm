@@ -20,6 +20,7 @@ namespace nap
         bool mShadows = true;
         bool mCircleGrid = true;
         bool mDarkMode = true;
+        bool mLabels = true;
         
     };
 
