@@ -244,7 +244,7 @@ namespace nap
         ImGui::SetNextWindowPos(ImVec2(settingsWidth + paramWidth, 0));
         ImGui::SetNextWindowSize(ImVec2(dataWidth, 0));
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
-        ImGui::Begin("Output data");
+        ImGui::Begin("Data");
         showOutputData();
         ImGui::End();
         
