@@ -28,6 +28,8 @@ namespace nap
         
         glm::vec2 mLabelOffset = glm::vec2(0.f); ///< Property: 2D labels offset in relation to center position.
         
+        bool mIndices = false; ///< Property: if set to true, the Component will render indices instead of selected data.
+        
     private:
     };
 
@@ -43,6 +45,9 @@ namespace nap
         
         void update(double deltaTime) override;
         
+        // Updates the texts that will be displayed by retrieving the values of the data vield with the given name and type.
+        void setDataToRender(std::string name, bool isVec3);
+        
         // Draws text using the Renderable2DTextComponent. Should be called from the app's draw() function.
         void draw(IRenderTarget& renderTarget, PerspCameraComponentInstance& perspCamera, glm::vec3 color);
         
@@ -54,6 +59,10 @@ namespace nap
         
         int mCount = 0;
         std::vector<glm::vec3> mPositions; // TODO: is it really necessary to copy this data?
+        bool mDisplay = true;
+        bool mIndices = false;
+                
+        std::vector<std::string> mTexts;
         
     };
         

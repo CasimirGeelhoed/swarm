@@ -84,6 +84,9 @@ namespace nap
         // Restarts the OSCSender with current configuration.
         void restartOSCSender();
         
+        // Selects data for visualisation
+        void selectData(std::string fieldName, bool isVec3);
+        
         // GUI's
         void showPythonLog();
         void showOSCLog();
@@ -95,6 +98,7 @@ namespace nap
         bool mPythonLogVisible = false;
         bool mOSCLogVisible = false;
 
+        std::string mSelectedData = "";
         
         SwarmServiceConfiguration* mConfig;
         

@@ -265,7 +265,7 @@
             "Components": [
                 {
                     "Type": "nap::DataRenderingComponent",
-                    "mID": "nap::DataRenderingComponent_7f30aa49",
+                    "mID": "DataRenderingComponent",
                     "Visible": true,
                     "MaterialInstance": {
                         "Uniforms": [],
@@ -302,17 +302,18 @@
                 },
                 {
                     "Type": "nap::LabelsRenderingComponent",
-                    "mID": "nap::LabelsRenderingComponent_b0d2dcc5",
-                    "RenderableTextComponent": "./nap::Renderable2DTextComponent_c315a7b8",
+                    "mID": "IndicesRenderingComponent",
+                    "RenderableTextComponent": "./IndicesTextComponent",
                     "Data": "OutputData",
                     "LabelOffset": {
                         "x": 25.0,
                         "y": 0.0
-                    }
+                    },
+                    "Indices": true
                 },
                 {
                     "Type": "nap::Renderable2DTextComponent",
-                    "mID": "nap::Renderable2DTextComponent_c315a7b8",
+                    "mID": "IndicesTextComponent",
                     "Visible": true,
                     "Text": "",
                     "Font": "LabelsFont",
@@ -321,6 +322,39 @@
                             1.0,
                             1.0,
                             1.0
+                        ]
+                    },
+                    "Location": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "Orientation": "Left",
+                    "DepthMode": "NoReadWrite",
+                    "IgnoreTransform": true,
+                    "DPI Aware": true
+                },
+                {
+                    "Type": "nap::LabelsRenderingComponent",
+                    "mID": "DataLabelsRenderingComponent",
+                    "RenderableTextComponent": "./DataLabelsTextComponent",
+                    "Data": "OutputData",
+                    "LabelOffset": {
+                        "x": 25.0,
+                        "y": -30.0
+                    },
+                    "Indices": false
+                },
+                {
+                    "Type": "nap::Renderable2DTextComponent",
+                    "mID": "DataLabelsTextComponent",
+                    "Visible": true,
+                    "Text": "",
+                    "Font": "SublabelsFont",
+                    "TextColor": {
+                        "Values": [
+                            1.0,
+                            0.49803921580314639,
+                            0.0
                         ]
                     },
                     "Location": {
@@ -632,6 +666,14 @@
                     "mID": "LabelsFont",
                     "Properties": {
                         "Size": 9
+                    },
+                    "Font": "Manrope-Light.otf"
+                },
+                {
+                    "Type": "nap::Font",
+                    "mID": "SublabelsFont",
+                    "Properties": {
+                        "Size": 7
                     },
                     "Font": "Manrope-Light.otf"
                 }

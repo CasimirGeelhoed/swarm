@@ -179,8 +179,12 @@ namespace nap
             // Render labels.
             if(mConfig->mLabels)
             {
-                auto& labelsRenderingComponent = mRenderingEntity->getComponent<LabelsRenderingComponentInstance>();
-                labelsRenderingComponent.draw(*mRenderWindow, perp_cam, mConfig->mDarkMode ? mColor : mDarkColor);
+                auto* indicesRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("IndicesRenderingComponent");
+                indicesRenderingComponent->draw(*mRenderWindow, perp_cam, mConfig->mDarkMode ? mColor : mDarkColor);
+                
+                auto* dataLabelsRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("DataLabelsRenderingComponent");
+                dataLabelsRenderingComponent->draw(*mRenderWindow, perp_cam, mConfig->mDarkMode ? mColor : mDarkColor);
+
             }
             
 			// Render GUI elements
@@ -206,6 +210,13 @@ namespace nap
         mOSCSender->start(e);
     }
 	
+
+    void swarmApp::selectData(std::string fieldName, bool isVec3)
+    {
+        auto* dataLabelsRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("DataLabelsRenderingComponent");
+        dataLabelsRenderingComponent->setDataToRender(fieldName, isVec3);
+    }
+
 
     void swarmApp::updateGUI()
     {
@@ -344,39 +355,36 @@ namespace nap
 
     void swarmApp::showOutputData()
     {
-        ImGui::Columns(3, "outputdata", false);
-        int i = 0;
+        
         for(auto& x : mOutputData->getVec3Fields())
         {
-            ImGui::Text(x.first.c_str());
-            ImGui::NextColumn();
-            
-            const char* items[] = { "Off", "Position", "Arrow" };
-            static int item_current = 0;
-            ImGui::Combo(("##combovec3" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
-
-            ImGui::NextColumn();
-            bool dummy = false;
-            ImGui::Checkbox(" ", &dummy);
-            ImGui::NextColumn();
+            std::string name = x.first.c_str();
+            if(ImGui::RadioButton(name.c_str(), mSelectedData == name))
+            {
+                selectData(name, true);
+                mSelectedData = name;
+            }
             ImGui::Separator();
         }
         
+        
         for(auto& x : mOutputData->getFloatFields())
         {
-            ImGui::Text(x.first.c_str());
-            ImGui::NextColumn();
-            
-            const char* items[] = { "Off", "Red", "Green", "Blue", "Scale"};
-            static int item_current = 0;
-            ImGui::Combo(("##combofloat" + std::to_string(i++)).c_str(), &item_current, items, IM_ARRAYSIZE(items));
-            
-            ImGui::NextColumn();
-            bool dummy = false;
-            ImGui::Checkbox(" ", &dummy);
-            ImGui::NextColumn();
+            std::string name = x.first.c_str();
+            if(ImGui::RadioButton(name.c_str(), mSelectedData == name))
+            {
+                selectData(name, false);
+                mSelectedData = name;
+            }
             ImGui::Separator();
         }
+
+        if(ImGui::RadioButton("(none)", mSelectedData == ""))
+        {
+            selectData("", false);
+            mSelectedData = "";
+        }
+
     }
 
     void swarmApp::showMonitorOptions()
