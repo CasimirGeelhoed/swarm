@@ -247,22 +247,6 @@ namespace nap
         
         int i = 1;
         
-        if(mOSCLogVisible)
-        {
-            ImGui::Begin("OSC Input Log", &mOSCLogVisible);
-            showOSCLog();
-            ImGui::End();
-        }
-        else
-        {
-            ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 45 - 100 * (i++)));
-            bool b = true;
-            ImGui::Begin("osclogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
-            if(ImGui::Button("OSC Log"))
-                mOSCLogVisible = true;
-            ImGui::End();
-        }
-
         if(mPythonLogVisible)
         {
             ImGui::Begin("Python Error Log", &mPythonLogVisible);
@@ -276,6 +260,22 @@ namespace nap
             ImGui::Begin("pythonlogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
             if(ImGui::Button("Python Log"))
                 mPythonLogVisible = true;
+            ImGui::End();
+        }
+        
+        if(mOSCLogVisible)
+        {
+            ImGui::Begin("OSC Input Log", &mOSCLogVisible);
+            showOSCLog();
+            ImGui::End();
+        }
+        else
+        {
+            ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 45 - 100 * (i++)));
+            bool b = true;
+            ImGui::Begin("osclogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
+            if(ImGui::Button("OSC Log"))
+                mOSCLogVisible = true;
             ImGui::End();
         }
 
