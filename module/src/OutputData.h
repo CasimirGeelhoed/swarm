@@ -33,12 +33,12 @@ namespace nap {
         bool setVec3(int index, const std::string& fieldName, glm::vec3 value);
         
         /**
-         * Unsafe getter for vec3 field.
+         * 'Safe' getter for vec3 field. Returns reference to an empty vec3 vector if not found.
          */
         const std::vector<glm::vec3>& getVec3Field(const std::string& name);
         
         /**
-         * Unsafe getter for float field
+         * 'Safe' getter for float field. Returns reference to an empty float vector if not found.
          */
         const std::vector<float>& getFloatField(const std::string& name);
         
@@ -50,6 +50,9 @@ namespace nap {
         int mSize;
         std::unordered_map<std::string, std::vector<glm::vec3>> mVec3Fields;
         std::unordered_map<std::string, std::vector<float>> mFloatFields;
+        
+        std::vector<glm::vec3> mEmptyVec3Vector = {};
+        std::vector<float> mEmptyFloatVector = {};
     };
     
 }

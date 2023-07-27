@@ -49,13 +49,21 @@ namespace nap {
 
     const std::vector<glm::vec3>& OutputData::getVec3Field(const std::string& name)
     {
-        return mVec3Fields[name];
+        auto it = mVec3Fields.find(name);
+        if(it == mVec3Fields.end())
+            return mEmptyVec3Vector;
+
+        return it->second;
     }
 
 
     const std::vector<float>& OutputData::getFloatField(const std::string& name)
     {
-        return mFloatFields[name];
+        auto it = mFloatFields.find(name);
+        if(it == mFloatFields.end())
+            return mEmptyFloatVector;
+
+        return it->second;
     }
     
 }
