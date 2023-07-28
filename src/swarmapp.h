@@ -92,6 +92,7 @@ namespace nap
         void showOSCLog();
         void showSettings();
         void showParameters();
+        void showEditableParameters();
         void showOutputData();
         void showMonitorOptions();
         

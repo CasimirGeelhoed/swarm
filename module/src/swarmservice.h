@@ -22,6 +22,7 @@ namespace nap
         bool mDarkMode = true;
         bool mLabels = true;
         bool mCapFPS = true;
+        bool mEditParameters = true;
         
         std::string mSelectedData = "";
     };

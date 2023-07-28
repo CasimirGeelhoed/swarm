@@ -251,7 +251,10 @@ namespace nap
         ImGui::SetNextWindowSize(ImVec2(paramWidth, 0));
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
         ImGui::Begin("Parameters");
-        showParameters();
+        if(mConfig->mEditParameters)
+            showEditableParameters();
+        else
+            showParameters();
         ImGui::End();
         
         ImGui::SetNextWindowPos(ImVec2(settingsWidth + paramWidth, 0));
@@ -323,8 +326,15 @@ namespace nap
         ImGui::PopItemWidth();
         if(ImGui::Button("Apply"))
         {
-            writeConfig();
             restartOSCSender();
+            writeConfig();
+        }
+        
+        ImGui::Separator();
+        
+        if(ImGui::Checkbox("Edit Parameters", &mConfig->mEditParameters))
+        {
+            writeConfig();
         }
             
         ImGui::Separator();
@@ -339,6 +349,28 @@ namespace nap
         
         ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
 
+    }
+
+
+    void swarmApp::showEditableParameters()
+    {
+        for(auto& x : mParameterData->getVec3Parameters())
+        {
+            auto* param = x.second.get();
+            glm::vec3 value = param->mValue;
+            if (ImGui::SliderFloat3(param->getDisplayName().c_str(), &(value[0]), param->mMinimum, param->mMaximum))
+                param->setValue(value);
+            ImGui::Separator();
+        }
+
+        for(auto& x : mParameterData->getFloatParameters())
+        {
+            auto* param = x.second.get();
+            float value = param->mValue;
+            if (ImGui::SliderFloat(param->getDisplayName().c_str(), &value, param->mMinimum, param->mMaximum))
+                param->setValue(value);
+            ImGui::Separator();
+        }
     }
 
 
@@ -357,7 +389,6 @@ namespace nap
             ImGui::NextColumn();
             ImGui::Separator();
         }
-
         for(auto& x : mParameterData->getFloatParameters())
         {
             ImGui::Text(x.first.c_str());
