@@ -268,7 +268,25 @@
                     "mID": "DataRenderingComponent",
                     "Visible": true,
                     "MaterialInstance": {
-                        "Uniforms": [],
+                        "Uniforms": [
+                            {
+                                "Type": "nap::UniformStruct",
+                                "mID": "UBO",
+                                "Name": "UBO",
+                                "Uniforms": [
+                                    {
+                                        "Type": "nap::UniformVec3",
+                                        "mID": "UniformVec3_06128d1f",
+                                        "Name": "color",
+                                        "Value": {
+                                            "x": 1.0,
+                                            "y": 0.5,
+                                            "z": 0.0
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
                         "Samplers": [],
                         "Buffers": [],
                         "Material": "ConstantMaterial",
@@ -276,7 +294,8 @@
                         "DepthMode": "NotSet"
                     },
                     "Mesh": "SphereMesh",
-                    "Data": "OutputData"
+                    "Data": "OutputData",
+                    "DynamicColoring": true
                 },
                 {
                     "Type": "nap::TransformComponent",
@@ -399,7 +418,8 @@
                         "DepthMode": "NotSet"
                     },
                     "Mesh": "SphereMesh",
-                    "Data": "OutputData"
+                    "Data": "OutputData",
+                    "DynamicColoring": false
                 },
                 {
                     "Type": "nap::TransformComponent",

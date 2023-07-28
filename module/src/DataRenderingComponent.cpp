@@ -12,6 +12,7 @@ RTTI_BEGIN_CLASS(nap::DataRenderingComponent)
     RTTI_PROPERTY("MaterialInstance",    &nap::DataRenderingComponent::mMaterialInstanceResource,    nap::rtti::EPropertyMetaData::Required)
     RTTI_PROPERTY("Mesh",            &nap::DataRenderingComponent::mMesh,                    nap::rtti::EPropertyMetaData::Required)
     RTTI_PROPERTY("Data",            &nap::DataRenderingComponent::mData,                    nap::rtti::EPropertyMetaData::Required)
+    RTTI_PROPERTY("DynamicColoring",  &nap::DataRenderingComponent::mDynamicColoring, nap::rtti::EPropertyMetaData::Default)
 RTTI_END_CLASS
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::DataRenderingComponentInstance)
@@ -65,7 +66,19 @@ namespace nap
         mMesh = mRenderService->createRenderableMesh(*resource->mMesh, mMaterialInstance, errorState);
         if (!errorState.check(mMesh.isValid(), "Mesh can't be copied"))
             return false;
-            
+        
+        // Get the flag that determines whether colors are being set by the 'displayIntensity' field.
+        mDynamicColoring = resource->mDynamicColoring;
+                    
+        if(mDynamicColoring)
+        {
+            // Get handle to color uniform, which we set in the draw call. Save the initial color as default color.
+            mColorUniform = mMaterialInstance.getOrCreateUniform("UBO")->getOrCreateUniform<UniformVec3Instance>("color");
+            if (!errorState.check(mColorUniform, "Color uniform not found."))
+                return false;
+            mBaseColor = mColorUniform->getValue();
+        }
+
         return true;
     }
 
@@ -114,9 +127,11 @@ namespace nap
             mViewMatUniform->setValue(viewMatrix);
 
         // Get points to copy onto
-        // TODO: optimize
         const std::vector<glm::vec3>& pos_data = mData->getVec3Field("position");
-        const std::vector<float>& scale_data = mData->getFloatField("gain");
+        const std::vector<float>& scale_data = mData->getFloatField("displayScale");
+        const std::vector<float>& intensity_data = mData->getFloatField("displayIntensity");
+        bool hasScaleData = scale_data.size() == pos_data.size();
+        bool hasIntensityData = intensity_data.size() == pos_data.size();
 
         // Get render-pipeline for mesh / material
         utility::ErrorState error_state;
@@ -125,7 +140,7 @@ namespace nap
         // Bind pipeline per mesh we are going to render
         vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.mPipeline);
 
-        // Update scissor state (Note: I don't know what this is / does)
+        // Update scissor state
         VkRect2D scissor_rect
         {
             { 0, 0 },
@@ -140,9 +155,19 @@ namespace nap
         for (auto i = 0; i < pos_data.size(); i++)
         {
             // Calculate model matrix
-            glm::mat4x4 object_loc = glm::translate(mTransform->getGlobalTransform(), pos_data[i]);
-            auto model_mat = glm::scale(object_loc, { scale_data[i], scale_data[i], scale_data[i] });
-            mModelMatUniform->setValue(model_mat);
+            glm::mat4x4 mat = glm::translate(mTransform->getGlobalTransform(), pos_data[i]);
+            if(hasScaleData)
+                mat = glm::scale(mat, glm::vec3(scale_data[i]));
+            else
+                mat = glm::scale(mat, mDefaultScale);
+            mModelMatUniform->setValue(mat);
+            
+            // Set color
+            if(mDynamicColoring && hasIntensityData)
+            {
+                glm::vec3 color = intensity_data[i] * mBaseColor + (1.f - intensity_data[i]) * glm::vec3(0.5, 0.5, 0.5);
+                mColorUniform->setValue(color);
+            }
 
             // Render mesh
             renderMesh(*mRenderService, pipeline, mMesh, commandBuffer);

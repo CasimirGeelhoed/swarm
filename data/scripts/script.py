@@ -8,20 +8,26 @@ class Control:
         self.sourcesCount = 50
         
         addVec3Field("position")
-        addVec3Field("direction")
-        addFloatField("gain")
+        addFloatField("displayScale")
+        addFloatField("displayIntensity")
+
         
-        addVec3Parameter("param1", 0, 10, vec3(1,2,3))
+        addVec3Parameter("testvec3", 0, 10, vec3(1,2,3))
+        addFloatParameter("speed", 0.01, 10, 1)
         addFloatParameter("test", 0, 10, 5)
+
+        
         
         init(entity, self.sourcesCount)
         
     def update(self, elapsedTime, deltaTime):
-        whaha
         for i in range(self.sourcesCount):
-            x = 30 * math.sin(elapsedTime * (0.4 + 0.1 * i))
-            y = 5 + 1.0 * math.cos(elapsedTime * (10 + 0.0 * i)) + x * -0.2
-            z = 10 * math.sin(elapsedTime * (0.2 + 0.07 * i))
-            g = 0.2 + 0.1 * math.sin(elapsedTime * (0.1 + 0.03 * i))
+            x = 30 * math.sin(getFloat("speed") * 0.1 * elapsedTime * (0.4 + 0.1 * i))
+            y = 5 * math.cos(getFloat("speed") * 0.1 * elapsedTime * (10 + 0.05 * i)) + x * -0.2
+            z = 30 * math.sin(getFloat("speed") * 0.1 * elapsedTime * (0.2 + 0.07 * i))
+            scale = 0.5 + 0.25 * math.sin(elapsedTime * (0.1 + 0.03 * i))
+            intensity = math.sin(elapsedTime + i * 0.5) * 1
+            setFloat(i, "displayIntensity", intensity)
             setVec3(i, "position", vec3(x, y, z))
-            setFloat(i, "gain", g)
+            setFloat(i, "displayScale", scale)
+            

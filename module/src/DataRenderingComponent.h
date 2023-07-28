@@ -29,6 +29,8 @@ namespace nap
         MaterialInstanceResource mMaterialInstanceResource;           ///< Property: 'MaterialInstance' the material used to shade the text
         rtti::ObjectPtr<IMesh> mMesh;                             ///< Property: 'Mesh' mesh to copy onto target
         
+        bool mDynamicColoring = true;
+        
         ResourcePtr<OutputData> mData;  ///< Property: 'Data' pointer to the data resource.
     };
 
@@ -55,6 +57,12 @@ namespace nap
         UniformMat4Instance* mModelMatUniform = nullptr; // Pointer to the model matrix uniform.
         UniformMat4Instance* mViewMatUniform = nullptr; // Pointer to the view matrix uniform.
         UniformMat4Instance* mProjectMatUniform = nullptr; // Pointer to the projection matrix uniform
+        
+        UniformVec3Instance* mColorUniform = nullptr; // Color uniform slot
+        glm::vec3 mBaseColor;
+        glm::vec3 mDefaultScale = glm::vec3(0.1f);
+        bool mDynamicColoring = true;
+;
 
         RenderService* mRenderService = nullptr; // RenderService.
         
