@@ -131,6 +131,12 @@ namespace nap
 		mInputService->processWindowEvents(*mRenderWindow, input_router, { &mScene->getRootEntity() });
         
         updateGUI();
+        
+        // update status message
+        if(mStatusMessageTimer > 0.f)
+            mStatusMessageTimer -= deltaTime;
+        else
+            mShowStatusMessage = false;
     }
 
 
@@ -221,6 +227,9 @@ namespace nap
         mOSCSender->stop();
         utility::ErrorState e;
         mOSCSender->start(e);
+        
+        // show message
+        setStatusMessage("Sending OSC to " + mConfig->mOSCOutputAddress + " / " + std::to_string(mConfig->mOSCOutputPort), 5.0f);
     }
 	
 
@@ -307,11 +316,19 @@ namespace nap
         }
 
         
-        ImGui::SetNextWindowPos(ImVec2(windowWidth - 520, windowHeight - 75));
-        bool b = true;
-        ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-        ImGui::Text("Swarm v0.1 - by Casimir Geelhoed");
-        ImGui::End();
+        if(mShowStatusMessage)
+            showStatusMessage();
+        
+        showVersionNumber();
+        
+    }
+
+
+    void swarmApp::setStatusMessage(std::string message, float duration)
+    {
+        mStatusMessageTimer = duration;
+        mStatusMessage = message;
+        mShowStatusMessage = true;
     }
 
 
@@ -491,6 +508,33 @@ namespace nap
 
         // Display block of text
         ImGui::InputTextMultiline("Python Errors", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
+    }
+
+
+    void swarmApp::showStatusMessage()
+    {
+        int windowWidth = mRenderWindow->getWidthPixels();
+        int windowHeight = mRenderWindow->getHeightPixels();
+
+        auto textWidth = ImGui::CalcTextSize(mStatusMessage.c_str()).x;
+        ImGui::SetNextWindowPos(ImVec2(windowWidth / 2.f - textWidth / 2.f, windowHeight - 75));
+        bool b = true;
+        ImGui::Begin("status", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+        ImGui::Text(mStatusMessage.c_str());
+        ImGui::End();
+    }
+
+
+    void swarmApp::showVersionNumber()
+    {
+        int windowWidth = mRenderWindow->getWidthPixels();
+        int windowHeight = mRenderWindow->getHeightPixels();
+        
+        ImGui::SetNextWindowPos(ImVec2(windowWidth - 520, windowHeight - 75));
+        bool b = true;
+        ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+        ImGui::Text("Swarm v0.1 - by Casimir Geelhoed");
+        ImGui::End();
     }
 
 

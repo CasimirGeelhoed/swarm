@@ -95,9 +95,17 @@ namespace nap
         void showEditableParameters();
         void showOutputData();
         void showMonitorOptions();
+        void showStatusMessage();
+        void showVersionNumber();
+
+        void setStatusMessage(std::string message, float duration);
         
         bool mPythonLogVisible = false;
         bool mOSCLogVisible = false;
+        
+        std::string mStatusMessage = "";
+        bool mShowStatusMessage = false;
+        float mStatusMessageTimer = 0.0f;
         
         SwarmServiceConfiguration* mConfig;
         
