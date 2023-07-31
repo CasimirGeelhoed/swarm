@@ -9,7 +9,7 @@ namespace nap
     
     class PythonErrorHandlerComponentInstance;
     
-    
+    // TODO: rename to PythonLoggingComponent?
     class NAPAPI PythonErrorHandlerComponent : public Component
     {
         RTTI_ENABLE(Component)
@@ -32,6 +32,9 @@ namespace nap
         
         // Initialize the component
         bool init(utility::ErrorState& errorState) override;
+        
+        // Manually add a message (called from Python)
+        void addMessage(const std::string& message) { onPythonErrorReceived(message); }
         
         const std::vector<std::string>& getMessages();
         

@@ -2,6 +2,8 @@ from nap import vec3
 
 controller = None
 
+logger = None
+
 vec3Fields = []
 floatFields = []
 vec3Parameters = []
@@ -27,7 +29,6 @@ def addFloatParameter(name, min, max, value):
     global floatParameters
     floatParameters.append((name, min, max, value))
 
-
 # Initialises the parameters and data fields.
 def init(entity, sourcesCount):
     global controller
@@ -41,6 +42,17 @@ def init(entity, sourcesCount):
     vec3Parameters.clear()
     floatParameters.clear()
     
+
+# find the logging component
+def initLogger(entity):
+    global logger
+    logger = entity.findComponentByID("PythonErrorHandlingComponent")
+    
+# add a message to be displayed
+def log(message):
+    logger.addMessage(str(message))
+
+
 # Returns a vec3 parameter value
 def getVec3(name):
     return controller.getVec3(name)

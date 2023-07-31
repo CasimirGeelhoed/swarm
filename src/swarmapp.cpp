@@ -398,11 +398,11 @@ namespace nap
         {
             ImGui::Text(x.first.c_str());
             ImGui::NextColumn();
-            ImGui::Text("%.02f", x.second->mValue.x);
+            ImGui::Text("%.03f", x.second->mValue.x);
             ImGui::NextColumn();
-            ImGui::Text("%.02f", x.second->mValue.y);
+            ImGui::Text("%.03f", x.second->mValue.y);
             ImGui::NextColumn();
-            ImGui::Text("%.02f", x.second->mValue.z);
+            ImGui::Text("%.03f", x.second->mValue.z);
             ImGui::NextColumn();
             ImGui::Separator();
         }
@@ -410,7 +410,7 @@ namespace nap
         {
             ImGui::Text(x.first.c_str());
             ImGui::NextColumn();
-            ImGui::Text("%.02f", x.second->mValue);
+            ImGui::Text("%.03f", x.second->mValue);
             ImGui::NextColumn();
             ImGui::NextColumn();
             ImGui::NextColumn();

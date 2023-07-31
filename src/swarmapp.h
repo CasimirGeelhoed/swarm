@@ -84,8 +84,11 @@ namespace nap
         // Restarts the OSCSender with current configuration.
         void restartOSCSender();
         
-        // Selects data for visualisation
+        // Selects data for visualisation.
         void selectData(std::string fieldName, bool isVec3);
+        
+        // Sets a status message to be displayed.
+        void setStatusMessage(std::string message, float duration);
         
         // GUI's
         void showPythonLog();
@@ -97,8 +100,6 @@ namespace nap
         void showMonitorOptions();
         void showStatusMessage();
         void showVersionNumber();
-
-        void setStatusMessage(std::string message, float duration);
         
         bool mPythonLogVisible = false;
         bool mOSCLogVisible = false;

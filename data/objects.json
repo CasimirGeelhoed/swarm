@@ -129,7 +129,8 @@
                     "BackupPythonScript": "BackupPythonScript",
                     "Class": "Control",
                     "Dependencies": [
-                        "nap::DataControlComponent"
+                        "nap::DataControlComponent",
+                        "nap::PythonErrorHandlingComponent"
                     ]
                 },
                 {
@@ -140,7 +141,7 @@
                 },
                 {
                     "Type": "nap::PythonErrorHandlerComponent",
-                    "mID": "nap::PythonErrorHandlerComponent_665438e7",
+                    "mID": "PythonErrorHandlingComponent",
                     "PythonScriptComponent": "./PythonScriptComponent"
                 }
             ],
