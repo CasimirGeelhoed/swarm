@@ -6,6 +6,10 @@
 
 namespace nap
 {
+
+    /**
+     * Simple square grid mesh.
+     */
     class NAPAPI GridMesh : public IMesh
     {
         RTTI_ENABLE(IMesh)

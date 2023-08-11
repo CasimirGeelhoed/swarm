@@ -9,6 +9,10 @@ namespace nap
     
     class PythonLoggingComponentInstance;
     
+    /**
+     * Catches Python errors / receives Python log messages and exposes them to the GUI.
+     * NOTE: for this to work, PythonScriptComponent should depend on PythonLoggingComponent.
+     */
     class NAPAPI PythonLoggingComponent : public Component
     {
         RTTI_ENABLE(Component)
@@ -21,10 +25,6 @@ namespace nap
     };
 
     
-    /**
-     * Catches Python errors / receives Python log messages and exposes them to the GUI.
-     * NOTE: for this to work, PythonScriptComponent should depend on PythonLoggingComponent.
-     */
     class NAPAPI PythonLoggingComponentInstance : public ComponentInstance
     {
         RTTI_ENABLE(ComponentInstance)

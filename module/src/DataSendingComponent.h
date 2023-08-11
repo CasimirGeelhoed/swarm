@@ -13,8 +13,10 @@ namespace nap
     
     class DataSendingComponentInstance;
 
-    
     // TODO: adjustable output rate?
+    /**
+     * Component that reads out all @OutputData and sends it out over OSC.
+     */
     class NAPAPI DataSendingComponent : public Component
     {
         RTTI_ENABLE(Component)

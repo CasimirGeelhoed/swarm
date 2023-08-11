@@ -14,7 +14,9 @@ namespace nap
     
     class LabelsRenderingComponentInstance;
     
-    // for now, just renders indices
+    /**
+     * Component that renders text labels next to sound sources.
+     */
     class NAPAPI LabelsRenderingComponent : public Component
     {
         RTTI_ENABLE(Component)

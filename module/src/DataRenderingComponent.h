@@ -15,9 +15,12 @@
 
 namespace nap
 {
-    // Forward declare instance part
+    
     class DataRenderingComponentInstance;
 
+    /**
+     * Component that renders the data as 3D objects.
+     */
     class NAPAPI DataRenderingComponent : public RenderableComponent
     {
         RTTI_ENABLE(RenderableComponent)

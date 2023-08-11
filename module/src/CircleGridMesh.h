@@ -7,7 +7,7 @@
 namespace nap
 {
     /**
-     * Simple Circle mesh.
+     * Simple circular grid mesh.
      */
     class NAPAPI CircleGridMesh : public IMesh
     {

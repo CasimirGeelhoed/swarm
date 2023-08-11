@@ -15,6 +15,9 @@ namespace nap
     
     class DataReceivingComponentInstance;
 
+    /**
+     * Component that receives input OSC and sets the @ParameterData accordingly.
+     */
     class NAPAPI DataReceivingComponent : public Component
     {
         RTTI_ENABLE(Component)
@@ -35,7 +38,6 @@ namespace nap
         DataReceivingComponentInstance(EntityInstance& entity, Component& resource) : ComponentInstance(entity, resource) { }
         
         bool init(utility::ErrorState& errorState) override;
-        
         
     private:
         nap::Slot<const OSCEvent&> mMessageReceivedSlot  = { this, &DataReceivingComponentInstance::onMessageReceived };

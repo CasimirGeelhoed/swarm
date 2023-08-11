@@ -10,6 +10,9 @@ namespace nap {
 
     // TODO: more data types / generic Parameter data type.
     // TODO: optimise OSC parsing by using Signals instead of searching by name every cycle?
+    /**
+     * Data structure for input parameters.
+     */
     class NAPAPI ParameterData : public Resource {
         RTTI_ENABLE(Resource)
         
