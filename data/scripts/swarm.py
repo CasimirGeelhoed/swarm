@@ -47,6 +47,7 @@ def init(entity, sourcesCount):
 def initLogger(entity):
     global logger
     logger = entity.findComponentByID("PythonLoggingComponent")
+    logger.reconnect()
     
 # add a message to be displayed
 def log(message):

@@ -33,12 +33,15 @@ namespace nap
         
         bool init(utility::ErrorState& errorState) override;
         
-        void update(double deltaTime) override;
+        /**
+         * Tells the component to reconnect to the current PythonScriptComponent. Called by the Python script after initialisation (so it always reconnects after a hotload of the python script.
+         */
+        void reconnect();
 
         /**
-         * Manually adds a message (called by the Python script)
+         * Manually adds a message. Called by the Python script.
          */
-        void addMessage(const std::string& message) { onMessageReceived(message); }
+        void addMessage(const std::string& message);
         
         /**
          * Returns the last 25 messsages.
@@ -49,9 +52,7 @@ namespace nap
         Slot<const std::string&> mPythonErrorReceived = { this, &PythonLoggingComponentInstance::onMessageReceived };
         
         void onMessageReceived(const std::string& message);
-        
-        bool mPythonScriptComponentFound = false;
-                
+                        
         std::vector<std::string> mMessages; ///< Holds all the received messages.
 
     };

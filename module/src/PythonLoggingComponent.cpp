@@ -8,6 +8,7 @@ RTTI_DEFINE_CLASS(nap::PythonLoggingComponent)
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::PythonLoggingComponentInstance)
     RTTI_CONSTRUCTOR(nap::EntityInstance&, nap::Component&)
+    RTTI_FUNCTION("reconnect", &nap::PythonLoggingComponentInstance::reconnect)
     RTTI_FUNCTION("addMessage", &nap::PythonLoggingComponentInstance::addMessage)
 RTTI_END_CLASS
 
@@ -21,19 +22,22 @@ namespace nap
     }
 
 
-    void PythonLoggingComponentInstance::update(double deltaTime)
+    void PythonLoggingComponentInstance::reconnect()
     {
-        // Try to find the python script component (which has intialised before this component).
-        if(!mPythonScriptComponentFound)
-        {
-            PythonScriptComponentInstance* pythonScriptComponent = getEntityInstance()->findComponent<PythonScriptComponentInstance>();
-            if(pythonScriptComponent != nullptr)
-            {
-                // Connect signal to display python errors
-                pythonScriptComponent->mPythonErrorCaught.connect(mPythonErrorReceived);
-                mPythonScriptComponentFound = true;
-            }
-        }
+        mPythonErrorReceived.disconnect();
+        
+        PythonScriptComponentInstance* pythonScriptComponent = getEntityInstance()->findComponent<PythonScriptComponentInstance>();
+        
+        if(pythonScriptComponent != nullptr)
+            pythonScriptComponent->mPythonErrorCaught.connect(mPythonErrorReceived);
+        else
+            nap::Logger::warn("PythonLoggingComponent couldn't find PythonScriptComponent.");
+    }
+
+
+    void PythonLoggingComponentInstance::addMessage(const std::string& message)
+    {
+        onMessageReceived(message);
     }
 
 
