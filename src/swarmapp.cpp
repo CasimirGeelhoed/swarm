@@ -12,7 +12,7 @@
 
 #include <DataRenderingComponent.h>
 #include <LabelsRenderingComponent.h>
-#include <PythonErrorHandlerComponent.h>
+#include <PythonLoggingComponent.h>
 
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmApp)
@@ -285,7 +285,7 @@ namespace nap
         
         if(mPythonLogVisible)
         {
-            ImGui::Begin("Python Error Log", &mPythonLogVisible);
+            ImGui::Begin("Python Log", &mPythonLogVisible);
             showPythonLog();
             ImGui::End();
         }
@@ -491,12 +491,12 @@ namespace nap
     void swarmApp::showPythonLog()
     {
         // Get the python error handler component
-        auto pythonErrorHandler = mControllingEntity->findComponent<PythonErrorHandlerComponentInstance>();
-        assert(pythonErrorHandler);
+        auto pythonLogger = mControllingEntity->findComponent<PythonLoggingComponentInstance>();
+        assert(pythonLogger);
         
         // Get all received osc messages and convert into a single string
         std::string msg;
-        for (const auto& message : pythonErrorHandler->getMessages())
+        for (const auto& message : pythonLogger->getMessages())
             msg += (message + "\n");
 
         // Backup text
