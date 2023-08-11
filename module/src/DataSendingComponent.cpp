@@ -50,9 +50,15 @@ namespace nap
                 sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first, it.second[i]);
         
         for(auto& it : mData->getVec3Fields())
+        {
             for(int i = 0; i < it.second.size(); i++)
+            {
                 sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first, it.second[i]);
-
+                sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/x", it.second[i].x);
+                sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/y", it.second[i].y);
+                sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/z", it.second[i].z);
+            }
+        }
     }
 
 }
