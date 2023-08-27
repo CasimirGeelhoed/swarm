@@ -130,7 +130,7 @@
                     "Class": "Control",
                     "Dependencies": [
                         "nap::DataControlComponent",
-                        "nap::PythonErrorHandlingComponent"
+                        "nap::PythonLoggingComponent"
                     ]
                 },
                 {
@@ -140,9 +140,8 @@
                     "OutputData": "OutputData"
                 },
                 {
-                    "Type": "nap::PythonErrorHandlerComponent",
-                    "mID": "PythonErrorHandlingComponent",
-                    "PythonScriptComponent": "./PythonScriptComponent"
+                    "Type": "nap::PythonLoggingComponent",
+                    "mID": "PythonLoggingComponent"
                 }
             ],
             "Children": []
