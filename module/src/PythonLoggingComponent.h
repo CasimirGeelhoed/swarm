@@ -34,7 +34,7 @@ namespace nap
         bool init(utility::ErrorState& errorState) override;
         
         /**
-         * Tells the component to reconnect to the current PythonScriptComponent. Called by the Python script after initialisation (so it always reconnects after a hotload of the python script.
+         * Tells the component to reconnect to the current PythonScriptComponent to listen for errors. Called in the Python script's initialisation (so it always reconnects after a hot reload of the python script).
          */
         void reconnect();
 
