@@ -130,7 +130,7 @@
             "SelectedData": "",
             "OSCOutputAddress": "localhost",
             "OSCOutputPort": 1000,
-            "OSCRate": 20.082000732421876
+            "OSCRate": 30.0
         }
     ]
 }
