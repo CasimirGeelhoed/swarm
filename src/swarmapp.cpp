@@ -109,27 +109,24 @@ namespace nap
         if (!error.check(mOSCSender != nullptr, "unable to find resource with name: %s", "OSCSender"))
             return false;
         
-        // Update selected data based on config setting
-        for(auto& x : mOutputData->getVec3Fields())
-        {
-            std::string name = x.first.c_str();
-            if(mConfig->mSelectedData == name)
-                selectData(name, true);
-        }
-        for(auto& x : mOutputData->getFloatFields())
-        {
-            std::string name = x.first.c_str();
-            if(mConfig->mSelectedData == name)
-                selectData(name, false);
-        }
+        // Restart OSC sender, update OSC rate, select data, etc..
+        postResourcesLoaded();
         
-        restartOSCSender();
-        updateOSCRate();
+        // and make this happen again after each hotload.
+        mResourceManager->mPostResourcesLoadedSignal.connect(mPostResourcesLoadedSlot);
                 
 		// All done!
 		return true;
 	}
 	
+
+    void swarmApp::postResourcesLoaded()
+    {
+        restartOSCSender();
+        updateOSCRate();
+        updateSelectedData();
+    }
+
 	
 	void swarmApp::update(double deltaTime)
 	{
@@ -239,6 +236,23 @@ namespace nap
         setStatusMessage("Sending OSC to " + mConfig->mOSCOutputAddress + " / " + std::to_string(mConfig->mOSCOutputPort), 5.0f);
     }
 	
+
+    void swarmApp::updateSelectedData()
+    {
+        for(auto& x : mOutputData->getVec3Fields())
+        {
+            std::string name = x.first.c_str();
+            if(mConfig->mSelectedData == name)
+                selectData(name, true);
+        }
+        for(auto& x : mOutputData->getFloatFields())
+        {
+            std::string name = x.first.c_str();
+            if(mConfig->mSelectedData == name)
+                selectData(name, false);
+        }
+    }
+
 
     void swarmApp::selectData(std::string fieldName, bool isVec3)
     {

@@ -76,6 +76,10 @@ namespace nap
         
 	private:
         
+        // Reapplies settings from config, such as OSC sender, OSC rate, selectedData. Triggered on init and after each hotload.
+        void postResourcesLoaded();
+        
+        // Updates the GUI.
         void updateGUI();
         
         // Updates to config file.
@@ -83,14 +87,17 @@ namespace nap
         
         // Restarts the OSCSender with current configuration.
         void restartOSCSender();
+                
+        // Updates data for visualisation according tp the current config.
+        void updateSelectedData();
         
-        // Selects data for visualisation.
+        // Selects data for visualisation. Used in 'updateSelectedData'.
         void selectData(std::string fieldName, bool isVec3);
         
         // Sets a status message to be displayed.
         void setStatusMessage(std::string message, float duration);
         
-        // Updates the OSC rate based on the current configuration.
+        // Updates the OSC rate according to the current configuration.
         void updateOSCRate();
         
         // GUI's
@@ -135,6 +142,9 @@ namespace nap
         
         ResourcePtr<OutputData> mOutputData = nullptr;
         ResourcePtr<ParameterData> mParameterData = nullptr;
+        
+        
+        nap::Slot<> mPostResourcesLoadedSlot    = { [&]() -> void { postResourcesLoaded(); } };
         
         glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
         glm::vec3 mDarkColor = { 0.1f, 0.1f, 0.1f };
