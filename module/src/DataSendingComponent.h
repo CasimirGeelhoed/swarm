@@ -41,7 +41,13 @@ namespace nap
         
         void update(double deltaTime) override;
         
+        void setOutputRate(double outputRate) { mOutputInterval = 1.0 / outputRate; }
+        
     private:
+        
+        double mOutputInterval = 0.5f; // number of seconds before next output
+        double mTimer = 0.f;
+        
         OSCSender* mOSCSender = nullptr;
         OutputData* mData = nullptr;
     };

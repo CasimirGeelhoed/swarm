@@ -22,6 +22,7 @@ RTTI_BEGIN_CLASS(nap::SwarmServiceConfiguration)
     RTTI_PROPERTY("SelectedData", &nap::SwarmServiceConfiguration::mSelectedData, nap::rtti::EPropertyMetaData::Default)
     RTTI_PROPERTY("OSCOutputAddress", &nap::SwarmServiceConfiguration::mOSCOutputAddress, nap::rtti::EPropertyMetaData::Default)
     RTTI_PROPERTY("OSCOutputPort", &nap::SwarmServiceConfiguration::mOSCOutputPort, nap::rtti::EPropertyMetaData::Default)
+    RTTI_PROPERTY("OSCRate", &nap::SwarmServiceConfiguration::mOSCRate, nap::rtti::EPropertyMetaData::Default)
 RTTI_END_CLASS
 
 

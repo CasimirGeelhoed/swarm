@@ -24,6 +24,8 @@ namespace nap
         bool mCapFPS = true;
         bool mEditParameters = true;
         
+        float mOSCRate = 30.f;
+        
         std::string mSelectedData = "";
     };
 

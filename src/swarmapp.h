@@ -90,6 +90,9 @@ namespace nap
         // Sets a status message to be displayed.
         void setStatusMessage(std::string message, float duration);
         
+        // Updates the OSC rate based on the current configuration.
+        void updateOSCRate();
+        
         // GUI's
         void showPythonLog();
         void showOSCLog();
@@ -123,6 +126,7 @@ namespace nap
         ObjectPtr<EntityInstance>   mRenderingEntity = nullptr;
         ObjectPtr<EntityInstance>   mControllingEntity = nullptr;
         ObjectPtr<EntityInstance>   mReceivingEntity = nullptr;
+        ObjectPtr<EntityInstance>   mSendingEntity = nullptr;
         ObjectPtr<EntityInstance>   mShadowsEntity = nullptr;
         ObjectPtr<EntityInstance>   mGridEntity = nullptr;
         ObjectPtr<EntityInstance>   mCircleGridEntity = nullptr;

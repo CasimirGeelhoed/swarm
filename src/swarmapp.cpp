@@ -13,6 +13,7 @@
 #include <DataRenderingComponent.h>
 #include <LabelsRenderingComponent.h>
 #include <PythonLoggingComponent.h>
+#include <DataSendingComponent.h>
 
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmApp)
@@ -29,6 +30,7 @@ namespace nap
 	{
         mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
 
+        setFramerate(30.0);
         capFramerate(mConfig->mCapFPS);
 
 		// Retrieve services
@@ -70,26 +72,30 @@ namespace nap
         if (!error.check(mReceivingEntity != nullptr, "unable to find entity with name: %s", "ReceivingEntity"))
             return false;
         
+        // Get the Controlling entity
         mControllingEntity = mScene->findEntity("ControllingEntity");
         if (!error.check(mControllingEntity != nullptr, "unable to find entity with name: %s", "ControllingEntity"))
             return false;
-
+        
+        // Get the Sending entity
+        mSendingEntity = mScene->findEntity("SendingEntity");
+        if (!error.check(mSendingEntity != nullptr, "unable to find entity with name: %s", "SendingEntity"))
+            return false;
         
         // Get the Grid entity
         mGridEntity = mScene->findEntity("GridEntity");
         if (!error.check(mGridEntity != nullptr, "unable to find entity with name: %s", "GridEntity"))
             return false;
         
+        // Get the Circle Grid entity
         mCircleGridEntity = mScene->findEntity("CircleGridEntity");
         if (!error.check(mCircleGridEntity != nullptr, "unable to find entity with name: %s", "CircleGridEntity"))
             return false;
 
-        
         // Get the Shadows entity
         mShadowsEntity = mScene->findEntity("ShadowsEntity");
         if (!error.check(mShadowsEntity != nullptr, "unable to find entity with name: %s", "ShadowsEntity"))
             return false;
-        
         
         mOutputData = mResourceManager->findObject("OutputData");
         if (!error.check(mOutputData != nullptr, "unable to find resource with name: %s", "OutputData"))
@@ -118,6 +124,7 @@ namespace nap
         }
         
         restartOSCSender();
+        updateOSCRate();
                 
 		// All done!
 		return true;
@@ -332,6 +339,12 @@ namespace nap
     }
 
 
+    void swarmApp::updateOSCRate()
+    {
+        mSendingEntity->getComponent<DataSendingComponentInstance>().setOutputRate(mConfig->mOSCRate);
+    }
+
+
     void swarmApp::showSettings()
     {
         ImGui::PushItemWidth(200);
@@ -347,6 +360,17 @@ namespace nap
             writeConfig();
         }
         
+        ImGui::Separator();
+        
+        ImGui::PushItemWidth(200);
+        if (ImGui::SliderFloat("OSC Rate", &mConfig->mOSCRate, 0, 30.0f))
+        {
+            updateOSCRate();
+            writeConfig();
+        }
+        ImGui::PopItemWidth();
+
+
         ImGui::Separator();
         
         if(ImGui::Checkbox("Edit Parameters", &mConfig->mEditParameters))
@@ -394,6 +418,7 @@ namespace nap
     void swarmApp::showParameters()
     {
         ImGui::Columns(4, "params", false);
+        
         for(auto& x : mParameterData->getVec3Parameters())
         {
             ImGui::Text(x.first.c_str());
@@ -406,16 +431,18 @@ namespace nap
             ImGui::NextColumn();
             ImGui::Separator();
         }
+        
+        ImGui::Columns(2, "params", false);
+        
         for(auto& x : mParameterData->getFloatParameters())
         {
             ImGui::Text(x.first.c_str());
             ImGui::NextColumn();
             ImGui::Text("%.03f", x.second->mValue);
             ImGui::NextColumn();
-            ImGui::NextColumn();
-            ImGui::NextColumn();
             ImGui::Separator();
         }
+        
         ImGui::Columns(1);
     }
 

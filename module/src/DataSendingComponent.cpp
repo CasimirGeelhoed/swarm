@@ -20,7 +20,7 @@ namespace nap
     {
         mOSCSender = getComponent<DataSendingComponent>()->mOSCSender.get();
         mData = getComponent<DataSendingComponent>()->mData.get();
-
+        
         return true;
     }
 
@@ -44,19 +44,27 @@ namespace nap
 
     void DataSendingComponentInstance::update(double deltaTime)
     {
-        // read all data and send it out as osc
-        for(auto& it : mData->getFloatFields())
-            for(int i = 0; i < it.second.size(); i++)
-                sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first, it.second[i]);
         
-        for(auto& it : mData->getVec3Fields())
+        mTimer += deltaTime;
+        
+        if(mTimer > mOutputInterval)
         {
-            for(int i = 0; i < it.second.size(); i++)
+            mTimer = 0.f;
+            
+            // read all data and send it out as osc
+            for(auto& it : mData->getFloatFields())
+                for(int i = 0; i < it.second.size(); i++)
+                    sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first, it.second[i]);
+            
+            for(auto& it : mData->getVec3Fields())
             {
-                sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first, it.second[i]);
-                sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/x", it.second[i].x);
-                sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/y", it.second[i].y);
-                sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/z", it.second[i].z);
+                for(int i = 0; i < it.second.size(); i++)
+                {
+                    sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first, it.second[i]);
+                    sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/x", it.second[i].x);
+                    sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/y", it.second[i].y);
+                    sendOSC(*mOSCSender, "/source" + std::to_string(i+1) + "/" + it.first + "/z", it.second[i].z);
+                }
             }
         }
     }
