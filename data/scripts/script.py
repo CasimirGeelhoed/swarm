@@ -19,7 +19,7 @@ def angle(pos1, pos2=vec3(0.,0., 0.)):
     if pos1.x-pos2.x == 0:
         return 0;
     else:
-        return math.atan((pos1.z-pos2.z)/(pos1.x-pos2.x))
+    	return math.atan2(pos1.z-pos2.z,pos1.x-pos2.x)
 
 
 
@@ -122,6 +122,29 @@ class LineBehaviour(Behaviour):
         return positions
 
 
+class DescendingBehaviour(Behaviour):
+    def __init__(self, count):
+
+
+        self.startingPositions = []
+        for i in range(count):
+    	    rad = (i / 8.0) * 2.0 * math.pi
+    	    self.startingPositions.append(vec3(math.cos(rad), 0.0, math.sin(rad)))
+
+        self.time = 0.0
+        addFloatParameter("descending/speed", 0.1, 10.0, 0.5)
+        addFloatParameter("descending/range", 0.0, 10.0, 2.0)
+        addFloatParameter("descending/scale", 0.0, 10.0, 2.0)
+
+    def getPositions(self, count, elapsedTime, deltaTime):
+        self.time += deltaTime * getFloat("descending/speed")
+        positions = []
+        for i in range(count):
+            positions.append(getFloat("descending/scale") * self.startingPositions[i] + vec3(0.0, getFloat("descending/range") * (1.0 - (self.time + i * 0.1) % 1.0), 0.0))
+        return positions
+
+
+
 
 class Control:
 
@@ -137,7 +160,8 @@ class Control:
         self.behaviours = []
         self.behaviours.append(SpinningBehaviour(self.maxSourcesCount))
         self.behaviours.append(JumpingBehaviour(self.maxSourcesCount))
-        self.behaviours.append(LineBehaviour(self.maxSourcesCount))
+        self.behaviours.append(DescendingBehaviour(self.maxSourcesCount))
+
 
         addFloatParameter("crossfade", 0, 1, 0)
         addFloatParameter("behaviourA", 0, 2, 0)
