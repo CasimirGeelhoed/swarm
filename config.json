@@ -126,10 +126,10 @@
             "DarkMode": true,
             "Labels": true,
             "CapFPS": true,
-            "EditParameters": false,
+            "EditParameters": true,
             "SelectedData": "",
             "OSCOutputAddress": "localhost",
-            "OSCOutputPort": 1000,
+            "OSCOutputPort": 57120,
             "OSCRate": 30.0
         }
     ]
