@@ -50,8 +50,8 @@ class SpinningBehaviour(Behaviour):
         addFloatParameter("spinner/reset", 0., 1., 0.)
         addFloatParameter("spinner/octave", 0., 1., 0.)
 
+        addFloatParameter("spinner/spiral", 0., 10., 0.)
 
-#again..
 
     # ___getPositions function___
     def getPositions(self, count, elapsedTime, deltaTime):
@@ -63,6 +63,7 @@ class SpinningBehaviour(Behaviour):
         secondarySpinZ = getFloat("spinner/secondarySpinZ")
         speed = getFloat("spinner/speed")
         speedDeviation = getFloat("spinner/speedDeviation")
+        spiral = getFloat("spinner/spiral")
 
         for i in range(count):
 
@@ -73,6 +74,9 @@ class SpinningBehaviour(Behaviour):
             # octave
             if (i / float(count)) < getFloat("spinner/octave"):
             	pos += vec3(0., 10., 0.)
+
+            # spiral
+            pos += spiral * self.phases[i] * vec3(0., 1., 0.);
 
             positions.append(pos);
 
@@ -134,7 +138,7 @@ class RainBehaviour(Behaviour):
 
         self.time = 0.0
         addFloatParameter("rain/speed", -10.0, 10.0, 0.5)
-        addFloatParameter("rain/speedDeviation", 0.0, 1.0, 0.0) #TODO
+        addFloatParameter("rain/speedDeviation", 0.0, 1.0, 0.0)
         addFloatParameter("rain/height", 0.0, 10.0, 2.0)
         addFloatParameter("rain/scale", 0.0, 50.0, 2.0)
         addFloatParameter("rain/top", 0.0, 1.0, 0.0) # 0 means descending downwards, 1 means falling onto ground
@@ -176,15 +180,79 @@ class RandomOscillatingBehaviour(Behaviour):
         addFloatParameter("random/range", 0.0, 10.0, 2.0)
         addFloatParameter("random/y", 0.0, 1.0, 0.0)
 
+        addFloatParameter("random/xOffset", -20.0, 20.0, 0.0)
+        addFloatParameter("random/zOffset", -20.0, 20.0, 0.0)
+
     def getPositions(self, count, elapsedTime, deltaTime):
         self.time += deltaTime * getFloat("random/speed")
         y = getFloat("random/y")
+        xOffset = getFloat("random/xOffset")
+        zOffset = getFloat("random/zOffset")
         positions = []
 
         for i in range(count):
-            positions.append(getFloat("random/range") * vec3(math.sin(self.time * self.speeds[i].x),y*math.sin(self.time * self.speeds[i].y),math.sin(self.time * self.speeds[i].z)))
+            positions.append(getFloat("random/range") * vec3(math.sin(self.time * self.speeds[i].x) + xOffset,y*math.sin(self.time * self.speeds[i].y),math.sin(self.time * self.speeds[i].z) + zOffset))
 
         return positions
+
+
+
+class LinesBehaviour(Behaviour):
+    def __init__(self, count):
+
+        self.startingPositions = []
+        self.phases = []
+        self.speedDeviations = []
+        for i in range(count):
+            self.startingPositions.append(vec3((i % 2.0) * 2.0 - 1.0, 0.0, 0.0))
+            self.phases.append(i / 8.0)
+            self.speedDeviations.append(random.uniform(0.5, 2.0)) # random value between 0.5 and 2
+
+
+        self.time = 0.0
+        addFloatParameter("lines/speed", -10.0, 10.0, 0.5)
+        addFloatParameter("lines/speedDeviation", 0.0, 1.0, 0.0)
+        addFloatParameter("lines/range", 0.0, 50.0, 10.0)
+        addFloatParameter("lines/scale", 0.0, 50.0, 2.0)
+        addFloatParameter("lines/reset", 0., 1., 0.)
+
+        addFloatParameter("lines/octaveUp", 0., 1., 0.)
+        addFloatParameter("lines/octaveDown", 0., 1., 0.)
+
+
+    def getPositions(self, count, elapsedTime, deltaTime):
+
+        speed = getFloat("lines/speed")
+        speedDeviation = getFloat("lines/speedDeviation")
+        rangeVal = getFloat("lines/range")
+        positions = []
+
+        for i in range(count):
+            pos = getFloat("lines/scale") * self.startingPositions[i] + vec3(0.0, 0.0, 2.0 * rangeVal * (0.5 - self.phases[i]))
+        
+            # octave
+            if (i / float(count)) < getFloat("lines/octaveUp"):
+                pos += vec3(0., 10., 0.)
+            if (i / float(count)) < getFloat("lines/octaveDown"):
+                pos += vec3(0., -10., 0.)
+
+            positions.append(pos)
+
+            # increment phase
+            finalSpeed = 0.25 * (speed * ((1. - speedDeviation) + speedDeviation * self.speedDeviations[i]))
+            self.phases[i] += deltaTime * finalSpeed
+            if self.phases[i] > 1.:
+                self.phases[i] -= 1.
+            if self.phases[i] < 0.:
+                self.phases[i] += 1.
+
+        # reset.
+        if getFloat("lines/reset") > 0.01:
+            for i in range(count):
+                self.phases[i] = i / 8.0
+
+        return positions
+
 
 
 
@@ -201,16 +269,18 @@ class Control:
 
         addFloatParameter("sourcesCount", 1, self.maxSourcesCount, self.maxSourcesCount)
 
+        # add behaviour options.
         self.behaviours = []
         self.behaviours.append(RainBehaviour(self.maxSourcesCount))
         self.behaviours.append(SpinningBehaviour(self.maxSourcesCount))
         self.behaviours.append(RandomOscillatingBehaviour(self.maxSourcesCount))
+        self.behaviours.append(LinesBehaviour(self.maxSourcesCount))
 
 
         addFloatParameter("crossfade", 0, 1, 0)
         addFloatParameter("y", -50, 50, 0)
-        addFloatParameter("behaviourA", 0, 2, 0)
-        addFloatParameter("behaviourB", 0, 2, 1)
+        addFloatParameter("behaviourA", 0, len(self.behaviours) - 1, 0)
+        addFloatParameter("behaviourB", 0, len(self.behaviours) - 1, 1)
 
         addVec3Field("position")
         addFloatField("displayIntensity")
@@ -234,7 +304,7 @@ class Control:
         activeCount = int(getFloat("sourcesCount"))
 
         xfade = getFloat("crossfade")
-        # y = getFloat("y")
+        y = getFloat("y")
 
 
         positionsA = self.behaviours[int(getFloat("behaviourA"))].getPositions(int(getFloat("sourcesCount")), elapsedTime, deltaTime)
