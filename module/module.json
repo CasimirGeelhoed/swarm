@@ -6,7 +6,7 @@
         "napscene",
         "napparameter",
         "naposc",
-        "nappython"
+        "naplua"
     ], 
     "WindowsDllSearchPaths": []
 }

@@ -123,25 +123,10 @@
             "mID": "ControllingEntity",
             "Components": [
                 {
-                    "Type": "nap::PythonScriptComponent",
-                    "mID": "PythonScriptComponent",
-                    "PythonScript": "PythonScript",
-                    "BackupPythonScript": "BackupPythonScript",
-                    "Class": "Control",
-                    "Dependencies": [
-                        "nap::DataControlComponent",
-                        "nap::PythonLoggingComponent"
-                    ]
-                },
-                {
                     "Type": "nap::DataControlComponent",
                     "mID": "DataControlComponent",
                     "ParameterData": "ParameterData",
                     "OutputData": "OutputData"
-                },
-                {
-                    "Type": "nap::PythonLoggingComponent",
-                    "mID": "PythonLoggingComponent"
                 }
             ],
             "Children": []
@@ -502,23 +487,6 @@
                     "IpAddress": "127.0.0.1",
                     "Port": 8000,
                     "BufferScale": 2
-                }
-            ],
-            "Children": []
-        },
-        {
-            "Type": "nap::ResourceGroup",
-            "mID": "PythonScripts",
-            "Members": [
-                {
-                    "Type": "nap::PythonScript",
-                    "mID": "PythonScript",
-                    "Path": "scripts/script.py"
-                },
-                {
-                    "Type": "nap::PythonScript",
-                    "mID": "BackupPythonScript",
-                    "Path": "scripts/backupscript.py"
                 }
             ],
             "Children": []

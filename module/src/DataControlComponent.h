@@ -13,7 +13,7 @@ namespace nap
     class DataControlComponentInstance;
     
     /**
-     * Component that interfaces with the 'output' data and the parameters. Is controlled by the python script.
+     * Component that interfaces with the 'output' data and the parameters. Is controlled by the Lua script.
      */
     class NAPAPI DataControlComponent : public Component
     {
