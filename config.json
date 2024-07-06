@@ -3,7 +3,7 @@
         {
             "Type": "nap::IMGuiServiceConfiguration",
             "mID": "nap::IMGuiServiceConfiguration",
-            "ColorScheme": "Dark",
+            "ColorScheme": "Custom",
             "FontSize": 15.0,
             "GlobalScale": 1.0,
             "FontFile": "",
@@ -15,44 +15,44 @@
             "Colors": {
                 "BackgroundColor": {
                     "Values": [
-                        45,
-                        45,
-                        45
+                        50,
+                        50,
+                        50
                     ]
                 },
                 "DarkColor": {
                     "Values": [
-                        0,
-                        0,
-                        0
+                        80,
+                        80,
+                        80
                     ]
                 },
                 "MenuColor": {
                     "Values": [
-                        141,
-                        139,
-                        132
+                        135,
+                        135,
+                        135
                     ]
                 },
                 "FrontColor1": {
                     "Values": [
-                        141,
-                        139,
-                        132
+                        135,
+                        135,
+                        135
                     ]
                 },
                 "FrontColor2": {
                     "Values": [
-                        174,
-                        172,
-                        164
+                        170,
+                        170,
+                        170
                     ]
                 },
                 "FrontColor3": {
                     "Values": [
-                        205,
-                        205,
-                        195
+                        200,
+                        200,
+                        200
                     ]
                 },
                 "FrontColor4": {
@@ -64,9 +64,9 @@
                 },
                 "HighlightColor1": {
                     "Values": [
-                        41,
-                        88,
-                        255
+                        170,
+                        170,
+                        170
                     ]
                 },
                 "HighlightColor2": {

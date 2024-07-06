@@ -31,9 +31,8 @@ namespace nap
         glm::vec2 mLabelOffset = glm::vec2(0.f); ///< Property: 2D labels offset in relation to center position.
         
         bool mIndices = false; ///< Property: if set to true, the Component will render indices instead of selected data.
-        
-    private:
-    };
+	
+	};
 
     
     class NAPAPI LabelsRenderingComponentInstance : public ComponentInstance
