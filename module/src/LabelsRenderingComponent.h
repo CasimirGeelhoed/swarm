@@ -42,15 +42,18 @@ namespace nap
     public:
         LabelsRenderingComponentInstance(EntityInstance& entity, Component& resource) : ComponentInstance(entity, resource) { }
         
-        // Initialize the component
         bool init(utility::ErrorState& errorState) override;
         
         void update(double deltaTime) override;
         
-        // Updates the texts that will be displayed by retrieving the values of the data vield with the given name and type.
+        /**
+		 * Updates the texts that will be displayed by retrieving the values of the data vield with the given name and type.
+		 */
         void setDataToRender(std::string name, bool isVec3);
         
-        // Draws text using the Renderable2DTextComponent. Should be called from the app's draw() function.
+        /**
+		 * Draws text using the Renderable2DTextComponent. Should be called from the app's draw() function.
+		 */
         void draw(IRenderTarget& renderTarget, PerspCameraComponentInstance& perspCamera, glm::vec3 color);
         
     private:

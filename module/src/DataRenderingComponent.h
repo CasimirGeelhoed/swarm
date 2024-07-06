@@ -19,7 +19,7 @@ namespace nap
     class DataRenderingComponentInstance;
 
     /**
-     * Component that renders the data as 3D objects.
+     * Component that renders 3D objects based on certain fields of @OutputData.
      */
     class NAPAPI DataRenderingComponent : public RenderableComponent
     {
