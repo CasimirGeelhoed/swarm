@@ -30,6 +30,7 @@ namespace nap {
 
     bool OutputData::setFloat(int index, const std::string& fieldName, float value)
     {
+		index--;
         if(index < 0 || index >= mSize)
             return false;
         
@@ -44,6 +45,7 @@ namespace nap {
 
     bool OutputData::setVec3(int index, const std::string& fieldName, glm::vec3 value)
     {
+		index--;
         if(index < 0 || index >= mSize)
             return false;
         
