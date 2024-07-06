@@ -5,38 +5,38 @@
 
 namespace nap
 {
-
-    class NAPAPI SwarmServiceConfiguration : public ServiceConfiguration
-    {
-        RTTI_ENABLE(ServiceConfiguration)
-        
-    public:
-        rtti::TypeInfo getServiceType() const;
-        
-        std::string mOSCOutputAddress = "127.0.0.1";
-        int mOSCOutputPort = 7000;
-        
-        bool mGnomon = true;
-        bool mShadows = true;
-        bool mCircleGrid = true;
-        bool mDarkMode = true;
-        bool mLabels = true;
-        bool mCapFPS = true;
-        bool mEditParameters = true;
-        
-        float mOSCRate = 30.f;
-        
-        std::string mSelectedData = "";
-    };
-
-
+	
+	class NAPAPI SwarmServiceConfiguration : public ServiceConfiguration
+	{
+		RTTI_ENABLE(ServiceConfiguration)
+		
+	public:
+		rtti::TypeInfo getServiceType() const;
+		
+		std::string mOSCOutputAddress = "127.0.0.1";
+		int mOSCOutputPort = 7000;
+		
+		bool mGnomon = true;
+		bool mShadows = true;
+		bool mCircleGrid = true;
+		bool mDarkMode = true;
+		bool mLabels = true;
+		bool mCapFPS = true;
+		bool mEditParameters = true;
+		
+		float mOSCRate = 30.f;
+		
+		std::string mSelectedData = "";
+	};
+	
+	
 	class NAPAPI swarmService : public Service
 	{
 		RTTI_ENABLE(Service)
 	public:
 		// Default Constructor
 		swarmService(ServiceConfiguration* configuration) : Service(configuration)	{ }
-
+		
 		/**
 		 * Use this call to register service dependencies
 		 * A service that depends on another service is initialized after all it's associated dependencies
@@ -57,7 +57,7 @@ namespace nap
 		 * This call is invoked after the resource manager has loaded any file changes but before
 		 * the app update call. If service B depends on A, A:s:update() is called before B::update()
 		 * @param deltaTime: the time in seconds between calls
-		*/
+		 */
 		virtual void update(double deltaTime) override;
 		
 		/**
@@ -66,9 +66,9 @@ namespace nap
 		 * When service B depends on A, Service B is shutdown before A
 		 */
 		virtual void shutdown() override;
-        
-        
-        SwarmServiceConfiguration& getSwarmServiceConfiguration() { return *getConfiguration<SwarmServiceConfiguration>(); }
-
+		
+		
+		SwarmServiceConfiguration& getSwarmServiceConfiguration() { return *getConfiguration<SwarmServiceConfiguration>(); }
+		
 	};
 }

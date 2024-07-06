@@ -12,13 +12,13 @@
 
 // RTTI
 RTTI_BEGIN_CLASS(nap::LuaScriptComponent)
-    RTTI_PROPERTY("Script", &nap::LuaScriptComponent::mScript, nap::rtti::EPropertyMetaData::Required)
+	RTTI_PROPERTY("Script", &nap::LuaScriptComponent::mScript, nap::rtti::EPropertyMetaData::Required)
 	RTTI_PROPERTY("ParameterData", &nap::LuaScriptComponent::mParameterData, nap::rtti::EPropertyMetaData::Required)
 	RTTI_PROPERTY("OutputData", &nap::LuaScriptComponent::mOutputData, nap::rtti::EPropertyMetaData::Required)
 RTTI_END_CLASS
 
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::LuaScriptComponentInstance)
-    RTTI_CONSTRUCTOR(nap::EntityInstance&, nap::Component&)
+	RTTI_CONSTRUCTOR(nap::EntityInstance&, nap::Component&)
 RTTI_END_CLASS
 
 
@@ -31,8 +31,8 @@ namespace nap
 		mOutputData = getComponent<LuaScriptComponent>()->mOutputData.get();
 		mParameterData = getComponent<LuaScriptComponent>()->mParameterData.get();
 	}
-	
-	
+
+
 	bool LuaScriptComponentInstance::init(utility::ErrorState& errorState)
 	{
 		// reserve space for log messages
@@ -46,7 +46,7 @@ namespace nap
 		luaNamespace.addFunction("addFloatParameter", [&](const std::string& name, float min, float max, float value) { mParameterData->addFloatParameter(name, min, max, value); });
 		luaNamespace.addFunction("getFloat", [&](const std::string& name) { return mParameterData->getFloat(name); });
 		luaNamespace.addFunction("getVec3", [&](const std::string& name) { return mParameterData->getVec3(name); });
-
+		
 		// expose OutputData functions
 		luaNamespace.addFunction("addVec3Field", [&](const std::string& name) { mOutputData->addVec3Field(name); });
 		luaNamespace.addFunction("addFloatField", [&](const std::string& name) { mOutputData->addFloatField(name); });
@@ -56,7 +56,7 @@ namespace nap
 		
 		// expose log function
 		luaNamespace.addFunction("log", [&](const std::string& message) { logMessage(message); });
-
+		
 		// call 'init'
 		utility::ErrorState e;
 		if(!mScript->callVoid("init", e))
@@ -64,7 +64,7 @@ namespace nap
 		
 		return true;
 	}
-	
+
 	void LuaScriptComponentInstance::update(double deltaTime)
 	{
 		// call 'update'
@@ -72,8 +72,8 @@ namespace nap
 		if(!mScript->callVoid("update", e, deltaTime))
 			logMessage(e.toString());
 	}
-	
-	
+
+
 	void LuaScriptComponentInstance::logMessage(const std::string& message)
 	{
 		// log to console
@@ -81,7 +81,7 @@ namespace nap
 		
 		// add message to message queue
 		mLogMessages.emplace_back(message);
-
+		
 		// remove first element when out of range
 		if (mLogMessages.size() > 25)
 			mLogMessages.erase(mLogMessages.begin());

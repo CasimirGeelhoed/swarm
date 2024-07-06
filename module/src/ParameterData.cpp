@@ -29,45 +29,45 @@ namespace nap {
 	}
 
 
-    bool ParameterData::setFloat(const std::string& name, float value)
-    {
-        auto it = mFloatParameters.find(name);
-        if(it == mFloatParameters.end())
-            return false;
-        
-        it->second->setValue(value);
-        return true;
-    }
+	bool ParameterData::setFloat(const std::string& name, float value)
+	{
+		auto it = mFloatParameters.find(name);
+		if(it == mFloatParameters.end())
+			return false;
+		
+		it->second->setValue(value);
+		return true;
+	}
 
 
-    bool ParameterData::setVec3(const std::string& name, glm::vec3 value)
-    {
-        auto it = mVec3Parameters.find(name);
-        if(it == mVec3Parameters.end())
-            return false;
-
-        it->second->setValue(value);
-        return true;
-    }
-
-
-    float ParameterData::getFloat(const std::string& name)
-    {
-        auto it = mFloatParameters.find(name);
-        if(it == mFloatParameters.end())
-            return 0.f;
-
-        return it->second->mValue;
-    }
+	bool ParameterData::setVec3(const std::string& name, glm::vec3 value)
+	{
+		auto it = mVec3Parameters.find(name);
+		if(it == mVec3Parameters.end())
+			return false;
+		
+		it->second->setValue(value);
+		return true;
+	}
 
 
-    glm::vec3 ParameterData::getVec3(const std::string& name)
-    {
-        auto it = mVec3Parameters.find(name);
-        if(it == mVec3Parameters.end())
-            return glm::vec3(0.f);
+	float ParameterData::getFloat(const std::string& name)
+	{
+		auto it = mFloatParameters.find(name);
+		if(it == mFloatParameters.end())
+			return 0.f;
+		
+		return it->second->mValue;
+	}
 
-        return it->second->mValue;
-    }
-    
+
+	glm::vec3 ParameterData::getVec3(const std::string& name)
+	{
+		auto it = mVec3Parameters.find(name);
+		if(it == mVec3Parameters.end())
+			return glm::vec3(0.f);
+		
+		return it->second->mValue;
+	}
+
 }

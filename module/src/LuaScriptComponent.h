@@ -11,32 +11,32 @@
 
 namespace nap
 {
-    
-    class LuaScriptComponentInstance;
-    
-    /**
-     * Component that allows a @LuaScript to control @ParameterData and @OutputData.
-     */
-    class NAPAPI LuaScriptComponent : public Component
-    {
-        RTTI_ENABLE(Component)
-        DECLARE_COMPONENT(LuaScriptComponent, LuaScriptComponentInstance)
-        
-    public:
-        LuaScriptComponent() : Component() { }
-        
-        nap::ResourcePtr<LuaScript> mScript; ///< Property: pointer to the Lua script.
-        nap::ResourcePtr<ParameterData> mParameterData; ///< Property: pointer to the parameters.
-        nap::ResourcePtr<OutputData> mOutputData; ///< Property: pointer to the output data.
-        
-    private:
-    };
-
-    
-    class NAPAPI LuaScriptComponentInstance : public ComponentInstance
-    {
-        RTTI_ENABLE(ComponentInstance)
-    public:
+	
+	class LuaScriptComponentInstance;
+	
+	/**
+	 * Component that allows a @LuaScript to control @ParameterData and @OutputData.
+	 */
+	class NAPAPI LuaScriptComponent : public Component
+	{
+		RTTI_ENABLE(Component)
+		DECLARE_COMPONENT(LuaScriptComponent, LuaScriptComponentInstance)
+		
+	public:
+		LuaScriptComponent() : Component() { }
+		
+		nap::ResourcePtr<LuaScript> mScript; ///< Property: pointer to the Lua script.
+		nap::ResourcePtr<ParameterData> mParameterData; ///< Property: pointer to the parameters.
+		nap::ResourcePtr<OutputData> mOutputData; ///< Property: pointer to the output data.
+		
+	private:
+	};
+	
+	
+	class NAPAPI LuaScriptComponentInstance : public ComponentInstance
+	{
+		RTTI_ENABLE(ComponentInstance)
+	public:
 		LuaScriptComponentInstance(EntityInstance& entity, Component& resource);
 		
 		// Inhereted from ComponentInstance
@@ -48,15 +48,15 @@ namespace nap
 		 */
 		const std::vector<std::string>& getLogMessages() { return mLogMessages; }
 		
-    private:
+	private:
 		void logMessage(const std::string& message);
-
-        LuaScript* mScript = nullptr;
-        OutputData* mOutputData = nullptr;
-        ParameterData* mParameterData = nullptr;
 		
-        std::vector<std::string> mLogMessages; ///< Holds the received log messages.
+		LuaScript* mScript = nullptr;
+		OutputData* mOutputData = nullptr;
+		ParameterData* mParameterData = nullptr;
 		
-    };
-        
+		std::vector<std::string> mLogMessages; ///< Holds the received log messages.
+		
+	};
+	
 }
