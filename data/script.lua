@@ -13,7 +13,7 @@ function init()
 	setCount(sourcesCount)
 
 
-	addVec3Field("position")
+	addVec3Field("displayPosition")
 	addFloatField("displayScale")
 	addFloatField("displayIntensity")
 
@@ -54,7 +54,7 @@ function update(t)
 		setFloat(i, "position/y", y)
 		setFloat(i, "position/z", z)
 
-		setVec3(i, "position", vec3(x,y,z))
+		setVec3(i, "displayPosition", vec3(x,y,z))
 		setFloat(i, "displayScale", 0.1)
 
 	end
