@@ -122,12 +122,14 @@
             "Type": "nap::Entity",
             "mID": "ControllingEntity",
             "Components": [
-                {
-                    "Type": "nap::DataControlComponent",
-                    "mID": "DataControlComponent",
+				{
+					"Type": "nap::LuaScriptComponent",
+					"mID": "LuaScriptCompponent",
+					"Script": "Script",
+					"DataContolComponent": "DataControlComponent",
                     "ParameterData": "ParameterData",
                     "OutputData": "OutputData"
-                }
+				}
             ],
             "Children": []
         },
@@ -455,6 +457,11 @@
             "RestoreSize": true,
             "RestorePosition": true
         },
+		{
+			"Type": "nap::LuaScript",
+			"mID": "Script",
+			"Path": "script.lua"
+		},
         {
             "Type": "nap::ResourceGroup",
             "mID": "Data",

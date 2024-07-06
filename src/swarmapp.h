@@ -101,7 +101,7 @@ namespace nap
         void updateOSCRate();
         
         // GUI's
-        void showPythonLog();
+		void showLuaLog();
         void showOSCLog();
         void showSettings();
         void showParameters();
@@ -111,7 +111,7 @@ namespace nap
         void showStatusMessage();
         void showVersionNumber();
         
-        bool mPythonLogVisible = false;
+        bool mLuaLogVisible = false;
         bool mOSCLogVisible = false;
         
         std::string mStatusMessage = "";

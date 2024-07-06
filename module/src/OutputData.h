@@ -15,9 +15,22 @@ namespace nap {
 
     public:
         OutputData() : Resource() { }
-        
-        void initFields(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size);
-        
+           
+		/**
+		 * Sets the number of output values per field.
+		 */
+		void setSize(int count);
+		
+		/**
+		 * Adds a vec3 field.
+		 */
+		void addVec3Field(const std::string& fieldName);
+
+		/**
+		 * Adds a float field.
+		 */
+		void addFloatField(const std::string& fieldName);
+		
         /**
          * Safely set float value of field at index.
          * Returns false if unsuccesfully set.
@@ -47,7 +60,7 @@ namespace nap {
         const std::unordered_map<std::string, std::vector<float>>& getFloatFields(){ return mFloatFields; }
         
     private:
-        int mSize;
+        int mSize = 0;
         std::unordered_map<std::string, std::vector<glm::vec3>> mVec3Fields;
         std::unordered_map<std::string, std::vector<float>> mFloatFields;
         

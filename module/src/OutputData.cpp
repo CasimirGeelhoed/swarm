@@ -5,18 +5,27 @@ RTTI_END_CLASS
 
 namespace nap {
 
-    void OutputData::initFields(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size)
-    {
-        mSize = size;
-        
-        mVec3Fields.clear();
-        for(auto& s : vec3Fields)
-            mVec3Fields.emplace(s, std::vector<glm::vec3>(mSize));
-        
-        mFloatFields.clear();
-        for(auto& s : floatFields)
-            mFloatFields.emplace(s, std::vector<float>(mSize));
-    }
+	void OutputData::setSize(int count)
+	{
+		mSize = count;
+		
+		for(auto& f : mVec3Fields)
+			f.second.resize(count);
+		for(auto& f : mFloatFields)
+			f.second.resize(count);
+	}
+
+
+	void OutputData::addVec3Field(const std::string& fieldName)
+	{
+		mVec3Fields.emplace(fieldName, std::vector<glm::vec3>(mSize));
+	}
+
+
+	void OutputData::addFloatField(const std::string& fieldName)
+	{
+		mFloatFields.emplace(fieldName, std::vector<float>(mSize));
+	}
 
 
     bool OutputData::setFloat(int index, const std::string& fieldName, float value)

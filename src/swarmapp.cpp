@@ -12,13 +12,8 @@
 
 #include <DataRenderingComponent.h>
 #include <LabelsRenderingComponent.h>
-//#include <PythonLoggingComponent.h>
+#include <LuaScriptComponent.h>
 #include <DataSendingComponent.h>
-
-
-//RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmApp)
-//	RTTI_CONSTRUCTOR(nap::Core&)
-//RTTI_END_CLASS
 
 namespace nap 
 {
@@ -30,7 +25,7 @@ namespace nap
 	{
         mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
 
-        setFramerate(30.0);
+		setFramerate(60.0);
         capFramerate(mConfig->mCapFPS);
 
 		// Retrieve services
@@ -207,7 +202,6 @@ namespace nap
                 
                 auto* dataLabelsRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("DataLabelsRenderingComponent");
                 dataLabelsRenderingComponent->draw(*mRenderWindow, perp_cam, mConfig->mDarkMode ? mColor : mDarkColor);
-
             }
             
 			// Render GUI elements
@@ -304,10 +298,10 @@ namespace nap
         
         int i = 1;
         
-        if(mPythonLogVisible)
+        if(mLuaLogVisible)
         {
-            ImGui::Begin("Lua Log", &mPythonLogVisible);
-            showPythonLog();
+            ImGui::Begin("Lua Log", &mLuaLogVisible);
+            showLuaLog();
             ImGui::End();
         }
         else
@@ -316,7 +310,7 @@ namespace nap
             bool b = true;
             ImGui::Begin("lualogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
             if(ImGui::Button("Lua Log"))
-                mPythonLogVisible = true;
+                mLuaLogVisible = true;
             ImGui::End();
         }
         
@@ -529,27 +523,26 @@ namespace nap
     }
 
 
-    void CoreApp::showPythonLog()
+    void CoreApp::showLuaLog()
     {
-		// TODO: ...
-//        // Get the python error handler component
-//        auto pythonLogger = mControllingEntity->findComponent<PythonLoggingComponentInstance>();
-//        assert(pythonLogger);
-//
-//        // Get all received osc messages and convert into a single string
-//        std::string msg;
-//        for (const auto& message : pythonLogger->getMessages())
-//            msg += (message + "\n");
-//
-//        // Backup text
-//        char txt[256] = "No Python Errors";
-//
-//        // If there are no messages display that instead of the received messages
-//        char* display_msg = msg.empty() ? txt : &msg[0];
-//        size_t display_size = msg.empty() ? 256 : msg.size();
-//
-//        // Display block of text
-//        ImGui::InputTextMultiline("Python Errors", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
+        // Get the python error handler component
+        auto luaScriptComponent = mControllingEntity->findComponent<LuaScriptComponentInstance>();
+        assert(luaScriptComponent);
+
+        // Get all received messages and convert into a single string
+        std::string msg;
+        for (const auto& message : luaScriptComponent->getLogMessages())
+            msg += (message + "\n");
+
+        // Backup text
+        char txt[256] = "No Lua Errors";
+
+        // If there are no messages display that instead of the received messages
+        char* display_msg = msg.empty() ? txt : &msg[0];
+        size_t display_size = msg.empty() ? 256 : msg.size();
+
+        // Display block of text
+        ImGui::InputTextMultiline("Lua Errors", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
     }
 
 
