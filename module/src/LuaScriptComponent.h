@@ -72,10 +72,8 @@ namespace nap
 
 			// call 'init'
 			utility::ErrorState e;
-			bool returnValue = false; // TODO: support void functions!
-			if(!mScript->call<bool>("init", e, returnValue))
+			if(!mScript->callVoid("init", e))
 				logMessage(e.toString());
-			
 			
 			return true;
 		}
@@ -83,10 +81,8 @@ namespace nap
         virtual void update(double deltaTime) override
 		{
 			utility::ErrorState e;
-			bool returnValue = false;
-			if(!mScript->call<bool>("update", e, returnValue, deltaTime))
+			if(!mScript->callVoid("update", e, deltaTime))
 				logMessage(e.toString());
-
 		}
 		
 		const std::vector<std::string>& getLogMessages()
