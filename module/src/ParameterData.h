@@ -56,13 +56,13 @@ namespace nap {
         glm::vec3 getVec3(const std::string& name);
         
         
-        const std::unordered_map<std::string, std::unique_ptr<ParameterVec3>>& getVec3Parameters() { return mVec3Parameters; }
+        const std::map<std::string, std::unique_ptr<ParameterVec3>>& getVec3Parameters() { return mVec3Parameters; }
         
-        const std::unordered_map<std::string, std::unique_ptr<ParameterFloat>>& getFloatParameters() { return mFloatParameters; }
+        const std::map<std::string, std::unique_ptr<ParameterFloat>>& getFloatParameters() { return mFloatParameters; }
         
     private:
-        std::unordered_map<std::string, std::unique_ptr<ParameterVec3>> mVec3Parameters;
-        std::unordered_map<std::string, std::unique_ptr<ParameterFloat>> mFloatParameters;
+        std::map<std::string, std::unique_ptr<ParameterVec3>> mVec3Parameters;
+        std::map<std::string, std::unique_ptr<ParameterFloat>> mFloatParameters;
     };
     
 }
