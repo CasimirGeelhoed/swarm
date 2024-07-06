@@ -15,9 +15,22 @@ namespace nap {
 
     public:
         OutputData() : Resource() { }
-        
-        void initFields(std::vector<std::string> vec3Fields, std::vector<std::string> floatFields, int size);
-        
+           
+		/**
+		 * Sets the number of output values per field.
+		 */
+		void setSize(int count);
+		
+		/**
+		 * Adds a vec3 field.
+		 */
+		void addVec3Field(const std::string& fieldName);
+
+		/**
+		 * Adds a float field.
+		 */
+		void addFloatField(const std::string& fieldName);
+		
         /**
          * Safely set float value of field at index.
          * Returns false if unsuccesfully set.
@@ -42,14 +55,15 @@ namespace nap {
          */
         const std::vector<float>& getFloatField(const std::string& name);
         
-        const std::unordered_map<std::string, std::vector<glm::vec3>>& getVec3Fields(){ return mVec3Fields; }
+        const std::map<std::string, std::vector<glm::vec3>>& getVec3Fields(){ return mVec3Fields; }
         
-        const std::unordered_map<std::string, std::vector<float>>& getFloatFields(){ return mFloatFields; }
+        const std::map<std::string, std::vector<float>>& getFloatFields(){ return mFloatFields; }
         
     private:
-        int mSize;
-        std::unordered_map<std::string, std::vector<glm::vec3>> mVec3Fields;
-        std::unordered_map<std::string, std::vector<float>> mFloatFields;
+        int mSize = 0;
+		
+        std::map<std::string, std::vector<glm::vec3>> mVec3Fields;
+        std::map<std::string, std::vector<float>> mFloatFields;
         
         std::vector<glm::vec3> mEmptyVec3Vector = {};
         std::vector<float> mEmptyFloatVector = {};

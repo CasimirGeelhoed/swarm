@@ -56,7 +56,7 @@ namespace nap
 
     void LabelsRenderingComponentInstance::update(double deltaTime)
     {
-        mPositions = mData->getVec3Field("position");
+        mPositions = mData->getVec3Field("displayPosition");
         mCount = mPositions.size();
         mRenderableTextComponent->resize(mCount);
         

@@ -5,32 +5,28 @@ RTTI_END_CLASS
 
 namespace nap {
 
-    void ParameterData::initParameters(std::vector<std::tuple<std::string, float, float, glm::vec3>> vec3Parameters, std::vector<std::tuple<std::string, float, float, float>> floatParameters)
-    {
-        mVec3Parameters.clear();
-        for(auto& s : vec3Parameters)
-        {
-            auto param = std::make_unique<ParameterVec3>();
-            param->mID = std::get<0>(s);
-            param->mName = std::get<0>(s);
-            param->mValue = std::get<3>(s);
-            param->mMinimum = std::get<1>(s);
-            param->mMaximum = std::get<2>(s);
-            mVec3Parameters.emplace(std::get<0>(s), std::move(param));
-        }
-        
-        mFloatParameters.clear();
-        for(auto& s : floatParameters)
-        {
-            auto param = std::make_unique<ParameterFloat>();
-            param->mID = std::get<0>(s);
-            param->mName = std::get<0>(s);
-            param->mValue = std::get<3>(s);
-            param->mMinimum = std::get<1>(s);
-            param->mMaximum = std::get<2>(s);
-            mFloatParameters.emplace(std::get<0>(s), std::move(param));
-        }
-    }
+	void ParameterData::addVec3Parameter(const std::string& name, float min, float max, glm::vec3 value)
+	{
+		auto param = std::make_unique<ParameterVec3>();
+		param->mID = name;
+		param->mName = name;
+		param->mValue = value;
+		param->mMinimum = min;
+		param->mMaximum = max;
+		mVec3Parameters.emplace(name, std::move(param));
+	}
+
+
+	void ParameterData::addFloatParameter(const std::string& name, float min, float max, float value)
+	{
+		auto param = std::make_unique<ParameterFloat>();
+		param->mID = name;
+		param->mName = name;
+		param->mValue = value;
+		param->mMinimum = min;
+		param->mMaximum = max;
+		mFloatParameters.emplace(name, std::move(param));
+	}
 
 
     bool ParameterData::setFloat(const std::string& name, float value)

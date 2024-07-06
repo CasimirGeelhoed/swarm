@@ -1,17 +1,17 @@
 {
     "Type": "nap::ProjectInfo",
     "mID": "ProjectInfo",
-    "Title": "swarm",
-    "Version": "0.1.0",
-    "Data": "data/objects.json",
-    "PathMapping": "cache/path_mapping.json",
-    "ServiceConfig": "config.json",
+    "Title": "Swarm",
+    "Version": "1.0.0",
     "RequiredModules": [
         "napapp",
         "napcameracontrol",
         "napparametergui",
-        "nappython",
+        "naplua",
         "naposc",
         "napswarm"
-    ]
+    ],
+    "Data": "data/objects.json",
+    "ServiceConfig": "config.json",
+    "PathMapping": "cache/path_mapping.json"
 }

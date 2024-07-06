@@ -8,8 +8,8 @@
 namespace nap {
     
 
-    // TODO: more data types / generic Parameter data type.
-    // TODO: optimise OSC parsing by using Signals instead of searching by name every cycle?
+    // TODO: more data types?
+
     /**
      * Data structure for input parameters.
      */
@@ -19,8 +19,16 @@ namespace nap {
     public:
         ParameterData() : Resource() { }
         
-        void initParameters(std::vector<std::tuple<std::string, float, float, glm::vec3>> vec3Parameters, std::vector<std::tuple<std::string, float, float, float>> floatParameters);
-        
+		/**
+		 * Adds vec3 parameter.
+		 */
+		void addVec3Parameter(const std::string& name, float min, float max, glm::vec3 value);
+		
+		/**
+		 * Adds float parameter.
+		 */
+		void addFloatParameter(const std::string& name, float min, float max, float value);
+		
         /**
          * Safely set float value of parameter.
          * Returns false if unsuccesful.
@@ -48,13 +56,13 @@ namespace nap {
         glm::vec3 getVec3(const std::string& name);
         
         
-        const std::unordered_map<std::string, std::unique_ptr<ParameterVec3>>& getVec3Parameters() { return mVec3Parameters; }
+        const std::map<std::string, std::unique_ptr<ParameterVec3>>& getVec3Parameters() { return mVec3Parameters; }
         
-        const std::unordered_map<std::string, std::unique_ptr<ParameterFloat>>& getFloatParameters() { return mFloatParameters; }
+        const std::map<std::string, std::unique_ptr<ParameterFloat>>& getFloatParameters() { return mFloatParameters; }
         
     private:
-        std::unordered_map<std::string, std::unique_ptr<ParameterVec3>> mVec3Parameters;
-        std::unordered_map<std::string, std::unique_ptr<ParameterFloat>> mFloatParameters;
+        std::map<std::string, std::unique_ptr<ParameterVec3>> mVec3Parameters;
+        std::map<std::string, std::unique_ptr<ParameterFloat>> mFloatParameters;
     };
     
 }

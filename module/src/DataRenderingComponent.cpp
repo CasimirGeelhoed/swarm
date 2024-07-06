@@ -127,7 +127,7 @@ namespace nap
             mViewMatUniform->setValue(viewMatrix);
 
         // Get points to copy onto
-        const std::vector<glm::vec3>& pos_data = mData->getVec3Field("position");
+        const std::vector<glm::vec3>& pos_data = mData->getVec3Field("displayPosition");
         const std::vector<float>& scale_data = mData->getFloatField("displayScale");
         const std::vector<float>& intensity_data = mData->getFloatField("displayIntensity");
         bool hasScaleData = scale_data.size() == pos_data.size();

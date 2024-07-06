@@ -28,7 +28,7 @@ namespace nap
 	/**
 	 * Main application that is called from within the main loop
 	 */
-	class swarmApp : public App
+	class CoreApp : public App
 	{
 		RTTI_ENABLE(App)
 	public:
@@ -36,7 +36,7 @@ namespace nap
 		 * Constructor
 		 * @param core instance of the NAP core system
 		 */
-		swarmApp(nap::Core& core) : App(core) { }
+		CoreApp(nap::Core& core) : App(core) { }
 		
 		/**
 		 * Initialize all the services and app specific data structures
@@ -101,7 +101,7 @@ namespace nap
         void updateOSCRate();
         
         // GUI's
-        void showPythonLog();
+		void showLuaLog();
         void showOSCLog();
         void showSettings();
         void showParameters();
@@ -111,7 +111,7 @@ namespace nap
         void showStatusMessage();
         void showVersionNumber();
         
-        bool mPythonLogVisible = false;
+        bool mLuaLogVisible = false;
         bool mOSCLogVisible = false;
         
         std::string mStatusMessage = "";

@@ -12,13 +12,8 @@
 
 #include <DataRenderingComponent.h>
 #include <LabelsRenderingComponent.h>
-#include <PythonLoggingComponent.h>
+#include <LuaScriptComponent.h>
 #include <DataSendingComponent.h>
-
-
-RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmApp)
-	RTTI_CONSTRUCTOR(nap::Core&)
-RTTI_END_CLASS
 
 namespace nap 
 {
@@ -26,11 +21,11 @@ namespace nap
 	 * Initialize all the resources and instances used for drawing
 	 * slowly migrating all functionality to NAP
 	 */
-	bool swarmApp::init(utility::ErrorState& error)
+	bool CoreApp::init(utility::ErrorState& error)
 	{
         mConfig = &getCore().getService<nap::swarmService>()->getSwarmServiceConfiguration();
 
-        setFramerate(30.0);
+		setFramerate(60.0);
         capFramerate(mConfig->mCapFPS);
 
 		// Retrieve services
@@ -120,7 +115,7 @@ namespace nap
 	}
 	
 
-    void swarmApp::postResourcesLoaded()
+    void CoreApp::postResourcesLoaded()
     {
         restartOSCSender();
         updateOSCRate();
@@ -128,7 +123,7 @@ namespace nap
     }
 
 	
-	void swarmApp::update(double deltaTime)
+	void CoreApp::update(double deltaTime)
 	{
 		// Use a default input router to forward input events (recursively) to all input components in the default scene
 		nap::DefaultInputRouter input_router(true);
@@ -144,7 +139,7 @@ namespace nap
     }
 
 
-    void swarmApp::writeConfig()
+    void CoreApp::writeConfig()
     {
         static std::string configError;
         utility::ErrorState errorState;
@@ -160,7 +155,7 @@ namespace nap
     }
 	
 
-	void swarmApp::render()
+	void CoreApp::render()
 	{
 		// Signal the beginning of a new frame, allowing it to be recorded.
 		// The system might wait until all commands that were previously associated with the new frame have been processed on the GPU.
@@ -207,7 +202,6 @@ namespace nap
                 
                 auto* dataLabelsRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("DataLabelsRenderingComponent");
                 dataLabelsRenderingComponent->draw(*mRenderWindow, perp_cam, mConfig->mDarkMode ? mColor : mDarkColor);
-
             }
             
 			// Render GUI elements
@@ -224,7 +218,7 @@ namespace nap
 		mRenderService->endFrame();
 	}
 
-    void swarmApp::restartOSCSender()
+    void CoreApp::restartOSCSender()
     {
         mOSCSender->mIPAddress = mConfig->mOSCOutputAddress;
         mOSCSender->mPort = mConfig->mOSCOutputPort;
@@ -237,7 +231,7 @@ namespace nap
     }
 	
 
-    void swarmApp::updateSelectedData()
+    void CoreApp::updateSelectedData()
     {
         for(auto& x : mOutputData->getVec3Fields())
         {
@@ -254,14 +248,14 @@ namespace nap
     }
 
 
-    void swarmApp::selectData(std::string fieldName, bool isVec3)
+    void CoreApp::selectData(std::string fieldName, bool isVec3)
     {
         auto* dataLabelsRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("DataLabelsRenderingComponent");
         dataLabelsRenderingComponent->setDataToRender(fieldName, isVec3);
     }
 
 
-    void swarmApp::updateGUI()
+    void CoreApp::updateGUI()
     {
         int windowWidth = mRenderWindow->getWidthPixels();
         int windowHeight = mRenderWindow->getHeightPixels();
@@ -304,19 +298,19 @@ namespace nap
         
         int i = 1;
         
-        if(mPythonLogVisible)
+        if(mLuaLogVisible)
         {
-            ImGui::Begin("Python Log", &mPythonLogVisible);
-            showPythonLog();
+            ImGui::Begin("Lua Log", &mLuaLogVisible);
+            showLuaLog();
             ImGui::End();
         }
         else
         {
             ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 32 - 100 * (i++)));
             bool b = true;
-            ImGui::Begin("pythonlogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
-            if(ImGui::Button("Python Log"))
-                mPythonLogVisible = true;
+            ImGui::Begin("lualogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
+            if(ImGui::Button("Lua Log"))
+                mLuaLogVisible = true;
             ImGui::End();
         }
         
@@ -345,7 +339,7 @@ namespace nap
     }
 
 
-    void swarmApp::setStatusMessage(std::string message, float duration)
+    void CoreApp::setStatusMessage(std::string message, float duration)
     {
         mStatusMessageTimer = duration;
         mStatusMessage = message;
@@ -353,13 +347,13 @@ namespace nap
     }
 
 
-    void swarmApp::updateOSCRate()
+    void CoreApp::updateOSCRate()
     {
         mSendingEntity->getComponent<DataSendingComponentInstance>().setOutputRate(mConfig->mOSCRate);
     }
 
 
-    void swarmApp::showSettings()
+    void CoreApp::showSettings()
     {
         ImGui::PushItemWidth(200);
         static char buf[16] = "";
@@ -407,7 +401,7 @@ namespace nap
     }
 
 
-    void swarmApp::showEditableParameters()
+    void CoreApp::showEditableParameters()
     {
         for(auto& x : mParameterData->getVec3Parameters())
         {
@@ -429,7 +423,7 @@ namespace nap
     }
 
 
-    void swarmApp::showParameters()
+    void CoreApp::showParameters()
     {
         ImGui::Columns(4, "params", false);
         
@@ -461,7 +455,7 @@ namespace nap
     }
 
 
-    void swarmApp::showOutputData()
+    void CoreApp::showOutputData()
     {
         for(auto& x : mOutputData->getVec3Fields())
         {
@@ -496,7 +490,7 @@ namespace nap
 
     }
 
-    void swarmApp::showMonitorOptions()
+    void CoreApp::showMonitorOptions()
     {
         if(ImGui::Checkbox("Gnomon", &mConfig->mGnomon)) writeConfig();
         if(ImGui::Checkbox("Shadows", &mConfig->mShadows)) writeConfig();
@@ -506,7 +500,7 @@ namespace nap
     }
 
 
-    void swarmApp::showOSCLog()
+    void CoreApp::showOSCLog()
     {
         // Get the osc handle component
         auto oscHandler = mReceivingEntity->findComponent<OscHandlerComponentInstance>();
@@ -529,30 +523,30 @@ namespace nap
     }
 
 
-    void swarmApp::showPythonLog()
+    void CoreApp::showLuaLog()
     {
         // Get the python error handler component
-        auto pythonLogger = mControllingEntity->findComponent<PythonLoggingComponentInstance>();
-        assert(pythonLogger);
-        
-        // Get all received osc messages and convert into a single string
+        auto luaScriptComponent = mControllingEntity->findComponent<LuaScriptComponentInstance>();
+        assert(luaScriptComponent);
+
+        // Get all received messages and convert into a single string
         std::string msg;
-        for (const auto& message : pythonLogger->getMessages())
+        for (const auto& message : luaScriptComponent->getLogMessages())
             msg += (message + "\n");
 
         // Backup text
-        char txt[256] = "No Python Errors";
+        char txt[256] = "No Lua Errors";
 
         // If there are no messages display that instead of the received messages
         char* display_msg = msg.empty() ? txt : &msg[0];
         size_t display_size = msg.empty() ? 256 : msg.size();
 
         // Display block of text
-        ImGui::InputTextMultiline("Python Errors", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
+        ImGui::InputTextMultiline("Lua Errors", display_msg, display_size, ImVec2(-1.0f, ImGui::GetTextLineHeight() * 15), ImGuiInputTextFlags_ReadOnly);
     }
 
 
-    void swarmApp::showStatusMessage()
+    void CoreApp::showStatusMessage()
     {
         int windowWidth = mRenderWindow->getWidthPixels();
         int windowHeight = mRenderWindow->getHeightPixels();
@@ -566,7 +560,7 @@ namespace nap
     }
 
 
-    void swarmApp::showVersionNumber()
+    void CoreApp::showVersionNumber()
     {
         int windowWidth = mRenderWindow->getWidthPixels();
         int windowHeight = mRenderWindow->getHeightPixels();
@@ -579,13 +573,13 @@ namespace nap
     }
 
 
-	void swarmApp::windowMessageReceived(WindowEventPtr windowEvent)
+	void CoreApp::windowMessageReceived(WindowEventPtr windowEvent)
 	{
 		mRenderService->addEvent(std::move(windowEvent));
 	}
 	
 	
-	void swarmApp::inputMessageReceived(InputEventPtr inputEvent)
+	void CoreApp::inputMessageReceived(InputEventPtr inputEvent)
 	{
 		if (inputEvent->get_type().is_derived_from(RTTI_OF(nap::KeyPressEvent)))
 		{
@@ -603,7 +597,7 @@ namespace nap
 	}
 
 	
-	int swarmApp::shutdown()
+	int CoreApp::shutdown()
 	{
 		return 0;
 	}
