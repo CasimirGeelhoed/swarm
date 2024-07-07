@@ -22,9 +22,9 @@
 namespace nap
 {
 	using namespace rtti;
-
-    class SwarmServiceConfiguration;
-
+	
+	class SwarmServiceConfiguration;
+	
 	/**
 	 * Main application that is called from within the main loop
 	 */
@@ -42,7 +42,7 @@ namespace nap
 		 * Initialize all the services and app specific data structures
 		 * @param error contains the error code when initialization fails
 		 * @return if initialization succeeded
-		*/
+		 */
 		bool init(utility::ErrorState& error) override;
 		
 		/**
@@ -50,12 +50,12 @@ namespace nap
 		 * @param deltaTime the time in seconds between calls
 		 */
 		void update(double deltaTime) override;
-
+		
 		/**
 		 * Render is called after update. Use this call to render objects to a specific target
 		 */
 		void render() override;
-
+		
 		/**
 		 * Called when the app receives a window message.
 		 * @param windowEvent the window message that occurred
@@ -73,82 +73,82 @@ namespace nap
 		 * @return the application exit code, this is returned when the main loop is exited
 		 */
 		virtual int shutdown() override;
-        
+		
 	private:
-        
-        // Reapplies settings from config, such as OSC sender, OSC rate, selectedData. Triggered on init and after each hotload.
-        void postResourcesLoaded();
-        
-        // Updates the GUI.
-        void updateGUI();
-        
-        // Updates to config file.
-        void writeConfig();
-        
-        // Restarts the OSCSender with current configuration.
-        void restartOSCSender();
-                
-        // Updates data for visualisation according tp the current config.
-        void updateSelectedData();
-        
-        // Selects data for visualisation. Used in 'updateSelectedData'.
-        void selectData(std::string fieldName, bool isVec3);
-        
-        // Sets a status message to be displayed.
-        void setStatusMessage(std::string message, float duration);
-        
-        // Updates the OSC rate according to the current configuration.
-        void updateOSCRate();
-        
-        // GUI's
+		
+		// Reapplies settings from config, such as OSC sender, OSC rate, selectedData. Triggered on init and after each hotload.
+		void postResourcesLoaded();
+		
+		// Updates the GUI.
+		void updateGUI();
+		
+		// Updates to config file.
+		void writeConfig();
+		
+		// Restarts the OSCSender with current configuration.
+		void restartOSCSender();
+		
+		// Updates data for visualisation according tp the current config.
+		void updateSelectedData();
+		
+		// Selects data for visualisation. Used in 'updateSelectedData'.
+		void selectData(std::string fieldName, bool isVec3);
+		
+		// Sets a status message to be displayed.
+		void setStatusMessage(std::string message, float duration);
+		
+		// Updates the OSC rate according to the current configuration.
+		void updateOSCRate();
+		
+		// GUI's
 		void showLuaLog();
-        void showOSCLog();
-        void showSettings();
-        void showParameters();
-        void showEditableParameters();
-        void showOutputData();
-        void showMonitorOptions();
-        void showStatusMessage();
+		void showOSCLog();
+		void showSettings();
+		void showParameters();
+		void showEditableParameters();
+		void showOutputData();
+		void showMonitorOptions();
+		void showStatusMessage();
 		void showLuaErrorMessage();
-        void showVersionNumber();
-        
-        bool mLuaLogVisible = false;
-        bool mOSCLogVisible = false;
-        
-        std::string mStatusMessage = "";
-        bool mShowStatusMessage = false;
-        float mStatusMessageTimer = 0.0f;
-        
-        SwarmServiceConfiguration* mConfig;
-        
+		void showVersionNumber();
+		
+		bool mLuaLogVisible = false;
+		bool mOSCLogVisible = false;
+		
+		std::string mStatusMessage = "";
+		bool mShowStatusMessage = false;
+		float mStatusMessageTimer = 0.0f;
+		
+		SwarmServiceConfiguration* mConfig;
+		
 		ResourceManager*			mResourceManager = nullptr;		///< Manages all the loaded data
 		RenderService*				mRenderService = nullptr;		///< Render Service that handles render calls
 		SceneService*				mSceneService = nullptr;		///< Manages all the objects in the scene
 		InputService*				mInputService = nullptr;		///< Input service for processing input
 		IMGuiService*				mGuiService = nullptr;			///< Manages GUI related update / draw calls
-		ObjectPtr<RenderWindow>		mRenderWindow;					///< Pointer to the render window	
+		ObjectPtr<RenderWindow>		mRenderWindow;					///< Pointer to the render window
 		ObjectPtr<Scene>			mScene = nullptr;				///< Pointer to the main scene
-        
-        ObjectPtr<EntityInstance>	mCameraEntity = nullptr;
+		
+		ObjectPtr<EntityInstance>	mCameraEntity = nullptr;
 		ObjectPtr<EntityInstance>	mGnomonEntity = nullptr;
-        ObjectPtr<EntityInstance>   mRenderingEntity = nullptr;
-        ObjectPtr<EntityInstance>   mControllingEntity = nullptr;
-        ObjectPtr<EntityInstance>   mReceivingEntity = nullptr;
-        ObjectPtr<EntityInstance>   mSendingEntity = nullptr;
-        ObjectPtr<EntityInstance>   mShadowsEntity = nullptr;
-        ObjectPtr<EntityInstance>   mGridEntity = nullptr;
-        ObjectPtr<EntityInstance>   mCircleGridEntity = nullptr;
-        
-        ResourcePtr<OSCSender> mOSCSender = nullptr;
-        
-        ResourcePtr<OutputData> mOutputData = nullptr;
-        ResourcePtr<ParameterData> mParameterData = nullptr;
-        
-        
-        nap::Slot<> mPostResourcesLoadedSlot    = { [&]() -> void { postResourcesLoaded(); } };
-        
-        glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
-        glm::vec3 mDarkColor = { 0.1f, 0.1f, 0.1f };
-        
-    };
+		ObjectPtr<EntityInstance>   mRenderingEntity = nullptr;
+		ObjectPtr<EntityInstance>   mControllingEntity = nullptr;
+		ObjectPtr<EntityInstance>   mReceivingEntity = nullptr;
+		ObjectPtr<EntityInstance>   mSendingEntity = nullptr;
+		ObjectPtr<EntityInstance>   mShadowsEntity = nullptr;
+		ObjectPtr<EntityInstance>   mGridEntity = nullptr;
+		ObjectPtr<EntityInstance>   mCircleGridEntity = nullptr;
+		
+		ResourcePtr<OSCSender> mOSCSender = nullptr;
+		
+		ResourcePtr<OutputData> mOutputData = nullptr;
+		ResourcePtr<ParameterData> mParameterData = nullptr;
+		
+		
+		nap::Slot<> mPostResourcesLoadedSlot    = { [&]() -> void { postResourcesLoaded(); } };
+		
+		glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
+		glm::vec3 mDarkColor = { 0.1f, 0.1f, 0.1f };
+		
+	};
 }
