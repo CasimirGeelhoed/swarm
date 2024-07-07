@@ -59,6 +59,8 @@ namespace nap {
 		
 		const std::map<std::string, std::vector<float>>& getFloatFields(){ return mFloatFields; }
 		
+		void clear() { mVec3Fields.clear(); mFloatFields.clear(); }
+		
 	private:
 		int mSize = 0;
 		

@@ -57,6 +57,10 @@ namespace nap
 		// expose log function
 		luaNamespace.addFunction("log", [&](const std::string& message) { logMessage(message); });
 		
+		// clear data
+		mOutputData->clear();
+		mParameterData->clear();
+		
 		// call 'init'
 		utility::ErrorState e;
 		if(!mScript->callVoid("init", e))

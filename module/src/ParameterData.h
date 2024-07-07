@@ -60,6 +60,8 @@ namespace nap {
 		
 		const std::map<std::string, std::unique_ptr<ParameterFloat>>& getFloatParameters() { return mFloatParameters; }
 		
+		void clear() { mVec3Parameters.clear(); mFloatParameters.clear(); }
+		
 	private:
 		std::map<std::string, std::unique_ptr<ParameterVec3>> mVec3Parameters;
 		std::map<std::string, std::unique_ptr<ParameterFloat>> mFloatParameters;
