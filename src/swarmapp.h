@@ -109,6 +109,7 @@ namespace nap
         void showOutputData();
         void showMonitorOptions();
         void showStatusMessage();
+		void showLuaErrorMessage();
         void showVersionNumber();
         
         bool mLuaLogVisible = false;

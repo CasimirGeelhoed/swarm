@@ -274,7 +274,7 @@ namespace nap
         ImGui::SetNextWindowPos(ImVec2(settingsWidth, 0));
         ImGui::SetNextWindowSize(ImVec2(paramWidth, 0));
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
-        ImGui::Begin("Parameters");
+        ImGui::Begin("Input Parameters");
         if(mConfig->mEditParameters)
             showEditableParameters();
         else
@@ -284,7 +284,7 @@ namespace nap
         ImGui::SetNextWindowPos(ImVec2(settingsWidth + paramWidth, 0));
         ImGui::SetNextWindowSize(ImVec2(dataWidth, 0));
         ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
-        ImGui::Begin("Data");
+        ImGui::Begin("Output Data");
         showOutputData();
         ImGui::End();
         
@@ -333,6 +333,8 @@ namespace nap
         
         if(mShowStatusMessage)
             showStatusMessage();
+		
+		showLuaErrorMessage();
         
         showVersionNumber();
         
@@ -558,8 +560,30 @@ namespace nap
         ImGui::Text(mStatusMessage.c_str());
         ImGui::End();
     }
+	
+	
+	void CoreApp::showLuaErrorMessage()
+	{
+		auto luaScriptComponent = mControllingEntity->findComponent<LuaScriptComponentInstance>();
+		assert(luaScriptComponent);
+		
+		const std::vector<std::string>& messages = luaScriptComponent->getLogMessages();
+		if(messages.empty())
+			return;
 
+		const std::string& message = messages.back();
+		
+		ImGui::SetNextWindowPos(ImVec2(0, 60));
+		auto textWidth = ImGui::CalcTextSize(message.c_str()).x;
+		bool b = true;
+		ImGui::Begin("luaMessage", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255,0,0,255));
+		ImGui::Text(message.c_str());
+		ImGui::PopStyleColor();
+		ImGui::End();
+	}
 
+	
     void CoreApp::showVersionNumber()
     {
         int windowWidth = mRenderWindow->getWidthPixels();
