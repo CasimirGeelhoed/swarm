@@ -56,11 +56,13 @@ namespace nap
 		void logMessage(const std::string& message);
 				
 		std::unique_ptr<LuaScript> mScript = nullptr;
-
+		
 		OutputData* mOutputData = nullptr;
 		ParameterData* mParameterData = nullptr;
 		
 		std::vector<std::string> mLogMessages; ///< Holds the received log messages.
+		
+		uint64_t mLastModTime = 0;
 		
 	};
 	

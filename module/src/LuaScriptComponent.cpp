@@ -9,6 +9,8 @@
 
 #include <entity.h>
 
+#include <utility/fileutils.h>
+
 
 // RTTI
 RTTI_BEGIN_CLASS(nap::LuaScriptComponent)
@@ -86,8 +88,8 @@ namespace nap
 		return true;
 		
 	}
-
-
+	
+	
 	void LuaScriptComponentInstance::update(double deltaTime)
 	{
 		if(!mScript)
@@ -97,6 +99,18 @@ namespace nap
 		utility::ErrorState e;
 		if(!mScript->callVoid("update", e, deltaTime))
 			logMessage(e.toString());
+		
+		// check for real-time edit to script
+		uint64 modTime;
+		bool canGetModTime = utility::getFileModificationTime(mScript->mPath, modTime);
+		if (canGetModTime && modTime != mLastModTime)
+		{
+			// a real-time edit has happend, reload the script
+			mLastModTime = modTime;
+			utility::ErrorState e;
+			loadScript(mScript->mPath, e);
+		}
+
 	}
 
 
