@@ -449,7 +449,7 @@ namespace nap
 		
 		// get file names without extension to display
 		for(auto& s : mScriptPaths)
-			mScriptNames.emplace_back(utility::getFileNameWithoutExtension(s));
+			mScriptNames.emplace_back(utility::getFileName(s));
 	}
 
 	

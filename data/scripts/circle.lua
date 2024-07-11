@@ -35,7 +35,7 @@
 
 
 
-sourcesCount = 100
+sourcesCount = 40
 
 passedTime = 0.0
 
@@ -67,7 +67,6 @@ function init()
 		phases[i] = 2 * math.pi * i / sourcesCount
 	end
 
-	return true
 end
 
 
@@ -93,7 +92,6 @@ function update(t)
 
 	end
 
-	return true
 end
 
 

@@ -1,113 +1,41 @@
 
-
--- sourcesCount = 5
-
--- function init()
--- 	setCount(sourcesCount)
-
--- 	addVec3Field("displayPosition")
--- end
-
-
-
--- function update(t)
-
--- 	for i = 1, sourcesCount do
--- 		setVec3(i, "displayPosition", vec3(i, 0, 0))
--- 	end
-
--- end
-
-
--- sourcesCount = 1
-
--- function init()
--- 	setCount(sourcesCount)
-
--- end
-
-
--- function update(t)
-
-
--- end
-
-
-
-
-sourcesCount = 100
-
-passedTime = 0.0
-
-phases = {}
-
-
 function init()
-	setCount(sourcesCount)
 
+	setCount(4)
 
+	addVec3Parameter("positionA", -20, 20, vec3(-1,0,-1))
+	addVec3Parameter("positionB", -20, 20, vec3(-1,0,1))
+	addVec3Parameter("positionC", -20, 20, vec3(1,0,-1))
+	addVec3Parameter("positionD", -20, 20, vec3(1,0,1))
+
+	addFloatParameter("intensityA", -1, 1, 0)
+	addFloatParameter("intensityB", -1, 1, 0)
+	addFloatParameter("intensityC", -1, 1, 0)
+	addFloatParameter("intensityD", -1, 1, 0)
+
+	addFloatField("displayIntensity")
 	addVec3Field("displayPosition")
 	addFloatField("displayScale")
-	addFloatField("displayIntensity")
 
-	addFloatField("distance")
-	addFloatField("speed")
-	addFloatField("distortion")
-
-	addFloatField("position/x")
-	addFloatField("position/y")
-	addFloatField("position/z")
-
-
-	addFloatParameter("speed", 0.01, 10, 1)
-	addFloatParameter("scale", 0.01, 10, 1)
-	addFloatParameter("vertical", 0.01, 10, 1)
-
-	for i = 1, sourcesCount do
-		phases[i] = 2 * math.pi * i / sourcesCount
-	end
-
-	return true
 end
-
 
 
 
 function update(t)
-	-- time = time + (t / 100.0) * getFloat("speed")
-	-- phase = t * getFloat("rotationSpeed")
 
-	delta = getFloat("speed") * t
+	setVec3(1, "displayPosition", getVec3("positionA"))
+	setVec3(2, "displayPosition", getVec3("positionB"))
+	setVec3(3, "displayPosition", getVec3("positionC"))
+	setVec3(4, "displayPosition", getVec3("positionD"))
 
-	for i = 1, sourcesCount do
-		phases[i] = phases[i] + delta
-		x = math.cos(phases[i]) * getFloat("scale")
-		z = math.sin(phases[i]) * getFloat("scale")
-		y = math.sin(i + phases[i]) * getFloat("vertical") * getFloat("scale")
-		setFloat(i, "position/x", x)
-		setFloat(i, "position/y", y)
-		setFloat(i, "position/z", z)
+	setFloat(1, "displayScale", 0.1)
+	setFloat(2, "displayScale", 0.1)
+	setFloat(3, "displayScale", 0.1)
+	setFloat(4, "displayScale", 0.1)
 
-		setVec3(i, "displayPosition", vec3(x,y,z))
-		setFloat(i, "displayScale", 0.1)
+	setFloat(1, "displayIntensity", getFloat("intensityA"))
+	setFloat(2, "displayIntensity", getFloat("intensityB"))
+	setFloat(3, "displayIntensity", getFloat("intensityC"))
+	setFloat(4, "displayIntensity", getFloat("intensityD"))
 
-	end
-
-	return true
 end
-
-
--- function init()
--- 	addVec3Parameter("test", 0, 100, vec3(1,2,3))
--- 	return true
--- end
-
-
--- timePassed = 0.0
-
--- function update(t)
--- 	timePassed = timePassed + t
--- 	log("hey! " .. timePassed)
--- 	test = getVec3("test");
--- 	return test.x
--- end
