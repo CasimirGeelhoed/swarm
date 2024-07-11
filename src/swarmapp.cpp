@@ -373,7 +373,7 @@ namespace nap
 	void CoreApp::showSettings()
 	{
 		showScriptSelector();
-		
+
 		ImGui::Separator();
 		
 		ImGui::PushItemWidth(200);
@@ -619,7 +619,7 @@ namespace nap
 		auto textWidth = ImGui::CalcTextSize(mStatusMessage.c_str()).x;
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2.f - textWidth / 2.f, windowHeight - 75));
 		bool b = true;
-		ImGui::Begin("status", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+		ImGui::Begin("status", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
 		ImGui::Text(mStatusMessage.c_str());
 		ImGui::End();
 	}
@@ -636,14 +636,16 @@ namespace nap
 		
 		const std::string& message = messages.back();
 		
+		auto textHeight = ImGui::CalcTextSize(message.c_str()).y;
 		ImGui::SetNextWindowPos(ImVec2(0, 60));
-		auto textWidth = ImGui::CalcTextSize(message.c_str()).x;
-		bool b = true;
-		ImGui::Begin("luaMessage", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+		ImGui::SetNextWindowSize(ImVec2(mRenderWindow->getWidthPixels(), 250));
 		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255,0,0,255));
-		ImGui::Text(message.c_str());
-		ImGui::PopStyleColor();
+		bool b = true;
+		ImGui::Begin("luaMessage", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+		ImGui::TextWrapped(message.c_str());
 		ImGui::End();
+		ImGui::PopStyleColor();
+
 	}
 	
 	
@@ -654,7 +656,7 @@ namespace nap
 		
 		ImGui::SetNextWindowPos(ImVec2(windowWidth - 520, windowHeight - 75));
 		bool b = true;
-		ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+		ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
 		ImGui::Text("Swarm v0.1 - by Casimir Geelhoed");
 		ImGui::End();
 	}

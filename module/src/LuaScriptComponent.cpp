@@ -105,7 +105,7 @@ namespace nap
 		bool canGetModTime = utility::getFileModificationTime(mScript->mPath, modTime);
 		if (canGetModTime && modTime != mLastModTime)
 		{
-			// a real-time edit has happend, reload the script
+			// a real-time edit has happened, reload the script
 			mLastModTime = modTime;
 			utility::ErrorState e;
 			loadScript(mScript->mPath, e);
