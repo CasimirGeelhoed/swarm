@@ -25,7 +25,6 @@ namespace nap
 	public:
 		LuaScriptComponent() : Component() { }
 		
-		nap::ResourcePtr<LuaScript> mScript; ///< Property: pointer to the Lua script.
 		nap::ResourcePtr<ParameterData> mParameterData; ///< Property: pointer to the parameters.
 		nap::ResourcePtr<OutputData> mOutputData; ///< Property: pointer to the output data.
 		
@@ -44,14 +43,20 @@ namespace nap
 		virtual void update(double deltaTime) override;
 		
 		/**
+		 * Instantiates a LuaScript based on a given path. Called from the App.
+		 */
+		bool loadScript(const std::string& path, utility::ErrorState& errorState);
+		
+		/**
 		 * Returns the received Lua log messages.
 		 */
 		const std::vector<std::string>& getLogMessages() { return mLogMessages; }
 		
 	private:
 		void logMessage(const std::string& message);
-		
-		LuaScript* mScript = nullptr;
+				
+		std::unique_ptr<LuaScript> mScript = nullptr;
+
 		OutputData* mOutputData = nullptr;
 		ParameterData* mParameterData = nullptr;
 		

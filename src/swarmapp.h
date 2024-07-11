@@ -100,7 +100,13 @@ namespace nap
 		// Updates the OSC rate according to the current configuration.
 		void updateOSCRate();
 		
+		// Loads the script.
+		void loadScript();
+		
 		// GUI's
+		void initScriptSelector();
+		void showScriptSelector();
+
 		void showLuaLog();
 		void showOSCLog();
 		void showSettings();
@@ -118,6 +124,10 @@ namespace nap
 		std::string mStatusMessage = "";
 		bool mShowStatusMessage = false;
 		float mStatusMessageTimer = 0.0f;
+		
+		std::vector<std::string> mScriptPaths;
+		std::vector<std::string> mScriptNames;
+		int mSelectedScriptIndex = 0;
 		
 		SwarmServiceConfiguration* mConfig;
 		

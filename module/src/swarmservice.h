@@ -13,6 +13,8 @@ namespace nap
 	public:
 		rtti::TypeInfo getServiceType() const;
 		
+		std::string mScriptPath = "scripts/script.lua";
+		
 		std::string mOSCOutputAddress = "127.0.0.1";
 		int mOSCOutputPort = 7000;
 		

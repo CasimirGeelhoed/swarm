@@ -1,5 +1,38 @@
 
 
+-- sourcesCount = 5
+
+-- function init()
+-- 	setCount(sourcesCount)
+
+-- 	addVec3Field("displayPosition")
+-- end
+
+
+
+-- function update(t)
+
+-- 	for i = 1, sourcesCount do
+-- 		setVec3(i, "displayPosition", vec3(i, 0, 0))
+-- 	end
+
+-- end
+
+
+-- sourcesCount = 1
+
+-- function init()
+-- 	setCount(sourcesCount)
+
+-- end
+
+
+-- function update(t)
+
+
+-- end
+
+
 
 
 sourcesCount = 100
@@ -36,6 +69,7 @@ function init()
 
 	return true
 end
+
 
 
 

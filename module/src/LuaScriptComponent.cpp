@@ -12,7 +12,6 @@
 
 // RTTI
 RTTI_BEGIN_CLASS(nap::LuaScriptComponent)
-	RTTI_PROPERTY("Script", &nap::LuaScriptComponent::mScript, nap::rtti::EPropertyMetaData::Required)
 	RTTI_PROPERTY("ParameterData", &nap::LuaScriptComponent::mParameterData, nap::rtti::EPropertyMetaData::Required)
 	RTTI_PROPERTY("OutputData", &nap::LuaScriptComponent::mOutputData, nap::rtti::EPropertyMetaData::Required)
 RTTI_END_CLASS
@@ -27,7 +26,6 @@ namespace nap
 
 	LuaScriptComponentInstance::LuaScriptComponentInstance(EntityInstance& entity, Component& resource) : ComponentInstance(entity, resource)
 	{
-		mScript = getComponent<LuaScriptComponent>()->mScript.get();
 		mOutputData = getComponent<LuaScriptComponent>()->mOutputData.get();
 		mParameterData = getComponent<LuaScriptComponent>()->mParameterData.get();
 	}
@@ -37,6 +35,29 @@ namespace nap
 	{
 		// reserve space for log messages
 		mLogMessages.reserve(25);
+		
+		return true;
+	}
+	
+	
+	bool LuaScriptComponentInstance::loadScript(const std::string& path, utility::ErrorState& errorState)
+	{
+		// clear data
+		mOutputData->clear();
+		mParameterData->clear();
+		
+		// clear old log messages
+		mLogMessages.clear();
+		
+		// make resource, set mScript back to nullptr if it fails
+		mScript = std::make_unique<LuaScript>();
+		mScript->mPath = path;
+		if(!mScript->init(errorState))
+		{
+			logMessage("Script not found: " + path);
+			mScript = nullptr;
+			return false;
+		}
 		
 		// get the Lua namespace
 		auto luaNamespace = mScript->getNamespace();
@@ -56,21 +77,22 @@ namespace nap
 		
 		// expose log function
 		luaNamespace.addFunction("log", [&](const std::string& message) { logMessage(message); });
-		
-		// clear data
-		mOutputData->clear();
-		mParameterData->clear();
-		
-		// call 'init'
+				
+		// call script's 'init' function
 		utility::ErrorState e;
 		if(!mScript->callVoid("init", e))
 			logMessage(e.toString());
 		
 		return true;
+		
 	}
+
 
 	void LuaScriptComponentInstance::update(double deltaTime)
 	{
+		if(!mScript)
+			return;
+		
 		// call 'update'
 		utility::ErrorState e;
 		if(!mScript->callVoid("update", e, deltaTime))

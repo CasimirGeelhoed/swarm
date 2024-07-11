@@ -117,6 +117,9 @@ namespace nap
 		restartOSCSender();
 		updateOSCRate();
 		updateSelectedData();
+		
+		loadScript();
+		initScriptSelector();
 	}
 	
 	
@@ -352,8 +355,27 @@ namespace nap
 	}
 	
 	
+	void CoreApp::loadScript()
+	{
+
+		auto luaScriptComponent = mControllingEntity->findComponent<LuaScriptComponentInstance>();
+		assert(luaScriptComponent);
+		
+		utility::ErrorState e;
+		if(luaScriptComponent->loadScript(mConfig->mScriptPath, e))
+			setStatusMessage("Loaded script: " + mConfig->mScriptPath, 5.0f);
+		else
+			setStatusMessage("Failed to load script: " + mConfig->mScriptPath, 5.0f);
+		
+	}
+
+	
 	void CoreApp::showSettings()
 	{
+		showScriptSelector();
+		
+		ImGui::Separator();
+		
 		ImGui::PushItemWidth(200);
 		static char buf[16] = "";
 		std::copy(mConfig->mOSCOutputAddress.begin(), mConfig->mOSCOutputAddress.end(), buf);
@@ -399,6 +421,50 @@ namespace nap
 		
 	}
 	
+	
+	static bool vector_getter(void* vec, int idx, const char** out_text)
+	{
+		auto& vector = *static_cast<std::vector<std::string>*>(vec);
+		if (idx < 0 || idx >= static_cast<int>(vector.size())) { return false; }
+		*out_text = vector.at(idx).c_str();
+		return true;
+	};
+
+	
+	void CoreApp::initScriptSelector()
+	{
+		// read all directory files
+		utility::listDir("scripts", mScriptPaths);
+				
+		// filter out non-lua files
+		mScriptPaths.erase(std::remove_if(mScriptPaths.begin(), mScriptPaths.end(), [&](const std::string& s) -> bool { return utility::getFileExtension(s) != "lua"; }), mScriptPaths.end());
+		
+		// sort alphabetically
+		std::sort(mScriptPaths.begin(), mScriptPaths.end());
+		
+		// set selected script index
+		for(int i = 0; i < mScriptPaths.size(); i++)
+			if(mScriptPaths[i] == mConfig->mScriptPath)
+				mSelectedScriptIndex = i;
+		
+		// get file names without extension to display
+		for(auto& s : mScriptPaths)
+			mScriptNames.emplace_back(utility::getFileNameWithoutExtension(s));
+	}
+
+	
+	void CoreApp::showScriptSelector()
+	{
+		// show combo
+		if (ImGui::Combo("Script", &mSelectedScriptIndex, vector_getter,
+						 static_cast<void*>(&mScriptNames), mScriptNames.size()))
+		{
+			mConfig->mScriptPath = mScriptPaths[mSelectedScriptIndex]; // change selected script in config
+			writeConfig(); // save changes to config file
+			loadScript(); // try to load the newly selected script
+		}
+	}
+
 	
 	void CoreApp::showEditableParameters()
 	{
