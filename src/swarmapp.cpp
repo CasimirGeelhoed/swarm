@@ -118,8 +118,8 @@ namespace nap
 		updateOSCRate();
 		updateSelectedData();
 		
-		loadScript();
 		initScriptSelector();
+		loadScript();
 	}
 	
 	
@@ -357,7 +357,6 @@ namespace nap
 	
 	void CoreApp::loadScript()
 	{
-
 		auto luaScriptComponent = mControllingEntity->findComponent<LuaScriptComponentInstance>();
 		assert(luaScriptComponent);
 		
@@ -446,6 +445,10 @@ namespace nap
 		for(int i = 0; i < mScriptPaths.size(); i++)
 			if(mScriptPaths[i] == mConfig->mScriptPath)
 				mSelectedScriptIndex = i;
+		
+		// if the config script path was not found, set it to the first script path
+		if(mSelectedScriptIndex == 0)
+			mConfig->mScriptPath = mScriptPaths[0];
 		
 		// get file names without extension to display
 		for(auto& s : mScriptPaths)
