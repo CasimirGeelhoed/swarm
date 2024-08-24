@@ -108,7 +108,8 @@ namespace nap
 			// a real-time edit has happened, reload the script
 			mLastModTime = modTime;
 			utility::ErrorState e;
-			loadScript(mScript->mPath, e);
+			std::string pathCopy = mScript->mPath;
+			loadScript(pathCopy, e);
 		}
 
 	}
