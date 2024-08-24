@@ -55,11 +55,12 @@ namespace nap
 		 */
 		void draw(IRenderTarget& renderTarget, PerspCameraComponentInstance& perspCamera, glm::vec3 color);
 		
+		glm::vec2 mLabelOffset;
+		
 	private:
 		ComponentInstancePtr<Renderable2DTextComponent> mRenderableTextComponent = { this, &LabelsRenderingComponent::mRenderableTextComponent }; ///< Property: 'RenderableTextComponent' The component that takes care of text rendering.
 		
 		OutputData* mData = nullptr;
-		glm::vec2 mLabelOffset;
 		
 		int mCount = 0;
 		std::vector<glm::vec3> mPositions; // TODO: is it really necessary to copy this data?

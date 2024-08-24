@@ -75,7 +75,6 @@ namespace nap
 		virtual int shutdown() override;
 		
 	private:
-		
 		// Reapplies settings from config, such as OSC sender, OSC rate, selectedData. Triggered on init and after each hotload.
 		void postResourcesLoaded();
 		
@@ -103,10 +102,11 @@ namespace nap
 		// Loads the script.
 		void loadScript();
 		
-		// GUI's
+		// Initialises the script selector GUI.
 		void initScriptSelector();
-		void showScriptSelector();
 
+		//  GUIs
+		void showScriptSelector();
 		void showLuaLog();
 		void showOSCLog();
 		void showSettings();
@@ -154,11 +154,13 @@ namespace nap
 		ResourcePtr<OutputData> mOutputData = nullptr;
 		ResourcePtr<ParameterData> mParameterData = nullptr;
 		
-		
 		nap::Slot<> mPostResourcesLoadedSlot    = { [&]() -> void { postResourcesLoaded(); } };
 		
 		glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
 		glm::vec3 mDarkColor = { 0.1f, 0.1f, 0.1f };
+		
+		// Multiplier applied on all pixel values, so that positions appear similar across screens with different resolutions.
+		float mPixelMultiplier = 0.f;
 		
 	};
 }

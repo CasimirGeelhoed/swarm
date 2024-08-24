@@ -101,6 +101,19 @@ namespace nap
 		if (!error.check(mOSCSender != nullptr, "unable to find resource with name: %s", "OSCSender"))
 			return false;
 		
+		// Calculate pixel multiplier (2.75 is the scale of the computer I am working at).
+		mPixelMultiplier = mGuiService->getScale() / 2.75;
+		
+		// Apply pixel multiplier to labels rendering components.
+		auto* indicesRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("IndicesRenderingComponent");
+		if (!error.check(indicesRenderingComponent != nullptr, "unable to find component with name: %s", "IndicesRenderingComponent"))
+			return false;
+		indicesRenderingComponent->mLabelOffset *= mPixelMultiplier;
+		
+		auto* dataLabelsRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("DataLabelsRenderingComponent");
+		if (!error.check(dataLabelsRenderingComponent != nullptr, "unable to find component with name: %s", "DataLabelsRenderingComponent"))
+		dataLabelsRenderingComponent->mLabelOffset *= mPixelMultiplier;
+		
 		// Restart OSC sender, update OSC rate, select data, etc..
 		postResourcesLoaded();
 		
@@ -259,8 +272,8 @@ namespace nap
 	{
 		int windowWidth = mRenderWindow->getWidthPixels();
 		int windowHeight = mRenderWindow->getHeightPixels();
-		int settingsWidth = 500;
-		int monitorWidth = 350;
+		int settingsWidth = 500 * mPixelMultiplier;
+		int monitorWidth = 350 * mPixelMultiplier;
 		int paramWidth = 0.66 * (windowWidth - settingsWidth - monitorWidth);
 		int dataWidth = windowWidth - settingsWidth - monitorWidth - paramWidth;
 		
@@ -306,7 +319,7 @@ namespace nap
 		}
 		else
 		{
-			ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 32 - 100 * (i++)));
+			ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 32 * mPixelMultiplier - 100 * mPixelMultiplier * (i++)));
 			bool b = true;
 			ImGui::Begin("lualogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
 			if(ImGui::Button("Lua Log"))
@@ -322,7 +335,7 @@ namespace nap
 		}
 		else
 		{
-			ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 32 - 100 * (i++)));
+			ImGui::SetNextWindowPos(ImVec2(0, windowHeight - 32 * mPixelMultiplier - 100 * mPixelMultiplier * (i++)));
 			bool b = true;
 			ImGui::Begin("osclogbutton", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize );
 			if(ImGui::Button("OSC Log"))
@@ -620,7 +633,7 @@ namespace nap
 		int windowHeight = mRenderWindow->getHeightPixels();
 		
 		auto textWidth = ImGui::CalcTextSize(mStatusMessage.c_str()).x;
-		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2.f - textWidth / 2.f, windowHeight - 75));
+		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2.f - textWidth / 2.f, windowHeight - 75 * mPixelMultiplier));
 		bool b = true;
 		ImGui::Begin("status", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
 		ImGui::Text(mStatusMessage.c_str());
@@ -640,8 +653,8 @@ namespace nap
 		const std::string& message = messages.back();
 		
 		auto textHeight = ImGui::CalcTextSize(message.c_str()).y;
-		ImGui::SetNextWindowPos(ImVec2(0, 60));
-		ImGui::SetNextWindowSize(ImVec2(mRenderWindow->getWidthPixels(), 250));
+		ImGui::SetNextWindowPos(ImVec2(0, 60 * mPixelMultiplier));
+		ImGui::SetNextWindowSize(ImVec2(mRenderWindow->getWidthPixels(), 250 * mPixelMultiplier));
 		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255,0,0,255));
 		bool b = true;
 		ImGui::Begin("luaMessage", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
@@ -657,7 +670,7 @@ namespace nap
 		int windowWidth = mRenderWindow->getWidthPixels();
 		int windowHeight = mRenderWindow->getHeightPixels();
 		
-		ImGui::SetNextWindowPos(ImVec2(windowWidth - 520, windowHeight - 75));
+		ImGui::SetNextWindowPos(ImVec2(windowWidth - 520 * mPixelMultiplier, windowHeight - 75 * mPixelMultiplier));
 		bool b = true;
 		ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
 		ImGui::Text("Swarm v0.1 - by Casimir Geelhoed");
