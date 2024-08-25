@@ -12,18 +12,18 @@ RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::swarmService)
 RTTI_END_CLASS
 
 RTTI_BEGIN_CLASS(nap::SwarmServiceConfiguration)
-	RTTI_PROPERTY("Gnomon", &nap::SwarmServiceConfiguration::mGnomon, nap::rtti::EPropertyMetaData::Default)
-	RTTI_PROPERTY("CircleGrid", &nap::SwarmServiceConfiguration::mCircleGrid, nap::rtti::EPropertyMetaData::Default)
-	RTTI_PROPERTY("Shadows", &nap::SwarmServiceConfiguration::mShadows, nap::rtti::EPropertyMetaData::Default)
-	RTTI_PROPERTY("DarkMode", &nap::SwarmServiceConfiguration::mDarkMode, nap::rtti::EPropertyMetaData::Default)
-	RTTI_PROPERTY("Labels", &nap::SwarmServiceConfiguration::mLabels, nap::rtti::EPropertyMetaData::Default)
-	RTTI_PROPERTY("CapFPS", &nap::SwarmServiceConfiguration::mCapFPS, nap::rtti::EPropertyMetaData::Default)
-	RTTI_PROPERTY("EditParameters", &nap::SwarmServiceConfiguration::mEditParameters, nap::rtti::EPropertyMetaData::Default)
 	RTTI_PROPERTY("ScriptPath", &nap::SwarmServiceConfiguration::mScriptPath, nap::rtti::EPropertyMetaData::Default)
-	RTTI_PROPERTY("SelectedData", &nap::SwarmServiceConfiguration::mSelectedData, nap::rtti::EPropertyMetaData::Default)
 	RTTI_PROPERTY("OSCOutputAddress", &nap::SwarmServiceConfiguration::mOSCOutputAddress, nap::rtti::EPropertyMetaData::Default)
 	RTTI_PROPERTY("OSCOutputPort", &nap::SwarmServiceConfiguration::mOSCOutputPort, nap::rtti::EPropertyMetaData::Default)
 	RTTI_PROPERTY("OSCRate", &nap::SwarmServiceConfiguration::mOSCRate, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("Gnomon", &nap::SwarmServiceConfiguration::mGnomon, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("Shadows", &nap::SwarmServiceConfiguration::mShadows, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("CircleGrid", &nap::SwarmServiceConfiguration::mCircleGrid, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("DarkMode", &nap::SwarmServiceConfiguration::mDarkMode, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("CapFPS", &nap::SwarmServiceConfiguration::mCapFPS, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("EditParameters", &nap::SwarmServiceConfiguration::mEditParameters, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("Labels", &nap::SwarmServiceConfiguration::mLabels, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("SelectedData", &nap::SwarmServiceConfiguration::mSelectedData, nap::rtti::EPropertyMetaData::Default)
 RTTI_END_CLASS
 
 

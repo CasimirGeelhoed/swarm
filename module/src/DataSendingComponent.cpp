@@ -25,7 +25,7 @@ namespace nap
 	}
 
 	
-	// send out a vec3 as an OSC message
+	// Send out a vec3 as an OSC message.
 	static void sendOSC(OSCSender& sender, const std::string& address, const glm::vec3& value)
 	{
 		OSCEvent event(address);
@@ -36,7 +36,7 @@ namespace nap
 	}
 
 	
-	// send out a float as an OSC message
+	// Send out a float as an OSC message.
 	static void sendOSC(OSCSender& sender, const std::string& address, float value)
 	{
 		OSCEvent event(address);
@@ -51,11 +51,11 @@ namespace nap
 	{
 		std::string address = fieldName;
 
-		// prefix with '/' if it doesn't have it
+		// Prefix with '/' if it doesn't have it.
 		if(address[0] != '/')
 			address = "/" + address;
 
-		// find '$' and replace it with the index. If '$' ws not found, prefix with '/sourceINDEX'
+		// Find '$' and replace it with the index. If '$' ws not found, prefix with '/sourceINDEX'.
 		size_t pos = address.find('$');
 		if(address.find('$') == std::string::npos)
 			address = "/source" + std::to_string(index) + address;
@@ -74,7 +74,7 @@ namespace nap
 		{
 			mTimer = 0.f;
 			
-			// read all data and send it out as osc
+			// Read all data and send it out as osc.
 			for(auto& it : mData->getFloatFields())
 				for(int i = 0; i < it.second.size(); i++)
 					sendOSC(*mOSCSender, fieldNameToAddress(it.first, i+1), it.second[i]);

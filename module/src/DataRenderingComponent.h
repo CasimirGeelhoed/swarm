@@ -29,10 +29,10 @@ namespace nap
 		virtual void getDependentComponents(std::vector<rtti::TypeInfo>& components) const override;
 		
 		// Component Properties
-		MaterialInstanceResource mMaterialInstanceResource;           ///< Property: 'MaterialInstance' the material used to shade the text
-		rtti::ObjectPtr<IMesh> mMesh;                             ///< Property: 'Mesh' mesh to copy onto target
+		MaterialInstanceResource mMaterialInstanceResource; ///< Property: 'MaterialInstance' the material used to shade the text
+		rtti::ObjectPtr<IMesh> mMesh; ///< Property: 'Mesh' mesh to copy onto target
 		
-		bool mDynamicColoring = true;
+		bool mDynamicColoring = true; ///< Property: Whether the coloring of elements will be dependant on real-time data.
 		
 		ResourcePtr<OutputData> mData;  ///< Property: 'Data' pointer to the data resource.
 	};

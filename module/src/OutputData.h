@@ -6,7 +6,6 @@
 
 namespace nap {
 	
-	// TODO: also bool type, string type?
 	/**
 	 * Resource that holds all data to be sent out. Data fields are created and set by the python script and read out by the monitor and OSC sender.
 	 */

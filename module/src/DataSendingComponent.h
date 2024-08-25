@@ -24,12 +24,11 @@ namespace nap
 	public:
 		DataSendingComponent() : Component() { }
 		
-		ResourcePtr<OSCSender> mOSCSender; ///< The OSC Sender.
-		ResourcePtr<OutputData> mData; ///< The data set.
+		ResourcePtr<OSCSender> mOSCSender; ///< Property: 'OSCSender' The OSC Sender.
+		ResourcePtr<OutputData> mData; ///< Property: 'Data' The data set to output.
 	};
 	
 	
-	// TODO: create adjustable translations of name&index -> address, to be compatible with different software.
 	class NAPAPI DataSendingComponentInstance : public ComponentInstance
 	{
 		RTTI_ENABLE(ComponentInstance)
@@ -40,6 +39,10 @@ namespace nap
 		
 		void update(double deltaTime) override;
 		
+		/**
+		 * Sets the OSC output rate.
+		 * @param outputRate the desired OSC output rate in times per second
+		 */
 		void setOutputRate(double outputRate) { mOutputInterval = 1.0 / outputRate; }
 		
 	private:

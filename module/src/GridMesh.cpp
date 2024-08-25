@@ -32,11 +32,11 @@ namespace nap
 			positions.emplace_back(glm::vec3(0.5, 0, i / (mLines - 1.0f) - 0.5f));
 		}
 		
-		// Create mesh
+		// Create mesh.
 		assert(mRenderService != nullptr);
 		mMeshInstance = std::make_unique<nap::MeshInstance>(*mRenderService);
 		
-		// Add vertex position
+		// Add vertex position.
 		nap::VertexAttribute<glm::vec3>& pattr = mMeshInstance->getOrCreateAttribute<glm::vec3>(vertexid::position);
 		
 		std::vector<glm::vec3> v_pos;
@@ -44,14 +44,14 @@ namespace nap
 		for (const auto& it : positions)
 			v_pos.emplace_back((it));
 		
-		// Set data
+		// Set data.
 		pattr.setData(v_pos);
 		
-		// Create shape and generate indicies
+		// Create shape and generate indicies.
 		nap::MeshShape& shape = mMeshInstance->createShape();
 		shape.reserveIndices(mLines * 4);
 		
-		// Grid of lines.
+		// Create grid of lines.
 		for(int i = 0; i < mLines; i++)
 		{
 			shape.addIndex(i * 4);
@@ -60,13 +60,13 @@ namespace nap
 			shape.addIndex(i * 4 + 3);
 		}
 		
-		// Set other mesh properties
+		// Set other mesh properties.
 		mMeshInstance->setCullMode(ECullMode::None);
 		mMeshInstance->setNumVertices(mLines * 4);
 		mMeshInstance->setDrawMode(EDrawMode::Lines);
 		mMeshInstance->setUsage(EMemoryUsage::Static);
 		
-		// Initialize
+		// Initialize.
 		return mMeshInstance->init(errorState);
 	}
 }

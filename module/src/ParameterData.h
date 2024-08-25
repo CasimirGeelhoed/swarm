@@ -7,9 +7,6 @@
 
 namespace nap {
 	
-	
-	// TODO: more data types?
-	
 	/**
 	 * Data structure for input parameters.
 	 */

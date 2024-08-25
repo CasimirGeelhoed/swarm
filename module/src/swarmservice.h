@@ -13,22 +13,21 @@ namespace nap
 	public:
 		rtti::TypeInfo getServiceType() const;
 		
-		std::string mScriptPath = "scripts/script.lua";
+		std::string mScriptPath = "scripts/script.lua"; ///< Property: 'ScriptPath' The path of the script.
 		
-		std::string mOSCOutputAddress = "127.0.0.1";
-		int mOSCOutputPort = 7000;
+		std::string mOSCOutputAddress = "127.0.0.1"; ///< Property: 'OSCOutputAddress'  The OSC output address.
+		int mOSCOutputPort = 7000; ///< Property: 'OSCOutputAddress'  The OSC output port.
+		float mOSCRate = 30.f; ///< Property: 'OSCRate'  The OSC output rate.
 		
-		bool mGnomon = true;
-		bool mShadows = true;
-		bool mCircleGrid = true;
-		bool mDarkMode = true;
-		bool mLabels = true;
-		bool mCapFPS = true;
-		bool mEditParameters = true;
-		
-		float mOSCRate = 30.f;
-		
-		std::string mSelectedData = "";
+		bool mGnomon = true; ///< Property: 'Gnomon'  Whether the gnomon is beying displayed.
+		bool mShadows = true; ///< Property: 'Shadows'  Whether the shadows are beying displayed.
+		bool mCircleGrid = true; ///< Property: 'CircleGrid'  Whether the displayed grid is circular or rectangular.
+		bool mDarkMode = true; ///< Property: 'DarkMode'  Whether darkmode is enabled.
+		bool mCapFPS = true; ///< Property: 'CapFPS'  Whether the display frame rate is being capped to 60FPS.
+		bool mEditParameters = true; ///< Property: 'EditParameters'  Whether input parameters are editable in the GUI.
+		bool mLabels = true; ///< Property: 'Labels'  Whether source labels are being displayed.
+
+		std::string mSelectedData = ""; ///< Property: 'SelectedData' The currently selected output data to display in the source labels.
 	};
 	
 	

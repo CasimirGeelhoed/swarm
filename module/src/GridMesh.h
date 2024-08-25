@@ -17,15 +17,9 @@ namespace nap
 		// Constructor
 		GridMesh(Core& core);
 		
-		/**
-		 * Creates the mesh.
-		 * @param errorState contains the error message when initialization fails.
-		 * @return if initialization succeeded.
-		 */
 		virtual bool init(utility::ErrorState& errorState) override;
 		
-		
-		int mLines = 20; ///< Property.
+		int mLines = 20; ///< Property: The number of lines in the grid.
 		
 		/**
 		 * @return the mesh instance

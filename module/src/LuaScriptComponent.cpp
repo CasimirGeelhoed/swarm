@@ -35,7 +35,7 @@ namespace nap
 
 	bool LuaScriptComponentInstance::init(utility::ErrorState& errorState)
 	{
-		// reserve space for log messages
+		// Reserve space for log messages.
 		mLogMessages.reserve(25);
 		
 		return true;
@@ -44,14 +44,14 @@ namespace nap
 	
 	bool LuaScriptComponentInstance::loadScript(const std::string& path, utility::ErrorState& errorState)
 	{
-		// clear data
+		// Clear data.
 		mOutputData->clear();
 		mParameterData->clear();
 		
-		// clear old log messages
+		// Clear old log messages.
 		mLogMessages.clear();
 		
-		// make resource, set mScript back to nullptr if it fails
+		// Make resource, set mScript back to nullptr if it fails.
 		mScript = std::make_unique<LuaScript>();
 		mScript->mPath = path;
 		if(!mScript->init(errorState))
@@ -61,26 +61,26 @@ namespace nap
 			return false;
 		}
 		
-		// get the Lua namespace
+		// Get the Lua namespace.
 		auto luaNamespace = mScript->getNamespace();
 		
-		// expose ParameterData functions
+		// Expose ParameterData functions.
 		luaNamespace.addFunction("addVec3Parameter", [&](const std::string& name, float min, float max, glm::vec3 value) { mParameterData->addVec3Parameter(name, min, max, value); });
 		luaNamespace.addFunction("addFloatParameter", [&](const std::string& name, float min, float max, float value) { mParameterData->addFloatParameter(name, min, max, value); });
 		luaNamespace.addFunction("getFloat", [&](const std::string& name) { return mParameterData->getFloat(name); });
 		luaNamespace.addFunction("getVec3", [&](const std::string& name) { return mParameterData->getVec3(name); });
 		
-		// expose OutputData functions
+		// Expose OutputData functions.
 		luaNamespace.addFunction("addVec3Field", [&](const std::string& name) { mOutputData->addVec3Field(name); });
 		luaNamespace.addFunction("addFloatField", [&](const std::string& name) { mOutputData->addFloatField(name); });
 		luaNamespace.addFunction("setCount", [&](int count) { return mOutputData->setSize(count); });
 		luaNamespace.addFunction("setVec3", [&](int index, const std::string& name, glm::vec3 value) { return mOutputData->setVec3(index, name, value); });
 		luaNamespace.addFunction("setFloat", [&](int index, const std::string& name, float value) { return mOutputData->setFloat(index, name, value); });
 		
-		// expose log function
+		// Expose log function.
 		luaNamespace.addFunction("log", [&](const std::string& message) { logMessage(message); });
 				
-		// call script's 'init' function
+		// Call script's 'init' function.
 		utility::ErrorState e;
 		if(!mScript->callVoid("init", e))
 			logMessage(e.toString());
@@ -95,12 +95,12 @@ namespace nap
 		if(!mScript)
 			return;
 		
-		// call 'update'
+		// Call 'update'.
 		utility::ErrorState e;
 		if(!mScript->callVoid("update", e, deltaTime))
 			logMessage(e.toString());
 		
-		// check for real-time edit to script
+		// Check for real-time edit to script.
 		uint64 modTime;
 		bool canGetModTime = utility::getFileModificationTime(mScript->mPath, modTime);
 		if (canGetModTime && modTime != mLastModTime)
@@ -117,13 +117,13 @@ namespace nap
 
 	void LuaScriptComponentInstance::logMessage(const std::string& message)
 	{
-		// log to console
+		// Log to console.
 		Logger::info(message);
 		
-		// add message to message queue
+		// Add message to message queue.
 		mLogMessages.emplace_back(message);
 		
-		// remove first element when out of range
+		// Remove first element when out of range.
 		if (mLogMessages.size() > 25)
 			mLogMessages.erase(mLogMessages.begin());
 	}

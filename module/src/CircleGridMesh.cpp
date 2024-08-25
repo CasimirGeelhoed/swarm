@@ -30,19 +30,19 @@ namespace nap
 			for(int i = 0; i < mSectors; i++)
 				positions.emplace_back( 0.5f * ((j + 1) / (float)mCircles) * glm::vec3(cos(math::PIX2 * (i / (float)mSectors)), 0.0, sin(math::PIX2 * (i / (float)mSectors))));
 		
-		// Meridian positions
+		// Calculate meridian positions.
 		for(int i = 0; i < mMeridians; i++)
 			positions.emplace_back( 0.5f * glm::vec3(cos(math::PIX2 * (i / (float)mMeridians)), 0.0, sin(math::PIX2 * (i / (float)mMeridians))));
 		
-		// Center position
+		// Emplace the center position.
 		positions.emplace_back(glm::vec3(0,0,0));
 		
 		
-		// Create mesh
+		// Create mesh.
 		assert(mRenderService != nullptr);
 		mMeshInstance = std::make_unique<nap::MeshInstance>(*mRenderService);
 		
-		// Add vertex position and color attribute
+		// Add vertex position and color attribute.
 		nap::VertexAttribute<glm::vec3>& pattr = mMeshInstance->getOrCreateAttribute<glm::vec3>(vertexid::position);
 		
 		std::vector<glm::vec3> v_pos;
@@ -50,14 +50,14 @@ namespace nap
 		for (const auto& it : positions)
 			v_pos.emplace_back((it));
 		
-		// Set data
+		// Set data.
 		pattr.setData(v_pos);
 		
-		// Create shape and generate indicies
+		// Create shape and generate indicies.
 		nap::MeshShape& shape = mMeshInstance->createShape();
 		shape.reserveIndices(mSectors * 2);
 		
-		// Concentric circles
+		// Add concentric circles to shape.
 		for(int j = 0; j < mCircles; j++)
 		{
 			int offset = j * mSectors;
@@ -70,7 +70,7 @@ namespace nap
 			shape.addIndex(offset + 0);
 		}
 		
-		// Meridians
+		// Add meridians to shape.
 		for(int i = 0; i < mMeridians; i++)
 		{
 			int offset = mCircles * mSectors;
@@ -78,13 +78,13 @@ namespace nap
 			shape.addIndex(mCircles * mSectors + mMeridians);
 		}
 		
-		// Set other mesh properties
+		// Set other mesh properties.
 		mMeshInstance->setCullMode(ECullMode::None);
 		mMeshInstance->setNumVertices(mCircles * mSectors + mMeridians + 1);
 		mMeshInstance->setDrawMode(EDrawMode::Lines);
 		mMeshInstance->setUsage(EMemoryUsage::Static);
 		
-		// Initialize
+		// Initialize.
 		return mMeshInstance->init(errorState);
 		
 	}

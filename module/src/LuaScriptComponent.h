@@ -15,7 +15,7 @@ namespace nap
 	class LuaScriptComponentInstance;
 	
 	/**
-	 * Component that allows a @LuaScript to control @ParameterData and @OutputData.
+	 * Component that allows a @LuaScript to control @ParameterData and @OutputData. The Lua script can be (re)loaded at runtime.
 	 */
 	class NAPAPI LuaScriptComponent : public Component
 	{
@@ -44,11 +44,15 @@ namespace nap
 		
 		/**
 		 * Instantiates a LuaScript based on a given path. Called from the App.
+		 * @param path the path of the Lua script
+		 * @param errorState contains the error if loading the script failed
+		 * @return whether it succeeded to load the script
 		 */
 		bool loadScript(const std::string& path, utility::ErrorState& errorState);
 		
 		/**
 		 * Returns the received Lua log messages.
+		 * @return the latest log messages.
 		 */
 		const std::vector<std::string>& getLogMessages() { return mLogMessages; }
 		

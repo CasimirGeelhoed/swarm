@@ -37,23 +37,23 @@ namespace nap
 		if (!RenderableComponentInstance::init(errorState))
 			return false;
 		
-		// Get resource
+		// Get resource.
 		DataRenderingComponent* resource = getComponent<DataRenderingComponent>();
 		
-		// Get data pointer
+		// Get data pointer.
 		mData = resource->mData.get();
 		
-		// Fetch transform, used to offset the copied meshes
+		// Fetch transform, used to offset the copied meshes.
 		mTransform = getEntityInstance()->findComponent<TransformComponentInstance>();
 		if (!errorState.check(mTransform != nullptr,
 							  "%s: unable to find transform component", resource->mID.c_str()))
 			return false;
 		
-		// Initialize our material instance based on values in the resource
+		// Initialize our material instance based on values in the resource.
 		if (!mMaterialInstance.init(*mRenderService, resource->mMaterialInstanceResource, errorState))
 			return false;
 		
-		// Get handle to matrices, which we set in the draw call
+		// Get handle to matrices, which we set in the draw call.
 		UniformStructInstance* mvp_struct = mMaterialInstance.getOrCreateUniform(uniform::mvpStruct);
 		if (mvp_struct != nullptr)
 		{
@@ -62,7 +62,7 @@ namespace nap
 			mProjectMatUniform = mvp_struct->getOrCreateUniform<UniformMat4Instance>(uniform::projectionMatrix);
 		}
 		
-		// Create renderable mesh from draw mesh
+		// Create renderable mesh from draw mesh.
 		mMesh = mRenderService->createRenderableMesh(*resource->mMesh, mMaterialInstance, errorState);
 		if (!errorState.check(mMesh.isValid(), "Mesh can't be copied"))
 			return false;
@@ -90,23 +90,23 @@ namespace nap
 
 	static void renderMesh(RenderService& renderService, RenderService::Pipeline& pipeline, RenderableMesh& renderableMesh, VkCommandBuffer commandBuffer)
 	{
-		// Get material to render with and descriptors for material
+		// Get material to render with and descriptors for material.
 		MaterialInstance& mat_instance = renderableMesh.getMaterialInstance();
 		const DescriptorSet& descriptor_set = mat_instance.update();
 		
-		// Bind descriptor set for next draw call
+		// Bind descriptor set for next draw call.
 		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.mLayout, 0, 1, &descriptor_set.mSet, 0, nullptr);
 		
-		// Bind vertex buffers
+		// Bind vertex buffers.
 		const std::vector<VkBuffer>& vertexBuffers = renderableMesh.getVertexBuffers();
 		const std::vector<VkDeviceSize>& vertexBufferOffsets = renderableMesh.getVertexBufferOffsets();
 		vkCmdBindVertexBuffers(commandBuffer, 0, vertexBuffers.size(), vertexBuffers.data(), vertexBufferOffsets.data());
 		
-		// Get mesh to draw
+		// Get mesh to draw.
 		MeshInstance& mesh_instance = renderableMesh.getMesh().getMeshInstance();
 		GPUMesh& mesh = mesh_instance.getGPUMesh();
 		
-		// Draw individual shapes inside mesh
+		// Draw individual shapes inside mesh.
 		for (int index = 0; index < mesh_instance.getNumShapes(); ++index)
 		{
 			const IndexBuffer& index_buffer = mesh.getIndexBuffer(index);
@@ -120,27 +120,28 @@ namespace nap
 	{
 		RenderService* renderService = getEntityInstance()->getCore()->getService<RenderService>();
 		
-		// Set mvp matrices in material (if present)
+		// Set mvp matrices in material (if present).
 		if (mProjectMatUniform != nullptr)
 			mProjectMatUniform->setValue(projectionMatrix);
 		if (mViewMatUniform != nullptr)
 			mViewMatUniform->setValue(viewMatrix);
 		
-		// Get points to copy onto
+		// Get the data.
+		// TODO: field names as property instead of hardcoded strings.
 		const std::vector<glm::vec3>& pos_data = mData->getVec3Field("displayPosition");
 		const std::vector<float>& scale_data = mData->getFloatField("displayScale");
 		const std::vector<float>& intensity_data = mData->getFloatField("displayIntensity");
 		bool hasScaleData = scale_data.size() == pos_data.size();
 		bool hasIntensityData = intensity_data.size() == pos_data.size();
 		
-		// Get render-pipeline for mesh / material
+		// Get render-pipeline for mesh / material.
 		utility::ErrorState error_state;
 		RenderService::Pipeline pipeline = mRenderService->getOrCreatePipeline(renderTarget, mMesh.getMesh(), mMesh.getMaterialInstance(), error_state);
 		
-		// Bind pipeline per mesh we are going to render
+		// Bind pipeline per mesh we are going to render.
 		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline.mPipeline);
 		
-		// Update scissor state
+		// Update scissor state.
 		VkRect2D scissor_rect
 		{
 			{ 0, 0 },
@@ -151,10 +152,10 @@ namespace nap
 		};
 		vkCmdSetScissor(commandBuffer, 0, 1, &scissor_rect);
 		
-		// Render at all data positions
+		// Render at all data positions.
 		for (auto i = 0; i < pos_data.size(); i++)
 		{
-			// Calculate model matrix
+			// Calculate model matrix.
 			glm::mat4x4 mat = glm::translate(mTransform->getGlobalTransform(), pos_data[i]);
 			if(hasScaleData)
 				mat = glm::scale(mat, glm::vec3(scale_data[i]));
@@ -162,14 +163,14 @@ namespace nap
 				mat = glm::scale(mat, mDefaultScale);
 			mModelMatUniform->setValue(mat);
 			
-			// Set color
+			// Set color.
 			if(mDynamicColoring && hasIntensityData)
 			{
 				glm::vec3 color = intensity_data[i] * mBaseColor + (1.f - intensity_data[i]) * glm::vec3(0.5, 0.5, 0.5);
 				mColorUniform->setValue(color);
 			}
 			
-			// Render mesh
+			// Render mesh.
 			renderMesh(*mRenderService, pipeline, mMesh, commandBuffer);
 		}
 	}

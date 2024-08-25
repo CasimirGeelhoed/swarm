@@ -19,13 +19,13 @@ namespace nap
 
 	bool LabelsRenderingComponentInstance::init(utility::ErrorState& errorState)
 	{
-		// Get resource
+		// Get resource.
 		LabelsRenderingComponent* resource = getComponent<LabelsRenderingComponent>();
 		
-		// Get data pointer
+		// Get data pointer.
 		mData = resource->mData.get();
 		
-		// Save label offset & indices setting
+		// Save label offset & indices setting.
 		mLabelOffset = resource->mLabelOffset;
 		mIndices = resource->mIndices;
 		
@@ -94,7 +94,6 @@ namespace nap
 		
 		for(int i = 0; i < mCount; i++)
 		{
-			// Get the color based on preference (tag or regular)
 			mRenderableTextComponent->setColor(color);
 			glm::vec3 pos = glm::vec4(mPositions[i], 1.0f);
 			glm::vec3 loc = perspCamera.worldToScreen(pos, math::Rect(0, 0, renderTarget.getBufferSize().x, renderTarget.getBufferSize().y));

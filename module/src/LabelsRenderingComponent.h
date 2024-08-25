@@ -28,7 +28,7 @@ namespace nap
 		ComponentPtr<Renderable2DTextComponent> mRenderableTextComponent = nullptr; ///< Property: 'RenderableTextComponent' The component that takes care of text rendering.
 		ResourcePtr<OutputData> mData; ///< Property: 'Data' pointer to the data resource
 		
-		glm::vec2 mLabelOffset = glm::vec2(0.f); ///< Property: 2D labels offset in relation to center position.
+		glm::vec2 mLabelOffset = glm::vec2(0.f); ///< Property: 'LabelOffset' 2D labels offset in relation to center position.
 		
 		bool mIndices = false; ///< Property: if set to true, the Component will render indices instead of selected data.
 		
@@ -46,12 +46,17 @@ namespace nap
 		void update(double deltaTime) override;
 		
 		/**
-		 * Updates the texts that will be displayed by retrieving the values of the data vield with the given name and type.
+		 * Updates the texts that will be displayed by retrieving the values of the data field with the given name and type.
+		 * @param name the name of the data field
+		 * @param isVec3 whether the data field is a vec3
 		 */
 		void setDataToRender(std::string name, bool isVec3);
 		
 		/**
 		 * Draws text using the Renderable2DTextComponent. Should be called from the app's draw() function.
+		 * @param renderTarget the render target to draw to
+		 * @param perspCamera the camera
+		 * @param color the color of the text
 		 */
 		void draw(IRenderTarget& renderTarget, PerspCameraComponentInstance& perspCamera, glm::vec3 color);
 		
