@@ -270,13 +270,20 @@ namespace nap
 	
 	void CoreApp::updateGUI()
 	{
+		if(mShowStatusMessage)
+			showStatusMessage();
+		
+		showLuaErrorMessage();
+		
+		showVersionNumber();
+
 		int windowWidth = mRenderWindow->getWidthPixels();
 		int windowHeight = mRenderWindow->getHeightPixels();
 		int settingsWidth = 500 * mPixelMultiplier;
 		int monitorWidth = 350 * mPixelMultiplier;
 		int paramWidth = 0.66 * (windowWidth - settingsWidth - monitorWidth);
 		int dataWidth = windowWidth - settingsWidth - monitorWidth - paramWidth;
-		
+				
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
 		ImGui::SetNextWindowSize(ImVec2(settingsWidth, 0));
 		ImGui::SetNextWindowCollapsed(true, ImGuiCond_Once);
@@ -307,7 +314,6 @@ namespace nap
 		ImGui::Begin("Monitor");
 		showMonitorOptions();
 		ImGui::End();
-		
 		
 		int i = 1;
 		
@@ -342,15 +348,7 @@ namespace nap
 				mOSCLogVisible = true;
 			ImGui::End();
 		}
-		
-		
-		if(mShowStatusMessage)
-			showStatusMessage();
-		
-		showLuaErrorMessage();
-		
-		showVersionNumber();
-		
+				
 	}
 	
 	
@@ -385,6 +383,10 @@ namespace nap
 	void CoreApp::showSettings()
 	{
 		showScriptSelector();
+		if(ImGui::Button("Refresh list"))
+		{
+			initScriptSelector();
+		}
 
 		ImGui::Separator();
 		
@@ -446,6 +448,7 @@ namespace nap
 	void CoreApp::initScriptSelector()
 	{
 		// read all directory files
+		mScriptPaths.clear();
 		utility::listDir("scripts", mScriptPaths);
 				
 		// filter out non-lua files
@@ -464,6 +467,7 @@ namespace nap
 			mConfig->mScriptPath = mScriptPaths[0];
 		
 		// get file names without extension to display
+		mScriptNames.clear();
 		for(auto& s : mScriptPaths)
 			mScriptNames.emplace_back(utility::getFileName(s));
 	}
@@ -635,7 +639,7 @@ namespace nap
 		auto textWidth = ImGui::CalcTextSize(mStatusMessage.c_str()).x;
 		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2.f - textWidth / 2.f, windowHeight - 75 * mPixelMultiplier));
 		bool b = true;
-		ImGui::Begin("status", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+		ImGui::Begin("status", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus);
 		ImGui::Text(mStatusMessage.c_str());
 		ImGui::End();
 	}
@@ -657,7 +661,7 @@ namespace nap
 		ImGui::SetNextWindowSize(ImVec2(mRenderWindow->getWidthPixels(), 250 * mPixelMultiplier));
 		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255,0,0,255));
 		bool b = true;
-		ImGui::Begin("luaMessage", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+		ImGui::Begin("luaMessage", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus);
 		ImGui::TextWrapped(message.c_str());
 		ImGui::End();
 		ImGui::PopStyleColor();
@@ -672,7 +676,7 @@ namespace nap
 		
 		ImGui::SetNextWindowPos(ImVec2(windowWidth - 520 * mPixelMultiplier, windowHeight - 75 * mPixelMultiplier));
 		bool b = true;
-		ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar);
+		ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus);
 		ImGui::Text("Swarm v0.1 - by Casimir Geelhoed");
 		ImGui::End();
 	}
