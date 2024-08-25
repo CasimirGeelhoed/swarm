@@ -8,7 +8,7 @@
 **Swarm** is designed to be flexible and easy-to-use, using simple Lua scripts that can be edited in real-time.
 
 **Swarm** is meant to integrate with different creative software setups and workflows:
-- Swarm can control any software that listens to OSC input (such as WFSCollider, 4DSOUND, Spat, SuperCollider synths, TouchDesigner patches, Max/MSP patches etc)
+- Swarm can control any software that listens to OSC input (such as 4DSOUND, WFSCollider, Spat, SuperCollider synths, TouchDesigner patches, Max/MSP patches etc)
 - Swarm itself can be controlled using any OSC controller (such as TouchOSC).
 
 **Swarm** is extremely customisable. Using Lua scripts, users can define their own input parameters, output data fields and develop their own algorithms.
@@ -76,7 +76,7 @@ A vec3 field named ___displayPosition___ will control the position of sources in
 
 A float field named ___displayScale___ will control the scale of sources in the 3D visualisation.
 
-A float field named ___displayItensity___ will control the color of sources in the 3D visualisation (-1 is blue, 0 is grey, 1 is orange).
+A float field named ___displayIntensity___ will control the color of sources in the 3D visualisation (-1 is blue, 0 is grey, 1 is orange).
 
 
 ## OSC output
