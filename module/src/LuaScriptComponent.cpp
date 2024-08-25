@@ -26,6 +26,39 @@ RTTI_END_CLASS
 namespace nap
 {
 
+	struct VecHelper
+	{
+		template <unsigned index>
+		static float get (glm::vec3 const* vec)
+		{
+			return (*vec)[index];
+		}
+		
+		template <unsigned index>
+		static void set (glm::vec3* vec, float value)
+		{
+			(*vec)[index] = value;
+		}
+		
+		static glm::vec3 add(const glm::vec3& l, const glm::vec3& r) {
+			return l + r;
+		}
+		
+		static glm::vec3 sub(const glm::vec3& l, const glm::vec3& r) {
+			return l - r;
+		}
+		
+		static glm::vec3 mul(const glm::vec3& v, float scalar) {
+			return v * scalar;
+		}
+		
+		static glm::vec3 div(const glm::vec3& v, float scalar) {
+			return v / scalar;
+		}
+		
+	};
+	
+	
 	LuaScriptComponentInstance::LuaScriptComponentInstance(EntityInstance& entity, Component& resource) : ComponentInstance(entity, resource)
 	{
 		mOutputData = getComponent<LuaScriptComponent>()->mOutputData.get();
@@ -40,7 +73,7 @@ namespace nap
 		
 		return true;
 	}
-	
+
 	
 	bool LuaScriptComponentInstance::loadScript(const std::string& path, utility::ErrorState& errorState)
 	{
@@ -60,10 +93,22 @@ namespace nap
 			mScript = nullptr;
 			return false;
 		}
-		
+				
+		// Bind the vec3 type.
+		mScript->getNamespace().beginClass<glm::vec3>("vec3")
+		.addConstructor<void(*)(float, float, float)>()
+		.addProperty ("x", &VecHelper::get<0>, &VecHelper::set<0>)
+		.addProperty ("y", &VecHelper::get<1>, &VecHelper::set<1>)
+		.addProperty ("z", &VecHelper::get<2>, &VecHelper::set<2>)
+		.addFunction("__add", &VecHelper::add)
+		.addFunction("__sub", &VecHelper::sub)
+		.addFunction("__mul", &VecHelper::mul)
+		.addFunction("__div", &VecHelper::div)
+		.endClass();
+
 		// Get the Lua namespace.
 		auto luaNamespace = mScript->getNamespace();
-		
+
 		// Expose ParameterData functions.
 		luaNamespace.addFunction("addVec3Parameter", [&](const std::string& name, float min, float max, glm::vec3 value) { mParameterData->addVec3Parameter(name, min, max, value); });
 		luaNamespace.addFunction("addFloatParameter", [&](const std::string& name, float min, float max, float value) { mParameterData->addFloatParameter(name, min, max, value); });
@@ -79,11 +124,21 @@ namespace nap
 		
 		// Expose log function.
 		luaNamespace.addFunction("log", [&](const std::string& message) { logMessage(message); });
-				
-		// Call script's 'init' function.
+		
+		// Load script.
 		utility::ErrorState e;
-		if(!mScript->callVoid("init", e))
+		if(!mScript->load(e))
+		{
 			logMessage(e.toString());
+			return false;
+		}
+
+		// Call script's 'init' function.
+		if(!mScript->callVoid("init", e))
+		{
+			logMessage(e.toString());
+			return false;
+		}
 		
 		return true;
 		
@@ -93,6 +148,9 @@ namespace nap
 	void LuaScriptComponentInstance::update(double deltaTime)
 	{
 		if(!mScript)
+			return;
+		
+		if(!mScript->mValid)
 			return;
 		
 		// Call 'update'.
