@@ -107,7 +107,8 @@ For example: if the count is set to 3, the field named 'position/$' will have th
 # Building from source (for contributors)
 
 1. Clone [swarm-nap-0.7](https://github.com/CasimirGeelhoed/nap.git).
-2. Clone this repository in /apps.
-3. Execute the 'generate_solution.sh' script to generate the solution.
+2. Clone [naplua](https://github.com/CasimirGeelhoed/naplua) in /modules.
+3. Clone this repository in /apps.
+4. Execute the 'generate_solution.sh' script to generate the solution.
 
 For more information, see the readme and documentation of [NAP Framework](https://docs.nap-framework.tech/d1/d66/getting_started).
