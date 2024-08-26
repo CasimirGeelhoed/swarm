@@ -406,7 +406,7 @@ namespace nap
 		ImGui::Separator();
 		
 		ImGui::PushItemWidth(200);
-		if (ImGui::SliderFloat("OSC Rate", &mConfig->mOSCRate, 0, 30.0f))
+		if (ImGui::SliderFloat("OSC Rate", &mConfig->mOSCRate, 0, 60.0f))
 		{
 			updateOSCRate();
 			writeConfig();
