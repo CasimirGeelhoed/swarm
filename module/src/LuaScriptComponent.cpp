@@ -150,14 +150,6 @@ namespace nap
 		if(!mScript)
 			return;
 		
-		if(!mScript->mValid)
-			return;
-		
-		// Call 'update'.
-		utility::ErrorState e;
-		if(!mScript->callVoid("update", e, deltaTime))
-			logMessage(e.toString());
-		
 		// Check for real-time edit to script.
 		uint64 modTime;
 		bool canGetModTime = utility::getFileModificationTime(mScript->mPath, modTime);
@@ -169,7 +161,14 @@ namespace nap
 			std::string pathCopy = mScript->mPath;
 			loadScript(pathCopy, e);
 		}
-
+		
+		// Call 'update' if the script is valid.
+		if(mScript->mValid)
+		{
+			utility::ErrorState e;
+			if(!mScript->callVoid("update", e, deltaTime))
+				logMessage(e.toString());
+		}
 	}
 
 
