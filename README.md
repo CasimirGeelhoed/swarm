@@ -74,7 +74,7 @@ A valid Lua script in Swarm needs to implement two functions:
 ### Logging
 - ___log(message)___: Logs a message.
 
-## Visualisation
+# Visualisation
 
 The 3D visualisation is controlled through fields. Certain field names are mapped to certain aspects of the visualisation.
 
@@ -85,7 +85,7 @@ A float field named ___displayScale___ will control the scale of sources in the 
 A float field named ___displayIntensity___ will control the color of sources in the 3D visualisation (-1 is blue, 0 is grey, 1 is orange).
 
 
-## OSC Output
+# OSC Output
 
 ### OSC output settings
 
