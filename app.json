@@ -2,7 +2,7 @@
     "Type": "nap::ProjectInfo",
     "mID": "ProjectInfo",
     "Title": "Swarm",
-    "Version": "1.0.0",
+    "Version": "0.1",
     "RequiredModules": [
         "napapp",
         "napcameracontrol",
