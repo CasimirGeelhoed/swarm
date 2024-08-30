@@ -1,3 +1,5 @@
+<img width="1392" alt="Screenshot 2024-08-30 at 23 05 59" src="https://github.com/user-attachments/assets/1267b430-1863-404b-b394-805e0078db2e">
+
 # Swarm
 
 **Swarm** is a free lightweight programming environment for spatial sound and other purposes.
@@ -20,8 +22,6 @@
 - Real-time scripting in Lua
 - Integrated 3D visualisation
 - Complete customisation of OSC input & output addresses
-
-<img width="1392" alt="Screenshot 2024-08-30 at 23 05 59" src="https://github.com/user-attachments/assets/1267b430-1863-404b-b394-805e0078db2e">
 
 # Scripting
 
