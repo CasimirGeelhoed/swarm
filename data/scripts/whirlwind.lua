@@ -26,7 +26,7 @@ function init()
 		speedsC[i] = math.random()
 	end
 
-	addFloatParameter("speed", 0.01, 10, 5)
+	addFloatParameter("speed", -10, 10, 5)
 	addFloatParameter("scale", 0.01, 10, 2.5)
 	addFloatParameter("horizontalModulation", 0.01, 10, 1)
 	addFloatParameter("verticalModulation", 0.01, 10, 1)

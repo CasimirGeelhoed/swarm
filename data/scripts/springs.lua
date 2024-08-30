@@ -9,7 +9,6 @@ Each point is attached to all other points by an ideal linear spring. You can va
 
 sourcesCount = 24
 
-
 positions = {}
 velocities = {}
 

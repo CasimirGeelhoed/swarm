@@ -46,6 +46,7 @@ function init()
 
 end
 
+
 -- triggers a wave from speaker 'index' by giving it a random offset
 function triggerWave(index)
 	if math.random() > 0.5 then
