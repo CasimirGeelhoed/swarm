@@ -11,6 +11,7 @@
 
 #include <utility/fileutils.h>
 
+#include <glm/gtc/matrix_transform.hpp>
 
 // RTTI
 RTTI_BEGIN_CLASS(nap::LuaScriptComponent)
@@ -40,21 +41,61 @@ namespace nap
 			(*vec)[index] = value;
 		}
 		
-		static glm::vec3 add(const glm::vec3& l, const glm::vec3& r) {
+		static glm::vec3 add(const glm::vec3& l, const glm::vec3& r)
+		{
 			return l + r;
 		}
 		
-		static glm::vec3 sub(const glm::vec3& l, const glm::vec3& r) {
+		static glm::vec3 sub(const glm::vec3& l, const glm::vec3& r)
+		{
 			return l - r;
 		}
 		
-		static glm::vec3 mul(const glm::vec3& v, float scalar) {
+		static glm::vec3 mul(const glm::vec3& v, float scalar)
+		{
 			return v * scalar;
 		}
 		
-		static glm::vec3 div(const glm::vec3& v, float scalar) {
+		static glm::vec3 mulB(float scalar, const glm::vec3& v)
+		{
+			return scalar * v;
+		}
+				
+		static glm::vec3 div(const glm::vec3& v, float scalar)
+		{
 			return v / scalar;
 		}
+		
+		static bool equal(const glm::vec3& l, const glm::vec3& r)
+		{
+			return l == r;
+		}
+		
+		static glm::vec3 normalize(const glm::vec3& vec)
+		{
+			return glm::normalize(vec);
+		}
+		
+		static float distance(const glm::vec3& l, const glm::vec3& r)
+		{
+			return glm::distance(l, r);
+		}
+		
+		static glm::vec3 cross(const glm::vec3& l, const glm::vec3& r)
+		{
+			return glm::cross(l, r);
+		}
+		
+		static float dot(const glm::vec3& l, const glm::vec3& r)
+		{
+			return glm::dot(l, r);
+		}
+		
+		static float length(const glm::vec3& vec)
+		{
+			return glm::length(vec);
+		}
+
 		
 	};
 	
@@ -97,17 +138,25 @@ namespace nap
 		// Bind the vec3 type.
 		mScript->getNamespace().beginClass<glm::vec3>("vec3")
 		.addConstructor<void(*)(float, float, float)>()
-		.addProperty ("x", &VecHelper::get<0>, &VecHelper::set<0>)
-		.addProperty ("y", &VecHelper::get<1>, &VecHelper::set<1>)
-		.addProperty ("z", &VecHelper::get<2>, &VecHelper::set<2>)
+		.addProperty("x", &VecHelper::get<0>, &VecHelper::set<0>)
+		.addProperty("y", &VecHelper::get<1>, &VecHelper::set<1>)
+		.addProperty("z", &VecHelper::get<2>, &VecHelper::set<2>)
 		.addFunction("__add", &VecHelper::add)
 		.addFunction("__sub", &VecHelper::sub)
 		.addFunction("__mul", &VecHelper::mul)
 		.addFunction("__div", &VecHelper::div)
+		.addFunction("__eq", &VecHelper::equal)
 		.endClass();
 
 		// Get the Lua namespace.
 		auto luaNamespace = mScript->getNamespace();
+		
+		// Expose vec3 functions.
+		luaNamespace.addFunction("normalize", &VecHelper::normalize);
+		luaNamespace.addFunction("distance", &VecHelper::distance);
+		luaNamespace.addFunction("cross", &VecHelper::cross);
+		luaNamespace.addFunction("dot", &VecHelper::dot);
+		luaNamespace.addFunction("length", &VecHelper::length);
 
 		// Expose ParameterData functions.
 		luaNamespace.addFunction("addVec3Parameter", [&](const std::string& name, float min, float max, glm::vec3 value) { mParameterData->addVec3Parameter(name, min, max, value); });
