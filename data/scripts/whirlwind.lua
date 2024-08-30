@@ -6,7 +6,7 @@ By Casimir Geelhoed.
 
 --]]
 
-sourcesCount = 25
+sourcesCount = 50
 
 phasesA = {}
 phasesB = {}
@@ -43,7 +43,7 @@ function update(dt)
 	delta = getFloat("speed") * dt
 
 	for i = 1, sourcesCount do
-		
+
 		phasesA[i] = phasesA[i] + delta
 		x = math.cos(phasesA[i]) * getFloat("scale")
 		z = math.sin(phasesA[i]) * getFloat("scale")

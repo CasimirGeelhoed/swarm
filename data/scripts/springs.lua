@@ -17,8 +17,8 @@ function init()
 
 	setCount(sourcesCount)
 
-	addFloatParameter("springLength", 0.01, 5, 1) -- rest length of the springs
-	addFloatParameter("springConstant", 0, 4, 1) -- spring constant
+	addFloatParameter("springLength", 0.01, 10, 5) -- rest length of the springs
+	addFloatParameter("springConstant", 0, 5, 1) -- spring constant
 	addFloatParameter("friction", 0, 1, 0.4) -- friction strength
 
 	addVec3Field("displayPosition")
