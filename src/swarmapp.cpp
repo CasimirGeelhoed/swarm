@@ -273,7 +273,7 @@ namespace nap
 		if(mShowStatusMessage)
 			showStatusMessage();
 		
-		showLuaErrorMessage();
+		showLuaLogMessage();
 		
 		showVersionNumber();
 
@@ -348,6 +348,17 @@ namespace nap
 				mOSCLogVisible = true;
 			ImGui::End();
 		}
+		
+		if(mAboutVisible)
+		{
+			ImGui::SetNextWindowPos(ImVec2(mRenderWindow->getWidthPixels() * 0.5f, mRenderWindow->getHeightPixels() * 0.5f), ImGuiCond_Always, ImVec2(0.5f,0.5f));
+			ImGui::SetNextWindowSize(ImVec2(mPixelMultiplier * 1000, mPixelMultiplier * 300));
+			ImGui::Begin("About", &mAboutVisible, ImGuiWindowFlags_NoResize);
+			ImGui::Text("Swarm v0.1-beta");
+			ImGui::Text("Copyright © Casimir Geelhoed 2024");
+			ImGui::Text("Published under the GNU General Public License.");
+			ImGui::End();
+		}
 				
 	}
 	
@@ -383,9 +394,12 @@ namespace nap
 	void CoreApp::showSettings()
 	{
 		showScriptSelector();
-		if(ImGui::Button("Refresh list"))
+		
+		// The "Refresh" button repopulates the script selector and reloads the current script.
+		if(ImGui::Button("Refresh"))
 		{
 			initScriptSelector();
+			loadScript();
 		}
 
 		ImGui::Separator();
@@ -433,6 +447,11 @@ namespace nap
 		
 		ImGui::Text(utility::stringFormat("FPS: %.02f", getCore().getFramerate()).c_str());
 		
+		ImGui::Separator();
+		
+		if(ImGui::Button("About"))
+			mAboutVisible = true;
+
 	}
 	
 	
@@ -575,13 +594,19 @@ namespace nap
 		
 	}
 	
+	
 	void CoreApp::showMonitorOptions()
 	{
-		if(ImGui::Checkbox("Gnomon", &mConfig->mGnomon)) writeConfig();
-		if(ImGui::Checkbox("Shadows", &mConfig->mShadows)) writeConfig();
-		if(ImGui::Checkbox("Circular grid", &mConfig->mCircleGrid)) writeConfig();
-		if(ImGui::Checkbox("Labels", &mConfig->mLabels)) writeConfig();
-		if(ImGui::Checkbox("Dark mode", &mConfig->mDarkMode)) writeConfig();
+		if(ImGui::Checkbox("Gnomon", &mConfig->mGnomon))
+			writeConfig();
+		if(ImGui::Checkbox("Shadows", &mConfig->mShadows))
+			writeConfig();
+		if(ImGui::Checkbox("Circular grid", &mConfig->mCircleGrid))
+			writeConfig();
+		if(ImGui::Checkbox("Labels", &mConfig->mLabels))
+			writeConfig();
+		if(ImGui::Checkbox("Dark mode", &mConfig->mDarkMode))
+			writeConfig();
 	}
 	
 	
@@ -620,7 +645,7 @@ namespace nap
 			msg += (message + "\n");
 		
 		// Backup text
-		char txt[256] = "No Lua Errors";
+		char txt[256] = "No Lua Messages";
 		
 		// If there are no messages display that instead of the received messages
 		char* display_msg = msg.empty() ? txt : &msg[0];
@@ -637,7 +662,8 @@ namespace nap
 		int windowHeight = mRenderWindow->getHeightPixels();
 		
 		auto textWidth = ImGui::CalcTextSize(mStatusMessage.c_str()).x;
-		ImGui::SetNextWindowPos(ImVec2(windowWidth / 2.f - textWidth / 2.f, windowHeight - 75 * mPixelMultiplier));
+		ImGui::SetNextWindowPos(ImVec2(0.5f * mRenderWindow->getWidthPixels(), windowHeight - 75 * mPixelMultiplier), ImGuiCond_Always, ImVec2(0.5f,0.0f));
+		ImGui::SetNextWindowSize(ImVec2(textWidth + 50.f, 75)); // Note: + 50.f is apparently needed for padding which is not taken into account.
 		bool b = true;
 		ImGui::Begin("status", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus);
 		ImGui::Text(mStatusMessage.c_str());
@@ -645,7 +671,7 @@ namespace nap
 	}
 	
 	
-	void CoreApp::showLuaErrorMessage()
+	void CoreApp::showLuaLogMessage()
 	{
 		auto luaScriptComponent = mControllingEntity->findComponent<LuaScriptComponentInstance>();
 		assert(luaScriptComponent);
@@ -674,10 +700,10 @@ namespace nap
 		int windowWidth = mRenderWindow->getWidthPixels();
 		int windowHeight = mRenderWindow->getHeightPixels();
 		
-		ImGui::SetNextWindowPos(ImVec2(windowWidth - 520 * mPixelMultiplier, windowHeight - 75 * mPixelMultiplier));
+		ImGui::SetNextWindowPos(ImVec2(windowWidth - 200 * mPixelMultiplier, windowHeight - 75 * mPixelMultiplier));
 		bool b = true;
 		ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus);
-		ImGui::Text("Swarm v0.1 - by Casimir Geelhoed");
+		ImGui::Text("Swarm v0.1");
 		ImGui::End();
 	}
 	

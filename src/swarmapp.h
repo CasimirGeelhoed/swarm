@@ -115,11 +115,12 @@ namespace nap
 		void showOutputData();
 		void showMonitorOptions();
 		void showStatusMessage();
-		void showLuaErrorMessage();
+		void showLuaLogMessage();
 		void showVersionNumber();
 		
 		bool mLuaLogVisible = false;
 		bool mOSCLogVisible = false;
+		bool mAboutVisible = false;
 		
 		std::string mStatusMessage = "";
 		bool mShowStatusMessage = false;

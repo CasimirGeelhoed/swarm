@@ -49,7 +49,7 @@ namespace nap
 		/**
 		 * Initializes the service
 		 * @param errorState contains the error message on failure
-		 * @return if the video service was initialized correctly
+		 * @return if the service was initialized correctly
 		 */
 		virtual bool init(nap::utility::ErrorState& errorState) override;
 		
