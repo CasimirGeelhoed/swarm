@@ -14,7 +14,7 @@
 
 **Swarm** is extremely customisable. Using Lua scripts, users can define their own input parameters, output data fields and develop their own algorithms with real-time 3D visual feedback.
 
-**Swarm** is developed by [Casimir Geelhoed](https://casimirgeelhoed.com/) in C++, on top of the [NAP Framework](https://github.com/napframework/nap). It it a standalone application that runs on MacOS.
+**Swarm** is developed by [Casimir Geelhoed](https://casimirgeelhoed.com/) on top of the [NAP Framework](https://github.com/napframework/nap). It it a standalone application that runs on MacOS.
 
 # Key features
 
