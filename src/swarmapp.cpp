@@ -354,9 +354,8 @@ namespace nap
 			ImGui::SetNextWindowPos(ImVec2(mRenderWindow->getWidthPixels() * 0.5f, mRenderWindow->getHeightPixels() * 0.5f), ImGuiCond_Always, ImVec2(0.5f,0.5f));
 			ImGui::SetNextWindowSize(ImVec2(mPixelMultiplier * 1000, mPixelMultiplier * 300));
 			ImGui::Begin("About", &mAboutVisible, ImGuiWindowFlags_NoResize);
-			ImGui::Text("Swarm v0.1-beta");
+			ImGui::Text(("Swarm " + mVersion).c_str());
 			ImGui::Text("Copyright © Casimir Geelhoed 2024");
-			ImGui::Text("Published under the GNU General Public License.");
 			ImGui::End();
 		}
 				
@@ -663,7 +662,7 @@ namespace nap
 		
 		auto textWidth = ImGui::CalcTextSize(mStatusMessage.c_str()).x;
 		ImGui::SetNextWindowPos(ImVec2(0.5f * mRenderWindow->getWidthPixels(), windowHeight - 75 * mPixelMultiplier), ImGuiCond_Always, ImVec2(0.5f,0.0f));
-		ImGui::SetNextWindowSize(ImVec2(textWidth + 50.f, 75)); // Note: + 50.f is apparently needed for padding which is not taken into account.
+		ImGui::SetNextWindowSize(ImVec2(textWidth + 50.f * mPixelMultiplier, 75)); // Note: + 50.f is needed for padding which is not taken into account.
 		bool b = true;
 		ImGui::Begin("status", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus);
 		ImGui::Text(mStatusMessage.c_str());
@@ -700,10 +699,12 @@ namespace nap
 		int windowWidth = mRenderWindow->getWidthPixels();
 		int windowHeight = mRenderWindow->getHeightPixels();
 		
-		ImGui::SetNextWindowPos(ImVec2(windowWidth - 200 * mPixelMultiplier, windowHeight - 75 * mPixelMultiplier));
+		std::string text = "Swarm " + mVersion;
+		ImGui::SetNextWindowPos(ImVec2(windowWidth - (ImGui::CalcTextSize(text.c_str()).x + 37 * mPixelMultiplier), windowHeight - 75 * mPixelMultiplier));
+		// Note: '+ 37' is needed for padding which is not taken into account (or because ImGui::CalcTextSize doesn't return the right value).
 		bool b = true;
 		ImGui::Begin("versionnr", &b, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoBringToFrontOnFocus);
-		ImGui::Text("Swarm v0.1");
+		ImGui::Text(text.c_str());
 		ImGui::End();
 	}
 	
