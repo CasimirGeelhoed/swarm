@@ -15,6 +15,7 @@ namespace nap
 		
 		std::string mScriptPath = "scripts/script.lua"; ///< Property: 'ScriptPath' The path of the script.
 		
+		int mOSCInputPort = 333; ///< Property: 'OSCOutputAddress'  The OSC output port.
 		std::string mOSCOutputAddress = "127.0.0.1"; ///< Property: 'OSCOutputAddress'  The OSC output address.
 		int mOSCOutputPort = 7000; ///< Property: 'OSCOutputAddress'  The OSC output port.
 		float mOSCRate = 30.f; ///< Property: 'OSCRate'  The OSC output rate.

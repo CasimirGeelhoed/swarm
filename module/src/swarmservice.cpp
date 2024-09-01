@@ -13,6 +13,7 @@ RTTI_END_CLASS
 
 RTTI_BEGIN_CLASS(nap::SwarmServiceConfiguration)
 	RTTI_PROPERTY("ScriptPath", &nap::SwarmServiceConfiguration::mScriptPath, nap::rtti::EPropertyMetaData::Default)
+	RTTI_PROPERTY("OSCInputPort", &nap::SwarmServiceConfiguration::mOSCInputPort, nap::rtti::EPropertyMetaData::Default)
 	RTTI_PROPERTY("OSCOutputAddress", &nap::SwarmServiceConfiguration::mOSCOutputAddress, nap::rtti::EPropertyMetaData::Default)
 	RTTI_PROPERTY("OSCOutputPort", &nap::SwarmServiceConfiguration::mOSCOutputPort, nap::rtti::EPropertyMetaData::Default)
 	RTTI_PROPERTY("OSCRate", &nap::SwarmServiceConfiguration::mOSCRate, nap::rtti::EPropertyMetaData::Default)
