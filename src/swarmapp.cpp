@@ -8,7 +8,6 @@
 #include <renderablemeshcomponent.h>
 #include <perspcameracomponent.h>
 #include <oschandler.h>
-#include <oscreceiver.h>
 #include <swarmservice.h>
 
 #include <DataRenderingComponent.h>
@@ -102,6 +101,10 @@ namespace nap
 		if (!error.check(mOSCSender != nullptr, "unable to find resource with name: %s", "OSCSender"))
 			return false;
 		
+		mOSCReceiver = mResourceManager->findObject("OSCReceiver");
+		if (!error.check(mOSCReceiver != nullptr, "unable to find resource with name: %s", "OSCReceiver"))
+			return false;
+		
 		// Calculate pixel multiplier (2.75 is the scale of the computer I am working at).
 		mPixelMultiplier = mGuiService->getScale() / 2.75;
 		
@@ -122,12 +125,6 @@ namespace nap
 		// and make this happen again after each hotload.
 		mResourceManager->mPostResourcesLoadedSignal.connect(mPostResourcesLoadedSlot);
 		
-		// Find the OSC Input port to display it.
-		ResourcePtr<OSCReceiver> oscReceiver = nullptr;
-		oscReceiver = mResourceManager->findObject<OSCReceiver>("OSCReceiver");
-		if (!error.check(oscReceiver != nullptr, "unable to find resource with name: %s", "OSCReceiver"))
-			return false;
-		mOSCInputPort = oscReceiver->mPort;
 		
 		// All done!
 		return true;
@@ -136,6 +133,7 @@ namespace nap
 	
 	void CoreApp::postResourcesLoaded()
 	{
+		restartOSCReceiver();
 		restartOSCSender();
 		updateOSCRate();
 		updateSelectedData();
@@ -253,6 +251,18 @@ namespace nap
 	}
 	
 	
+	void CoreApp::restartOSCReceiver()
+	{
+		mOSCReceiver->mPort = mConfig->mOSCInputPort;
+		mOSCReceiver->stop();
+		utility::ErrorState e;
+		mOSCReceiver->start(e);
+		
+		// show message
+		setStatusMessage("Receiving OSC on port " + std::to_string(mConfig->mOSCInputPort), 5.0f);
+	}
+
+	
 	void CoreApp::updateSelectedData()
 	{
 		for(auto& x : mOutputData->getVec3Fields())
@@ -365,7 +375,6 @@ namespace nap
 			ImGui::Begin("About", &mAboutVisible, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 			ImGui::Text(("Swarm " + mVersion).c_str());
 			ImGui::Text("Copyright © Casimir Geelhoed 2024");
-			ImGui::Text("Published under the GNU General Public License.");
 			ImGui::End();
 		}
 				
@@ -415,7 +424,12 @@ namespace nap
 		
 		ImGui::PushItemWidth(200);
 		
-		ImGui::LabelText("Input Port", std::to_string(mOSCInputPort).c_str());
+		ImGui::InputInt("Input Port", &mConfig->mOSCInputPort, 0);
+		if(ImGui::Button("Apply##input"))
+		{
+			restartOSCReceiver();
+			writeConfig();
+		}
 		
 		ImGui::Separator();
 
@@ -425,7 +439,7 @@ namespace nap
 			mConfig->mOSCOutputAddress = buf;
 		ImGui::InputInt("Output Port", &mConfig->mOSCOutputPort, 0);
 		ImGui::PopItemWidth();
-		if(ImGui::Button("Apply"))
+		if(ImGui::Button("Apply##output"))
 		{
 			restartOSCSender();
 			writeConfig();

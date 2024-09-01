@@ -14,6 +14,7 @@
 #include <entity.h>
 #include <app.h>
 #include <oscsender.h>
+#include <oscreceiver.h>
 
 // data classes include
 #include <OutputData.h>
@@ -86,6 +87,9 @@ namespace nap
 		
 		// Restarts the OSCSender with current configuration.
 		void restartOSCSender();
+
+		// Restarts the OSCReceiver with current configuration.
+		void restartOSCReceiver();
 		
 		// Updates data for visualisation according tp the current config.
 		void updateSelectedData();
@@ -151,14 +155,13 @@ namespace nap
 		ObjectPtr<EntityInstance>   mCircleGridEntity = nullptr;
 		
 		ResourcePtr<OSCSender> mOSCSender = nullptr;
+		ResourcePtr<OSCReceiver> mOSCReceiver = nullptr;
 		
 		ResourcePtr<OutputData> mOutputData = nullptr;
 		ResourcePtr<ParameterData> mParameterData = nullptr;
 		
 		nap::Slot<> mPostResourcesLoadedSlot = { [&]() -> void { postResourcesLoaded(); } };
-		
-		int mOSCInputPort = 0;
-		
+				
 		glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
 		glm::vec3 mDarkColor = { 0.1f, 0.1f, 0.1f };
 		
