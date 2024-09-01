@@ -8,6 +8,7 @@
 #include <renderablemeshcomponent.h>
 #include <perspcameracomponent.h>
 #include <oschandler.h>
+#include <oscreceiver.h>
 #include <swarmservice.h>
 
 #include <DataRenderingComponent.h>
@@ -112,6 +113,7 @@ namespace nap
 		
 		auto* dataLabelsRenderingComponent = mRenderingEntity->findComponentByID<LabelsRenderingComponentInstance>("DataLabelsRenderingComponent");
 		if (!error.check(dataLabelsRenderingComponent != nullptr, "unable to find component with name: %s", "DataLabelsRenderingComponent"))
+			return false;
 		dataLabelsRenderingComponent->mLabelOffset *= mPixelMultiplier;
 		
 		// Restart OSC sender, update OSC rate, select data, etc..
@@ -119,6 +121,13 @@ namespace nap
 		
 		// and make this happen again after each hotload.
 		mResourceManager->mPostResourcesLoadedSignal.connect(mPostResourcesLoadedSlot);
+		
+		// Find the OSC Input port to display it.
+		ResourcePtr<OSCReceiver> oscReceiver = nullptr;
+		oscReceiver = mResourceManager->findObject<OSCReceiver>("OSCReceiver");
+		if (!error.check(oscReceiver != nullptr, "unable to find resource with name: %s", "OSCReceiver"))
+			return false;
+		mOSCInputPort = oscReceiver->mPort;
 		
 		// All done!
 		return true;
@@ -353,9 +362,10 @@ namespace nap
 		{
 			ImGui::SetNextWindowPos(ImVec2(mRenderWindow->getWidthPixels() * 0.5f, mRenderWindow->getHeightPixels() * 0.5f), ImGuiCond_Always, ImVec2(0.5f,0.5f));
 			ImGui::SetNextWindowSize(ImVec2(mPixelMultiplier * 1000, mPixelMultiplier * 300));
-			ImGui::Begin("About", &mAboutVisible, ImGuiWindowFlags_NoResize);
+			ImGui::Begin("About", &mAboutVisible, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 			ImGui::Text(("Swarm " + mVersion).c_str());
 			ImGui::Text("Copyright © Casimir Geelhoed 2024");
+			ImGui::Text("Published under the GNU General Public License.");
 			ImGui::End();
 		}
 				
@@ -404,11 +414,16 @@ namespace nap
 		ImGui::Separator();
 		
 		ImGui::PushItemWidth(200);
+		
+		ImGui::LabelText("Input Port", std::to_string(mOSCInputPort).c_str());
+		
+		ImGui::Separator();
+
 		static char buf[16] = "";
 		std::copy(mConfig->mOSCOutputAddress.begin(), mConfig->mOSCOutputAddress.end(), buf);
-		if(ImGui::InputText("OSC Address", buf, IM_ARRAYSIZE(buf)))
+		if(ImGui::InputText("Output Address", buf, IM_ARRAYSIZE(buf)))
 			mConfig->mOSCOutputAddress = buf;
-		ImGui::InputInt("OSC Port", &mConfig->mOSCOutputPort, 0);
+		ImGui::InputInt("Output Port", &mConfig->mOSCOutputPort, 0);
 		ImGui::PopItemWidth();
 		if(ImGui::Button("Apply"))
 		{

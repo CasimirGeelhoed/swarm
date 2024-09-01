@@ -155,7 +155,9 @@ namespace nap
 		ResourcePtr<OutputData> mOutputData = nullptr;
 		ResourcePtr<ParameterData> mParameterData = nullptr;
 		
-		nap::Slot<> mPostResourcesLoadedSlot    = { [&]() -> void { postResourcesLoaded(); } };
+		nap::Slot<> mPostResourcesLoadedSlot = { [&]() -> void { postResourcesLoaded(); } };
+		
+		int mOSCInputPort = 0;
 		
 		glm::vec3 mColor = { 0.8f, 0.8f, 0.8f };
 		glm::vec3 mDarkColor = { 0.1f, 0.1f, 0.1f };
