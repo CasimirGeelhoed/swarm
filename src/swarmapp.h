@@ -168,7 +168,7 @@ namespace nap
 		// Multiplier applied on all pixel values, so that positions appear similar across screens with different resolutions.
 		float mPixelMultiplier = 0.f;
 		
-		std::string mVersion = "v0.1.0";
+		std::string mVersion = "v0.1.1";
 		
 	};
 }
