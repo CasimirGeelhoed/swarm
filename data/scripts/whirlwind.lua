@@ -49,11 +49,11 @@ function update(dt)
 		z = math.sin(phasesA[i]) * getFloat("scale")
 
 		phasesB[i] = phasesB[i] + delta * speedsB[i]
-		x = x + math.cos(phasesB[i]) * getFloat("scale")  * getFloat("horizontalModulation")
-		z = z + math.sin(phasesB[i]) * getFloat("scale")  * getFloat("horizontalModulation")
+		x = x + math.cos(phasesB[i]) * getFloat("scale") * getFloat("horizontalModulation")
+		z = z + math.sin(phasesB[i]) * getFloat("scale") * getFloat("horizontalModulation")
 
 		phasesC[i] = phasesC[i] + delta * speedsC[i]
-		y = math.sin(phasesC[i]) * getFloat("scale")  * getFloat("verticalModulation")
+		y = math.sin(phasesC[i]) * getFloat("scale") * getFloat("verticalModulation")
 
 		setVec3(i, "displayPosition", vec3(x,y,z))
 		setFloat(i, "displayScale", 0.1)

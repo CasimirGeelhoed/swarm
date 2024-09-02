@@ -51,19 +51,39 @@ namespace nap
 			return l - r;
 		}
 		
-		static glm::vec3 mul(const glm::vec3& v, float scalar)
-		{
-			return v * scalar;
-		}
-		
-		static glm::vec3 mulB(float scalar, const glm::vec3& v)
-		{
-			return scalar * v;
-		}
-				
 		static glm::vec3 div(const glm::vec3& v, float scalar)
 		{
 			return v / scalar;
+		}
+		
+		static glm::vec3 mul(lua_State* L)
+		{
+			// Check the number of arguments passed from Lua.
+			if (lua_gettop(L) != 2)
+			{
+				luaL_error(L, "Invalid arguemnts: two arguments expected.");
+				return glm::vec3();
+			}
+			
+			glm::vec3 result;
+			
+			// Check if the first argument is a float and the second is a vec3.
+			if (lua_isnumber(L, 1) && lua_isuserdata(L, 2))
+			{
+				float scalar = static_cast<float>(lua_tonumber(L, 1));
+				glm::vec3* vec = luabridge::detail::Userdata::get<glm::vec3>(L, 2, false);
+				return scalar * (*vec);
+			}
+			// Check if the first argument is a vec3 and the second is a float.
+			else if (lua_isuserdata(L, 1) && lua_isnumber(L, 2))
+			{
+				glm::vec3* vec = luabridge::detail::Userdata::get<glm::vec3>(L, 1, false);
+				float scalar = static_cast<float>(lua_tonumber(L, 2));
+				return (*vec) * scalar;
+			}
+			
+			luaL_error(L, "Invalid arguments: expected (number, vec3) or (vec3, number).");
+			return glm::vec3();
 		}
 		
 		static bool equal(const glm::vec3& l, const glm::vec3& r)
@@ -95,8 +115,7 @@ namespace nap
 		{
 			return glm::length(vec);
 		}
-
-		
+				
 	};
 	
 	
