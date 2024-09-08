@@ -1,3 +1,5 @@
+/* Copyright (C) 2024 Casimir Geelhoed */
+
 #pragma once
 
 // Core includes

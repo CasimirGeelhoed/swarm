@@ -1,9 +1,4 @@
-//
-//  LuaScriptComponent.cpp
-//  napswarm
-//
-//  Created by Casimir Geelhoed on 05/07/2024.
-//
+/* Copyright (C) 2024 Casimir Geelhoed */
 
 #include "LuaScriptComponent.h"
 

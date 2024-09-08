@@ -1,3 +1,5 @@
+/* Copyright (C) 2024 Casimir Geelhoed */
+
 #include "GridMesh.h"
 
 #include <renderservice.h>

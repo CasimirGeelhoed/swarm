@@ -1,3 +1,5 @@
+/* Copyright (C) 2024 Casimir Geelhoed */
+
 #include "OutputData.h"
 
 RTTI_BEGIN_CLASS(nap::OutputData)

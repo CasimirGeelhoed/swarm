@@ -1,3 +1,5 @@
+/* Copyright (C) 2024 Casimir Geelhoed */
+
 #include "ParameterData.h"
 
 RTTI_BEGIN_CLASS(nap::ParameterData)

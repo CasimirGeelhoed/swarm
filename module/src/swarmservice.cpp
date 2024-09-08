@@ -1,3 +1,5 @@
+/* Copyright (C) 2024 Casimir Geelhoed */
+
 // Local Includes
 #include "swarmservice.h"
 
