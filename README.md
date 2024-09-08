@@ -84,6 +84,9 @@ A float field named ___displayScale___ will control the scale of sources in the 
 
 A float field named ___displayIntensity___ will control the color of sources in the 3D visualisation (-1 is blue, 0 is grey, 1 is orange).
 
+# OSC Input
+
+All input parameters can be controlled over OSC, their name being the address. The OSC input port can be set under the 'Settings' dropdown menu.
 
 # OSC Output
 
