@@ -4,7 +4,7 @@
 
 **Swarm** is a free lightweight programming environment for spatial sound and other purposes.
 
-**Swarm** enables creative coders to intuitively develop new algorithms for live control of large numbers of objects.
+**Swarm** enables creative coders to intuitively develop new algorithms for live control of large numbers of data points.
 
 **Swarm** is designed to be flexible and easy-to-use, using simple Lua scripts that can be edited in real-time. 
 
@@ -18,7 +18,7 @@
 
 # Key features
 
-- Specifically designed for controlling large numbers of sound sources / data elements (think: particle systems, flocking algorithms, etc)
+- Specifically designed for controlling large numbers of data elements (think: particle systems, flocking algorithms, etc)
 - Real-time scripting in Lua
 - Integrated 3D visualisation
 - Complete customisation of OSC input & output addresses
